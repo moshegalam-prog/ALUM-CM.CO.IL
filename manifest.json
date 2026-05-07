@@ -11,16 +11,16 @@
   "dir": "rtl",
   "icons": [
     {
-      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgZmlsbD0iIzBhMTYyOCIvPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEyOCAxMDApIHNjYWxlKDQpIiBzdHJva2U9IiNkOTc3NTciIGZpbGw9Im5vbmUiIHN0cm9rZS13aWR0aD0iMS41Ij48cmVjdCB4PSIxMCIgeT0iNiIgd2lkdGg9IjQ0IiBoZWlnaHQ9IjYwIiBmaWxsPSJyZ2JhKDIxNywxMTksODcsMC4wNCkiLz48bGluZSB4MT0iMTAiIHkxPSIyMCIgeDI9IjU0IiB5Mj0iMjAiLz48bGluZSB4MT0iMTAiIHkxPSI1MiIgeDI9IjU0IiB5Mj0iNTIiLz48bGluZSB4MT0iMzIiIHkxPSIyMCIgeDI9IjMyIiB5Mj0iNTIiLz48bGluZSB4MT0iMzIiIHkxPSIzNCIgeDI9IjMyIiB5Mj0iMzgiIHN0cm9rZS13aWR0aD0iMi4yIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48L2c+PC9zdmc+",
-      "sizes": "512x512",
-      "type": "image/svg+xml",
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOTIgMTkyIj48cmVjdCB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgZmlsbD0iIzBhMTYyOCIvPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQ4IDM4KSBzY2FsZSgxLjUpIiBzdHJva2U9IiNkOTc3NTciIGZpbGw9Im5vbmUiIHN0cm9rZS13aWR0aD0iMS41Ij48cmVjdCB4PSIxMCIgeT0iNiIgd2lkdGg9IjQ0IiBoZWlnaHQ9IjYwIiBmaWxsPSJyZ2JhKDIxNywxMTksODcsMC4wNCkiLz48bGluZSB4MT0iMTAiIHkxPSIyMCIgeDI9IjU0IiB5Mj0iMjAiLz48bGluZSB4MT0iMTAiIHkxPSI1MiIgeDI9IjU0IiB5Mj0iNTIiLz48bGluZSB4MT0iMzIiIHkxPSIyMCIgeDI9IjMyIiB5Mj0iNTIiLz48bGluZSB4MT0iMzIiIHkxPSIzNCIgeDI9IjMyIiB5Mj0iMzgiIHN0cm9rZS13aWR0aD0iMi4yIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48L2c+PC9zdmc+",
-      "sizes": "192x192",
-      "type": "image/svg+xml",
-      "purpose": "any"
+      "src": "/maskable-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }
