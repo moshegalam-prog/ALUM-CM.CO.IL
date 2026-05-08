@@ -1,26 +1,27 @@
 {
-  "name": "ALUM(cm) - מערכת הצעות מחיר",
+  "name": "ALUM(cm) - מערכת הצעות מחיר חכמה",
   "short_name": "ALUM(cm)",
-  "description": "מערכת הצעות מחיר חכמה לבעלי מקצוע באלומיניום",
-  "start_url": "./",
+  "description": "מערכת הצעות מחיר חכמה לבעלי מקצוע בתחום האלומיניום",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#0a1628",
   "theme_color": "#0a1628",
   "orientation": "portrait",
   "lang": "he",
   "dir": "rtl",
+
   "icons": [
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
     {
       "src": "/android-chrome-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "/maskable-icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "any maskable"
     }
   ]
 }
