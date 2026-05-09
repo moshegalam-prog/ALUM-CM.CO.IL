@@ -2498,6 +2498,22 @@ input, textarea, select { font-family: inherit; }
   .card-section-header button, .quote-actions, .modal-bg { display: none !important; }
   .main { padding: 20px; }
   .quote-doc { box-shadow: none; border: none; }
+  #preview-area-container,
+#print-preview-app {
+    background: #fff !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+}
+
+#print {
+    margin: 0 auto !important;
+    box-shadow: none !important;
+    border: none !important;
+}
 }
 
 /* Work Order Print Mode */
