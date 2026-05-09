@@ -2484,6 +2484,16 @@ input, textarea, select { font-family: inherit; }
 /* Print styles */
 @media print {
   body { background: white; }
+  * {
+  color: #111 !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+  box-shadow: none !important;
+}
+
+.detail-back {
+  display: none !important;
+}
   .sidebar, .mobile-header, .bottom-nav, .fab, .main-header, .toast,
   .card-section-header button, .quote-actions, .modal-bg { display: none !important; }
   .main { padding: 20px; }
