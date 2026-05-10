@@ -3481,4 +3481,3 @@ async function showPublicQuote(token) {
 }
 
 init();
-
