@@ -1944,7 +1944,8 @@ input, textarea, select { font-family: inherit; }
 .quote-doc-header {
   background: #0a1628;
   color: #f7f4ec;
-  padding: 28px 32px;
+ padding: 50px 32px;
+min-height: 220px;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
