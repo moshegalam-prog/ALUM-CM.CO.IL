@@ -1301,7 +1301,8 @@ async function createQuote(clientId) {
     createdAt: new Date().toISOString(),
     items: [],
     pricing: { discount: 0, install: 0, vat: 18, notes: '' },
-    timeline: [{ status: 'draft', at: new Date().toISOString() }]
+    timeline: [{ status: 'draft', at: new Date().toISOString() }],
+    history: [{ status: 'draft', at: new Date().toISOString() }]
   };
   
   await dbPut('quotes', quote);
@@ -1756,9 +1757,10 @@ function renderQuoteDoc(quote, client, business, subtotal, discountAmt, beforeVa
 function renderTimeline() {
   const flow = STATUS_FLOW;
   const currentIdx = flow.indexOf(currentQuote.status);
+  const timeline = currentQuote.timeline || currentQuote.history || [];
   
   return `<div class="timeline">${flow.map((status, idx) => {
-    const event = currentQuote.timeline.find(e => e.status === status);
+    const event = timeline.find(e => e.status === status);
     let cls = '';
     let icon = '';
     
