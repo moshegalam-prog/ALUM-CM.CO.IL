@@ -1,58 +1,3635 @@
+
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-  <link rel="icon" href="/favicon.ico" type="image/x-icon">
-
-<link rel="manifest" href="/manifest.json">
-  <link rel="stylesheet" href="css/style.css">
-
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
-
-<meta name="theme-color" content="#0a1628">
-
-<meta name="mobile-web-app-capable" content="yes">
-
-<meta name="apple-mobile-web-app-capable" content="yes">
-
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-
-<meta name="apple-mobile-web-app-title" content="ALUM(cm)">
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-
- 
+<meta name="theme-color" content="#0a1628">
 <title>ALUM(cm) — מערכת הצעות מחיר חכמה לחלונות ואלומיניום</title>
-  <meta name="description" content="ALUM(cm) מערכת הצעות מחיר חכמה לעבודות אלומיניום, חלונות ותריסים. מדידה חכמה, תמונות, הצעות מחיר ממותגות, מעקב לקוחות ושליחה ישירה מהשטח.">
-<link rel="canonical" href="https://www.alum-cm.co.il/">
-  <meta property="og:title" content="ALUM(cm) - מערכת הצעות מחיר לעבודות אלומיניום">
-
-<meta property="og:description" content="מערכת מתקדמת להצעות מחיר לעבודות אלומיניום, חלונות ותריסים">
-
-<meta property="og:image" content="https://www.alum-cm.co.il/android-chrome-512x512.png">
-
-<meta property="og:url" content="https://www.alum-cm.co.il/">
-
-<meta property="og:type" content="website">
-
-<meta name="twitter:card" content="summary_large_image">
-
-<meta name="twitter:title" content="ALUM(cm)">
-
-<meta name="twitter:description" content="מערכת הצעות מחיר לעבודות אלומיניום">
-
-<meta name="twitter:image" content="https://www.alum-cm.co.il/android-chrome-512x512.png">
-
-<meta name="robots" content="index, follow">
-
-<meta name="application-name" content="ALUM(cm)">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0a1628;
+  --ink-soft: #1a2942;
+  --ink-mid: #2a3952;
+  --paper: #f7f4ec;
+  --paper-warm: #efeadc;
+  --paper-deep: #e6dfcd;
+  --accent: #d97757;
+  --accent-deep: #b85d3e;
+  --accent-light: #e89878;
+  --steel: #4a6b8a;
+  --steel-light: #7a96b8;
+  --blue: #3a7bd5;
+  --blue-deep: #2563eb;
+  --blue-light: #d6e4f5;
+  --blue-soft: rgba(58,123,213,0.08);
+  --success: #4a8a4a;
+  --success-bg: rgba(74,138,74,0.12);
+  --warning: #d4a64a;
+  --warning-bg: rgba(212,166,74,0.12);
+  --danger: #c44a4a;
+  --danger-bg: rgba(196,74,74,0.12);
+  --line: rgba(10,22,40,0.12);
+  --line-soft: rgba(10,22,40,0.06);
+  --line-strong: rgba(10,22,40,0.2);
+  --shadow-sm: 0 1px 2px rgba(10,22,40,0.04);
+  --shadow-md: 0 4px 12px rgba(10,22,40,0.08);
+  --shadow-lg: 0 12px 32px rgba(10,22,40,0.12);
+  --shadow-xl: 0 30px 60px rgba(10,22,40,0.18);
+  
+  /* Theme tokens - Light mode (default) */
+  --bg-main: #ffffff;
+  --bg-card: #ffffff;
+  --bg-elevated: #ffffff;
+  --bg-hover: #f8f9fb;
+  --bg-input: #ffffff;
+  --bg-mobile-header: #0a1628;
+  --text-primary: #0a1628;
+  --text-secondary: #4a6b8a;
+  --text-muted: #7a96b8;
+  --border: rgba(10,22,40,0.12);
+  --border-soft: rgba(10,22,40,0.06);
+  --card-shadow: 0 1px 3px rgba(10,22,40,0.04);
+}
 
+/* Dark Mode */
+[data-theme="dark"] {
+  --bg-main: #0e1420;
+  --bg-card: #1a2030;
+  --bg-elevated: #232a3d;
+  --bg-hover: #232a3d;
+  --bg-input: #1a2030;
+  --bg-mobile-header: #060a14;
+  --text-primary: #e8ecf3;
+  --text-secondary: #9ba8bd;
+  --text-muted: #6b7889;
+  --border: rgba(255,255,255,0.1);
+  --border-soft: rgba(255,255,255,0.05);
+  --line: rgba(255,255,255,0.1);
+  --line-soft: rgba(255,255,255,0.05);
+  --line-strong: rgba(255,255,255,0.18);
+  --card-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.3);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+  --shadow-lg: 0 12px 32px rgba(0,0,0,0.5);
+  --blue-light: rgba(58,123,213,0.2);
+  --blue-soft: rgba(58,123,213,0.12);
+  --paper: #1a2030;
+  --paper-warm: #232a3d;
+  --paper-deep: #2a3142;
+}
 
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
+html, body { height: 100%; overflow-x: hidden; }
 
+body {
+  font-family: 'Heebo', sans-serif;
+  background: var(--bg-main);
+  color: var(--text-primary);
+  line-height: 1.5;
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.serif { font-family: 'Heebo', sans-serif; }
+
+button { font-family: inherit; cursor: pointer; }
+input, textarea, select { font-family: inherit; }
+
+/* ===== APP CONTAINER ===== */
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.view { display: none; }
+.view.active { display: block; }
+
+/* ===== LANDING PAGE ===== */
+.landing {
+  min-height: 100vh;
+  background: #ffffff;
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(58,123,213,0.05) 0%, transparent 50%),
+    radial-gradient(circle at 90% 80%, rgba(58,123,213,0.04) 0%, transparent 50%);
+}
+
+.landing-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 32px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Heebo', sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  color: var(--text-primary);
+}
+
+.brand-mark {
+  width: 36px;
+  height: 36px;
+  background: var(--ink);
+  color: var(--accent);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.brand-mark svg {
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+
+/* ===== ALUM(cm) BRAND TYPOGRAPHY ===== */
+.brand-name {
+  font-family: 'Heebo', sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 1px;
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+.brand-name .alum {
+  color: inherit;
+}
+
+.brand-name .cm-wrap {
+  color: var(--accent);
+  font-size: 0.7em;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.brand-name .cm-paren {
+  opacity: 0.5;
+}
+
+/* גודל לוגו ב-sidebar */
+.sidebar-brand .brand-name { font-size: 22px; }
+.sidebar-brand .brand-name .cm-wrap { font-size: 14px; }
+
+/* גודל בנאב ראשי של דף נחיתה */
+.brand-logo .brand-name { font-size: 22px; }
+.brand-logo .brand-name .cm-wrap { font-size: 14px; }
+
+/* גודל ב-mobile header */
+.mobile-brand .brand-name { font-size: 18px; }
+.mobile-brand .brand-name .cm-wrap { font-size: 12px; }
+
+/* גודל ב-auth */
+.auth-brand .brand-name { font-size: 22px; }
+.auth-brand .brand-name .cm-wrap { font-size: 14px; }
+
+/* hero — לוגו גדול בנושא */
+.hero-mock-brand {
+  font-family: 'Heebo', sans-serif;
+  font-weight: 800;
+  font-size: 16px;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 1px;
+  color: var(--text-primary);
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+.hero-mock-brand .cm-wrap { color: var(--accent); font-size: 11px; }
+.hero-mock-brand .cm-paren { opacity: 0.5; }
+
+.landing-nav-links {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.btn {
+  padding: 10px 20px;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-primary);
+  transition: all 0.2s;
+}
+
+.btn:hover { border-color: var(--text-primary); }
+
+[data-theme="dark"] .btn {
+  background: var(--bg-elevated);
+  border-color: rgba(255,255,255,0.12);
+}
+
+[data-theme="dark"] .btn:hover {
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.25);
+}
+
+.btn-primary {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+
+.btn-primary:hover { background: var(--ink-soft); }
+
+[data-theme="dark"] .btn-primary,
+[data-theme="dark"] .modal-footer .btn-primary {
+  background: var(--blue) !important;
+  color: white !important;
+  border-color: var(--blue) !important;
+  box-shadow: 0 4px 12px rgba(58,123,213,0.3);
+}
+
+[data-theme="dark"] .btn-primary:hover,
+[data-theme="dark"] .modal-footer .btn-primary:hover {
+  background: var(--blue-deep) !important;
+  border-color: var(--blue-deep) !important;
+}
+
+.btn-accent {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+
+.btn-accent:hover { background: var(--accent-deep); border-color: var(--accent-deep); }
+
+.btn-pro {
+  background: linear-gradient(135deg, #1a2942 0%, #0a1628 100%);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  font-weight: 700;
+}
+
+.btn-pro:hover {
+  background: linear-gradient(135deg, #0a1628 0%, #1a2942 100%);
+  color: white;
+}
+
+.btn-ghost {
+  background: transparent;
+  border-color: transparent;
+}
+
+.btn-ghost:hover { background: var(--paper-warm); }
+
+.hero {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 60px 32px 80px;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; gap: 40px; padding: 40px 24px 60px; }
+}
+
+.hero-text .label {
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent-deep);
+  background: rgba(217,119,87,0.1);
+  padding: 6px 14px;
+  border-radius: 100px;
+  margin-bottom: 24px;
+  font-weight: 600;
+}
+
+.hero-text h1 {
+  font-family: 'Heebo', sans-serif;
+  font-size: clamp(36px, 5.5vw, 64px);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -1.5px;
+  margin-bottom: 24px;
+}
+
+.hero-text h1 em {
+  font-style: italic;
+  color: var(--accent-deep);
+}
+
+.hero-text p {
+  font-size: 18px;
+  color: var(--ink-soft);
+  line-height: 1.6;
+  margin-bottom: 32px;
+  max-width: 520px;
+}
+
+.hero-cta {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.hero-cta .btn {
+  padding: 14px 28px;
+  font-size: 15px;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 32px;
+  margin-top: 40px;
+  padding-top: 32px;
+  border-top: 1px solid var(--line);
+}
+
+.hero-stat {
+  font-family: 'Heebo', sans-serif;
+}
+
+.hero-stat-num {
+  font-size: 32px;
+  font-weight: 900;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.hero-stat-label {
+  font-size: 12px;
+  color: var(--steel);
+  margin-top: 4px;
+  font-family: 'Heebo', sans-serif;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.hero-visual {
+  position: relative;
+  perspective: 1500px;
+}
+
+.hero-mock {
+  background: var(--ink);
+  border-radius: 18px;
+  padding: 8px;
+  box-shadow: var(--shadow-xl);
+  transform: rotateY(-8deg) rotateX(4deg);
+  transform-style: preserve-3d;
+  transition: transform 0.4s;
+}
+
+.hero-mock:hover { transform: rotateY(-4deg) rotateX(2deg); }
+
+.hero-mock-screen {
+  background: var(--paper);
+  border-radius: 12px;
+  padding: 20px;
+  min-height: 380px;
+}
+
+.hero-mock-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  font-size: 12px;
+  color: var(--steel);
+}
+
+.hero-mock-card {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.hero-mock-card-title { font-weight: 600; font-size: 13px; }
+.hero-mock-card-meta { font-size: 11px; color: var(--steel); margin-top: 2px; }
+
+.hero-mock-pill {
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 100px;
+  font-weight: 600;
+}
+
+.hero-floating {
+  position: absolute;
+  background: var(--bg-card);
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: var(--shadow-lg);
+  font-size: 13px;
+}
+
+.hero-floating-1 {
+  top: 30px;
+  right: -20px;
+  border-right: 3px solid var(--success);
+}
+
+.hero-floating-2 {
+  bottom: 30px;
+  left: -20px;
+  border-right: 3px solid var(--accent);
+}
+
+@media (max-width: 900px) {
+  .hero-floating { display: none; }
+  .hero-mock { transform: none; }
+}
+
+/* ===== FEATURES ===== */
+.features {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 80px 32px;
+}
+
+.section-title {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.section-title .label {
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent-deep);
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.section-title h2 {
+  font-family: 'Heebo', sans-serif;
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -1px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+@media (max-width: 800px) {
+  .features-grid { grid-template-columns: 1fr; }
+}
+
+.feature {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 32px 28px;
+  transition: all 0.2s;
+}
+
+.feature:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.feature-icon {
+  width: 48px;
+  height: 48px;
+  background: var(--paper-warm);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.feature h3 {
+  font-family: 'Heebo', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.feature p {
+  color: var(--ink-soft);
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+/* ===== PRICING (Landing) ===== */
+.pricing {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 60px 32px 100px;
+}
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 50px;
+}
+
+@media (max-width: 700px) {
+  .pricing-grid { grid-template-columns: 1fr; }
+}
+
+.pricing-card {
+  background: var(--bg-card);
+  border: 2px solid var(--line);
+  border-radius: 20px;
+  padding: 36px 32px;
+  position: relative;
+}
+
+.pricing-card.pro {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+
+.pricing-card.pro::before {
+  content: 'הכי פופולרי';
+  position: absolute;
+  top: -14px;
+  right: 28px;
+  background: var(--accent);
+  color: white;
+  padding: 5px 14px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.pricing-tier-label {
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.pricing-tier-name {
+  font-family: 'Heebo', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  margin-bottom: 20px;
+}
+
+.pricing-amount {
+  font-family: 'Heebo', sans-serif;
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin-bottom: 6px;
+}
+
+.pricing-amount-num {
+  font-size: 56px;
+  font-weight: 900;
+  letter-spacing: -2px;
+}
+
+.pricing-amount-currency {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--steel);
+}
+
+.pricing-card.pro .pricing-amount-currency { color: var(--steel-light); }
+
+.pricing-period {
+  font-size: 13px;
+  opacity: 0.6;
+  margin-bottom: 28px;
+}
+
+.pricing-features {
+  list-style: none;
+  margin-bottom: 28px;
+}
+
+.pricing-features li {
+  padding: 10px 0;
+  font-size: 14px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.pricing-card.pro .pricing-features li { border-color: rgba(247,244,236,0.1); }
+
+.pricing-features li:last-child { border: none; }
+
+.pricing-features li::before {
+  content: '✓';
+  color: var(--accent);
+  font-weight: 800;
+  flex-shrink: 0;
+  font-size: 16px;
+}
+
+.pricing-card .btn {
+  width: 100%;
+  padding: 14px;
+  font-size: 15px;
+}
+
+/* ===== FOOTER (Landing) ===== */
+.landing-footer {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 60px 32px 40px;
+  text-align: center;
+}
+
+.landing-footer-text {
+  font-family: 'Heebo', sans-serif;
+  font-style: italic;
+  font-size: 18px;
+  max-width: 600px;
+  margin: 0 auto 20px;
+  color: rgba(247,244,236,0.7);
+}
+
+.landing-footer-meta {
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(247,244,236,0.4);
+  margin-top: 30px;
+}
+
+.landing-footer-credit {
+  margin-top: 16px;
+  font-size: 13px;
+  color: rgba(247,244,236,0.5);
+  font-family: 'Heebo', sans-serif;
+  font-style: italic;
+}
+
+.landing-footer-credit a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+  font-style: normal;
+  border-bottom: 1px solid rgba(217,119,87,0.4);
+  padding-bottom: 1px;
+  transition: all 0.2s;
+}
+
+.landing-footer-credit a:hover {
+  border-bottom-color: var(--accent);
+  color: var(--accent-light);
+}
+
+/* ===== AUTH ===== */
+.auth {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 24px;
+  background: var(--paper);
+  background-image: 
+    radial-gradient(circle at 20% 30%, rgba(217,119,87,0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(74,107,138,0.08) 0%, transparent 50%);
+}
+
+.auth-card {
+  background: var(--bg-card);
+  border-radius: 24px;
+  padding: 48px 40px;
+  max-width: 440px;
+  width: 100%;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--line);
+}
+
+.auth-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 32px;
+  justify-content: center;
+}
+
+.auth-card h2 {
+  font-family: 'Heebo', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.auth-subtitle {
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: 14px;
+  margin-bottom: 32px;
+}
+
+.input-group {
+  margin-bottom: 16px;
+}
+
+.input-group label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+  letter-spacing: 0.5px;
+}
+
+.input {
+  width: 100%;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-size: 15px;
+  color: var(--text-primary);
+  transition: all 0.2s;
+}
+
+[data-theme="dark"] .input {
+  background: var(--bg-card);
+  border-color: rgba(255,255,255,0.12);
+}
+
+[data-theme="dark"] .input::placeholder {
+  color: rgba(255,255,255,0.3);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--blue);
+  background: var(--bg-card);
+}
+
+.auth-btn {
+  width: 100%;
+  margin-top: 16px;
+  padding: 14px;
+  font-size: 15px;
+}
+
+.auth-divider {
+  text-align: center;
+  margin: 20px 0;
+  font-size: 13px;
+  color: var(--steel);
+  position: relative;
+}
+
+.auth-divider::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 0;
+  left: 0;
+  height: 1px;
+  background: var(--line);
+  z-index: 0;
+}
+
+.auth-divider span {
+  background: var(--bg-card);
+  padding: 0 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.auth-link {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+.auth-link a {
+  color: var(--accent-deep);
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* ===== APP LAYOUT ===== */
+.app-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: 100vh;
+}
+
+@media (max-width: 900px) {
+  .app-layout { grid-template-columns: 1fr; }
+}
+
+/* ===== SIDEBAR (Desktop) ===== */
+.sidebar {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 24px 16px;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 900px) {
+  .sidebar { display: none; }
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Heebo', sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  margin: 0 8px 32px;
+  color: var(--paper);
+}
+
+.sidebar-section-label {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(247,244,236,0.4);
+  margin: 24px 12px 8px;
+  font-weight: 600;
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  margin-bottom: 4px;
+  border-radius: 8px;
+  font-size: 14px;
+  color: rgba(247,244,236,0.7);
+  cursor: pointer;
+  transition: all 0.15s;
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: right;
+}
+
+.sidebar-item:hover {
+  background: rgba(247,244,236,0.05);
+  color: var(--paper);
+}
+
+.sidebar-item.active {
+  background: rgba(217,119,87,0.15);
+  color: var(--accent);
+}
+
+.sidebar-item-icon {
+  font-size: 16px;
+}
+
+.sidebar-item-badge {
+  margin-right: auto;
+  background: var(--accent);
+  color: white;
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 100px;
+  font-weight: 700;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding-top: 20px;
+  border-top: 1px solid rgba(247,244,236,0.1);
+}
+
+.sidebar-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.sidebar-user:hover { background: rgba(247,244,236,0.05); }
+
+.sidebar-avatar {
+  width: 36px;
+  height: 36px;
+  background: var(--accent);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: white;
+  font-size: 14px;
+}
+
+.sidebar-user-info { font-size: 13px; }
+.sidebar-user-name { color: var(--paper); font-weight: 600; }
+.sidebar-user-plan { color: rgba(247,244,236,0.5); font-size: 11px; margin-top: 2px; }
+
+.upgrade-pill {
+  background: rgba(217,119,87,0.15);
+  color: var(--accent);
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 100px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* ===== MAIN ===== */
+.main {
+  background: var(--bg-main);
+  min-height: 100vh;
+  padding: 32px 40px;
+  padding-bottom: 100px;
+  color: var(--text-primary);
+}
+
+@media (max-width: 900px) {
+  .main { padding: 16px 16px 100px; }
+}
+
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 32px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.main-title {
+  font-family: 'Heebo', sans-serif;
+  font-size: clamp(26px, 4vw, 36px);
+  font-weight: 800;
+  line-height: 1;
+}
+
+.main-subtitle {
+  color: var(--steel);
+  font-size: 14px;
+  margin-top: 6px;
+}
+
+/* ברכה אישית בדשבורד (במקום כותרת דשבורד) */
+/* Theme Toggle Switch */
+.theme-toggle-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.theme-switch {
+  position: relative;
+  display: inline-block;
+  width: 52px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+.theme-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.theme-slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background: var(--border);
+  border-radius: 28px;
+  transition: 0.3s;
+}
+
+.theme-slider:before {
+  content: "☀";
+  position: absolute;
+  height: 22px;
+  width: 22px;
+  left: 3px;
+  bottom: 3px;
+  background: white;
+  border-radius: 50%;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: #f59e0b;
+}
+
+.theme-switch input:checked + .theme-slider {
+  background: var(--blue);
+}
+
+.theme-switch input:checked + .theme-slider:before {
+  transform: translateX(24px);
+  content: "🌙";
+  background: #1e293b;
+  color: #fbbf24;
+}
+
+/* Theme Toggle Switch */
+.dashboard-greeting {
+  margin-bottom: 28px;
+}
+
+.greeting-text {
+  font-family: 'Heebo', sans-serif;
+  font-size: clamp(22px, 4vw, 28px);
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.3;
+  letter-spacing: -0.5px;
+}
+
+.greeting-text .greeting-name {
+  color: var(--blue);
+}
+
+/* Mobile header */
+.mobile-header {
+  display: none;
+  background: #0a1628;
+  color: #f7f4ec;
+  padding: 12px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  align-items: center;
+  justify-content: space-between;
+}
+
+[data-theme="dark"] .mobile-header {
+  background: #060a14;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+@media (max-width: 900px) {
+  .mobile-header { display: flex; }
+  .main { padding-top: 16px; }
+}
+
+/* צד ימין - לוגו חלון */
+.mobile-header-right {
+  display: flex;
+  align-items: center;
+}
+
+.mobile-window-logo {
+  width: 38px;
+  height: 45px;
+  display: block;
+  color: #f7f4ec;
+}
+
+[data-theme="dark"] .mobile-window-logo {
+  color: #ffffff;
+}
+
+/* צד שמאל - שם המותג + תפריט */
+.mobile-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mobile-brand-name {
+  font-family: 'Heebo', sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  color: #f7f4ec;
+  letter-spacing: -0.4px;
+  direction: ltr;
+}
+
+[data-theme="dark"] .mobile-brand-name {
+  color: #ffffff;
+}
+
+.mobile-brand-name .alum { color: inherit; }
+.mobile-brand-name .cm-wrap { 
+  font-size: 14px; 
+  color: var(--accent);
+  font-weight: 700;
+  margin-left: 4px;
+  display: inline-block;
+}
+.mobile-brand-name .cm-paren { color: var(--accent); }
+
+.mobile-brand {
+  font-family: 'Heebo', sans-serif;
+  font-weight: 800;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--bg-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: var(--text-primary);
+}
+
+.icon-btn-dark {
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.25);
+  color: #ffffff;
+  font-size: 22px;
+  font-weight: 400;
+}
+
+.icon-btn-dark:hover {
+  background: rgba(255,255,255,0.2);
+  border-color: rgba(255,255,255,0.4);
+}
+
+[data-theme="dark"] .icon-btn-dark {
+  background: rgba(255,255,255,0.15);
+  border-color: rgba(255,255,255,0.3);
+  color: #ffffff;
+}
+
+[data-theme="dark"] .icon-btn-dark:hover {
+  background: rgba(255,255,255,0.25);
+}
+
+/* Bottom Nav - הוסר. הניווט עכשיו בתפריט hamburger */
+.bottom-nav { display: none !important; }
+
+/* ===== STATS ===== */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+@media (max-width: 900px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 20px; }
+}
+
+.stat-card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--blue-light);
+  border-radius: 18px;
+  padding: 20px 22px;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+[data-theme="dark"] .stat-card {
+  background: var(--bg-elevated);
+  border-color: rgba(58,123,213,0.3);
+}
+
+.stat-card:hover {
+  border-color: var(--blue);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(58,123,213,0.12);
+}
+
+.stat-label {
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: 500;
+  margin-bottom: 14px;
+  letter-spacing: 0;
+}
+
+.stat-num {
+  font-family: 'Heebo', sans-serif;
+  font-size: 52px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--blue);
+  letter-spacing: -1px;
+}
+
+@media (max-width: 480px) {
+  .stat-num { font-size: 44px; }
+}
+
+.stat-trend {
+  font-size: 12px;
+  margin-top: 10px;
+  color: var(--steel);
+  opacity: 0.7;
+}
+
+.stat-trend.warning { color: var(--warning); opacity: 1; }
+.stat-trend.success { color: var(--success); opacity: 1; }
+
+/* כרטיס דונאט סטטוסים */
+.stat-card-donut {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 14px 12px;
+}
+
+.donut-title {
+  font-size: 13px;
+  color: var(--steel);
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.donut-wrap {
+  position: relative;
+  width: 130px;
+  height: 130px;
+  margin-bottom: 10px;
+}
+
+.donut-svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.donut-segment {
+  fill: none;
+  stroke-width: 14;
+  transition: stroke-dasharray 0.6s ease;
+}
+
+.donut-bg {
+  fill: none;
+  stroke: var(--paper-warm);
+  stroke-width: 14;
+  opacity: 0.5;
+}
+
+.donut-pct {
+  position: absolute;
+  font-size: 10px;
+  font-weight: 700;
+  color: white;
+  pointer-events: none;
+  font-family: 'Heebo', sans-serif;
+}
+
+.donut-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.donut-num {
+  font-family: 'Heebo', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.donut-label {
+  font-size: 11px;
+  color: var(--steel);
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.donut-legend {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  gap: 4px 12px;
+  font-size: 10px;
+  color: var(--steel);
+  font-weight: 500;
+  justify-content: center;
+}
+
+.donut-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+
+.donut-legend-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.donut-legend-dot.green { background: #22c55e; }
+.donut-legend-dot.blue { background: #2563eb; }
+.donut-legend-dot.orange { background: #f97316; }
+.donut-legend-dot.yellow { background: #facc15; }
+
+/* כרטיס עם מד עיגול - לאחוז סגירה (ישן, שמור לאחור-תאימות) */
+.stat-card-circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px;
+}
+
+.stat-circle {
+  position: relative;
+  width: 110px;
+  height: 110px;
+}
+
+.stat-circle svg {
+  transform: rotate(-90deg);
+  width: 100%;
+  height: 100%;
+}
+
+.stat-circle-bg {
+  fill: none;
+  stroke: var(--blue-light);
+  stroke-width: 6;
+  opacity: 0.4;
+}
+
+.stat-circle-fg {
+  fill: none;
+  stroke: var(--blue);
+  stroke-width: 6;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.6s ease;
+}
+
+.stat-circle-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.stat-circle-num {
+  font-family: 'Heebo', sans-serif;
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--blue);
+  line-height: 1;
+  letter-spacing: -0.5px;
+}
+
+.stat-circle-label {
+  font-size: 11px;
+  color: var(--steel);
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+/* ===== CARDS ===== */
+.card-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+[data-theme="dark"] .card-section {
+  background: var(--bg-elevated);
+  border-color: rgba(255,255,255,0.08);
+}
+
+.card-section-header {
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--line-soft);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-section-title {
+  font-family: 'Heebo', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.card-section-action {
+  background: transparent;
+  border: none;
+  color: var(--blue);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.card-section-action:hover {
+  color: var(--blue-deep);
+}
+
+.empty-state {
+  padding: 60px 30px;
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  opacity: 0.3;
+}
+
+.empty-title {
+  font-family: 'Heebo', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.empty-text {
+  color: var(--ink-soft);
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+/* List item */
+.list-item {
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--line-soft);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.list-item:last-child { border-bottom: none; }
+.list-item:hover { background: var(--bg-hover); }
+
+.list-item-info { flex: 1; min-width: 0; }
+
+.list-item-title {
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.list-item-meta {
+  font-size: 12px;
+  color: var(--steel);
+  margin-top: 4px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.list-item-amount {
+  font-family: 'Heebo', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--blue);
+}
+
+/* Status pill */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+
+.status-pill::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.status-draft { background: rgba(122,150,184,0.15); color: var(--steel); }
+.status-sent { background: var(--warning-bg); color: var(--warning); }
+.status-viewed { background: rgba(217,119,87,0.15); color: var(--accent-deep); }
+.status-approved { background: var(--success-bg); color: var(--success); }
+.status-production { background: rgba(74,107,138,0.15); color: var(--steel); }
+.status-installed { background: rgba(10,22,40,0.08); color: var(--ink); }
+.status-rejected { background: var(--danger-bg); color: var(--danger); }
+
+/* Dark Mode - status pills עם ניגוד טוב יותר */
+[data-theme="dark"] .status-draft { 
+  background: rgba(250,204,21,0.15); 
+  color: #facc15; 
+}
+[data-theme="dark"] .status-sent { 
+  background: rgba(58,123,213,0.2); 
+  color: #60a5fa; 
+}
+[data-theme="dark"] .status-viewed { 
+  background: rgba(249,115,22,0.2); 
+  color: #fb923c; 
+}
+[data-theme="dark"] .status-approved { 
+  background: rgba(34,197,94,0.2); 
+  color: #4ade80; 
+}
+[data-theme="dark"] .status-production { 
+  background: rgba(249,115,22,0.2); 
+  color: #fb923c; 
+}
+[data-theme="dark"] .status-installed { 
+  background: rgba(34,197,94,0.25); 
+  color: #4ade80; 
+}
+[data-theme="dark"] .status-rejected { 
+  background: rgba(239,68,68,0.2); 
+  color: #f87171; 
+}
+
+/* FAB */
+.fab {
+  position: fixed;
+  bottom: 24px;
+  left: 20px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--blue);
+  color: white;
+  border: none;
+  font-size: 30px;
+  font-weight: 300;
+  box-shadow: 0 8px 24px rgba(58,123,213,0.4);
+  z-index: 40;
+  display: none;
+  transition: all 0.2s ease;
+}
+
+.fab:hover {
+  background: var(--blue-deep);
+  transform: scale(1.05);
+  box-shadow: 0 10px 28px rgba(58,123,213,0.5);
+}
+
+@media (max-width: 900px) {
+  .fab { display: flex; align-items: center; justify-content: center; }
+}
+
+/* Form rows */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 600px) {
+  .form-row { grid-template-columns: 1fr; }
+}
+
+/* Toggle */
+.toggle-row {
+  display: flex;
+  background: var(--paper);
+  border-radius: 10px;
+  padding: 4px;
+}
+
+.toggle-btn {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  background: transparent;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--steel);
+  border-radius: 7px;
+}
+
+.toggle-btn.active {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Template grid */
+.template-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 600px) {
+  .template-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.template-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 18px 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.template-btn:hover { border-color: var(--accent); transform: translateY(-1px); }
+
+.template-icon { font-size: 28px; margin-bottom: 6px; }
+.template-name { font-size: 13px; font-weight: 600; }
+.template-meta { font-size: 11px; color: var(--steel); margin-top: 2px; }
+
+/* Area preview */
+.area-preview {
+  background: var(--paper-warm);
+  border-radius: 10px;
+  padding: 14px;
+  text-align: center;
+  margin: 10px 0;
+}
+
+.area-result {
+  font-family: 'Heebo', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--accent-deep);
+}
+
+/* Modal */
+.modal-bg {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(10,22,40,0.5);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.modal-bg.show { display: flex; }
+
+.modal {
+  background: var(--bg-card);
+  border-radius: 20px;
+  max-width: 520px;
+  width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-xl);
+  margin: auto;
+}
+
+.modal-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--line-soft);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.modal-title {
+  font-family: 'Heebo', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.modal-body {
+  padding: 24px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  flex: 1;
+}
+
+.modal-footer {
+  padding: 16px 24px;
+  border-top: 1px solid var(--border-soft);
+  display: flex;
+  gap: 10px;
+  background: var(--bg-card);
+  flex-shrink: 0;
+  position: sticky;
+  bottom: 0;
+}
+
+[data-theme="dark"] .modal-footer {
+  background: var(--bg-card);
+  border-top-color: rgba(255,255,255,0.08);
+}
+
+.modal-footer .btn { flex: 1; padding: 12px; }
+
+/* כשהמקלדת פתוחה — תן לדף לזוז ולהתאים */
+@media (max-width: 900px) {
+  .modal-bg.show { align-items: flex-start; padding: 10px; }
+  .modal { max-height: calc(100vh - 20px); max-height: calc(100dvh - 20px); }
+}
+
+/* תוספת מרווח בתחתית כדי שלא יוסתר ע"י המקלדת */
+.modal-body { padding-bottom: 40px; }
+
+/* כשמתמקדים בשדה — וודא שהוא נראה */
+.input:focus, textarea.input:focus {
+  scroll-margin-top: 80px;
+  scroll-margin-bottom: 80px;
+}
+
+/* Media strip */
+.media-strip {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 10px 0;
+}
+
+.media-item {
+  width: 70px;
+  height: 70px;
+  border-radius: 10px;
+  background: var(--paper-warm);
+  border: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.media-item img { width: 100%; height: 100%; object-fit: cover; }
+
+.media-item.audio {
+  background: linear-gradient(135deg, var(--accent), var(--accent-deep));
+  color: white;
+}
+
+.media-add {
+  border: 2px dashed var(--line-strong);
+  background: transparent;
+  color: var(--steel);
+  font-size: 24px;
+  font-weight: 300;
+}
+
+.media-remove {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.7);
+  color: white;
+  border: none;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Audio player */
+.audio-player {
+  background: var(--paper-warm);
+  border-radius: 10px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.audio-play {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: white;
+  border: none;
+  font-size: 14px;
+}
+
+.audio-info { flex: 1; font-size: 12px; }
+
+/* Recording */
+.recording-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(10,22,40,0.85);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  flex-direction: column;
+  color: white;
+  text-align: center;
+}
+
+.recording-overlay.show { display: flex; }
+
+.recording-pulse {
+  width: 100px;
+  height: 100px;
+  background: var(--danger);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  margin-bottom: 24px;
+  animation: pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(196,74,74,0.6); }
+  50% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(196,74,74,0); }
+}
+
+.recording-time {
+  font-family: 'Heebo', sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 30px;
+}
+
+.recording-stop {
+  background: var(--bg-card);
+  color: var(--danger);
+  border: none;
+  padding: 14px 32px;
+  border-radius: 100px;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+/* Quote preview */
+/* ===== QUOTE DOCUMENT - תמיד בהיר (כמו מסמך אמיתי) ===== */
+.quote-doc {
+  background: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(10,22,40,0.12);
+  margin-bottom: 16px;
+  color: #0a1628;
+}
+
+[data-theme="dark"] .quote-doc {
+  border-color: rgba(255,255,255,0.15);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  color: #0a1628 !important;
+}
+
+[data-theme="dark"] .quote-doc * {
+  color: inherit;
+}
+
+[data-theme="dark"] .quote-doc-header,
+[data-theme="dark"] .quote-doc-header * {
+  color: #f7f4ec !important;
+}
+
+[data-theme="dark"] .quote-doc-header .quote-doc-business-meta,
+[data-theme="dark"] .quote-doc-header .quote-doc-num {
+  color: rgba(247,244,236,0.7) !important;
+}
+
+.quote-doc-header {
+  background: #0a1628;
+  color: #f7f4ec;
+  padding: 28px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.quote-doc-logo {
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  background: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  color: white;
+  font-size: 20px;
+  margin-bottom: 12px;
+}
+
+.quote-doc-business { 
+  font-family: 'Heebo', sans-serif; 
+  font-size: 22px; 
+  font-weight: 800;
+  color: #f7f4ec;
+}
+.quote-doc-business-meta { 
+  font-size: 12px; 
+  color: rgba(247,244,236,0.7); 
+  margin-top: 4px;
+}
+
+.quote-doc-num {
+  text-align: left;
+  font-size: 12px;
+  color: rgba(247,244,236,0.7);
+}
+
+.quote-doc-num-val {
+  font-family: 'Heebo', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #f7f4ec;
+  margin-top: 2px;
+}
+
+.quote-doc-body { 
+  padding: 28px 32px;
+  background: #ffffff;
+  color: #0a1628;
+}
+
+.quote-doc-client {
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(10,22,40,0.1);
+}
+
+.quote-doc-client-label { 
+  font-size: 11px; 
+  color: #4a6b8a; 
+  letter-spacing: 1px; 
+  text-transform: uppercase; 
+  font-weight: 600; 
+}
+
+.quote-doc-client-name { 
+  font-family: 'Heebo', sans-serif; 
+  font-size: 22px; 
+  font-weight: 800; 
+  margin: 4px 0;
+  color: #0a1628;
+}
+
+.quote-doc-client-meta { 
+  font-size: 13px; 
+  color: #4a6b8a;
+}
+
+.quote-doc-table { 
+  width: 100%; 
+  border-collapse: collapse; 
+  font-size: 13px;
+  color: #0a1628;
+}
+
+/* תמונת חלון בטבלת ההצעה */
+.quote-doc-item-thumb {
+  flex: 0 0 auto;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #fafaf6 0%, #f3efe5 100%);
+  border-radius: 8px;
+  padding: 3px;
+}
+
+.quote-doc-item-thumb .window-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.quote-doc-table thead th { 
+  text-align: right; 
+  font-size: 11px; 
+  letter-spacing: 1px; 
+  text-transform: uppercase; 
+  color: #4a6b8a; 
+  padding: 10px 6px; 
+  border-bottom: 1px solid rgba(10,22,40,0.12); 
+  font-weight: 600; 
+}
+
+.quote-doc-table td { 
+  padding: 14px 6px; 
+  border-bottom: 1px solid rgba(10,22,40,0.06);
+  color: #0a1628;
+}
+
+.quote-doc-table .item-name { 
+  font-weight: 600;
+  color: #0a1628;
+}
+
+.quote-doc-table .item-detail { 
+  font-size: 11px; 
+  color: #4a6b8a; 
+}
+
+.quote-doc-table .num { 
+  text-align: left; 
+  font-family: 'Heebo', sans-serif; 
+  font-weight: 700;
+  color: #0a1628;
+}
+
+.quote-doc-totals {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 2px solid #0a1628;
+}
+
+.quote-doc-total-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  font-size: 14px;
+  color: #0a1628;
+}
+
+.quote-doc-total-row.discount { color: #4a8a4a; }
+
+.quote-doc-grand {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 14px;
+  padding: 16px 20px;
+  background: #f7f4ec;
+  border-radius: 12px;
+}
+
+.quote-doc-grand-label {
+  font-size: 13px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #4a6b8a;
+  font-weight: 600;
+}
+
+.quote-doc-grand-val {
+  font-family: 'Heebo', sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  color: #0a1628;
+}
+
+/* כש-quote-doc-grand מופיע מחוץ ל-quote-doc (בתוך card-section למשל) - Dark Mode */
+[data-theme="dark"] .card-section .quote-doc-grand {
+  background: rgba(58,123,213,0.15);
+  border: 1px solid rgba(58,123,213,0.3);
+}
+
+[data-theme="dark"] .card-section .quote-doc-grand-label {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .card-section .quote-doc-grand-val {
+  color: var(--blue);
+}
+
+[data-theme="dark"] .card-section .quote-doc-total-row {
+  color: var(--text-primary);
+}
+
+/* רק בתוך .quote-doc - להישאר בהיר */
+.quote-doc .quote-doc-grand {
+  background: #f7f4ec;
+}
+
+.quote-doc .quote-doc-grand-label {
+  color: #4a6b8a;
+}
+
+.quote-doc .quote-doc-grand-val {
+  color: #0a1628;
+}
+
+.quote-doc-footer {
+  padding: 20px 32px;
+  background: #f7f4ec;
+  font-size: 12px;
+  color: #4a6b8a;
+  text-align: center;
+  border-top: 1px solid rgba(10,22,40,0.1);
+}
+
+/* Status timeline */
+.timeline {
+  padding: 8px 0;
+}
+
+.timeline-row {
+  display: flex;
+  gap: 14px;
+  padding: 12px 0;
+  position: relative;
+  align-items: flex-start;
+}
+
+.timeline-dot {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 2px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.timeline-row.done .timeline-dot { background: var(--success); border-color: var(--success); color: white; }
+.timeline-row.active .timeline-dot { background: var(--accent); border-color: var(--accent); color: white; box-shadow: 0 0 0 4px rgba(217,119,87,0.2); }
+.timeline-row.rejected .timeline-dot { background: var(--danger); border-color: var(--danger); color: white; }
+
+.timeline-row:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: 12px;
+  top: 38px;
+  bottom: -2px;
+  width: 2px;
+  background: var(--line);
+}
+
+.timeline-row.done:not(:last-child)::after { background: var(--success); }
+
+.timeline-content { flex: 1; padding-top: 2px; }
+.timeline-status { font-weight: 600; font-size: 14px; }
+.timeline-row:not(.done):not(.active):not(.rejected) .timeline-status { color: var(--steel); }
+.timeline-time { font-size: 12px; color: var(--steel); margin-top: 2px; }
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 110px;
+  right: 50%;
+  transform: translateX(50%) translateY(20px);
+  background: var(--ink);
+  color: var(--paper);
+  padding: 12px 24px;
+  border-radius: 100px;
+  font-size: 14px;
+  font-weight: 500;
+  z-index: 300;
+  opacity: 0;
+  transition: all 0.3s;
+  pointer-events: none;
+  box-shadow: var(--shadow-lg);
+  white-space: nowrap;
+}
+
+.toast.show { opacity: 1; transform: translateX(50%) translateY(0); }
+
+@media (max-width: 900px) {
+  .toast { bottom: 90px; }
+}
+
+/* Logo upload */
+.logo-upload {
+  width: 140px;
+  height: 140px;
+  border-radius: 16px;
+  border: 2px dashed var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: var(--bg-hover);
+  font-size: 42px;
+  color: var(--text-secondary);
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.logo-upload:hover {
+  border-color: var(--blue);
+  background: var(--blue-soft);
+}
+
+[data-theme="dark"] .logo-upload {
+  background: var(--bg-card);
+  border-color: rgba(255,255,255,0.2);
+}
+
+[data-theme="dark"] .logo-upload:hover {
+  border-color: var(--blue);
+  background: rgba(58,123,213,0.1);
+}
+
+.logo-upload img { width: 100%; height: 100%; object-fit: cover; }
+
+/* Search */
+.search-box {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px 16px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.search-box input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  background: transparent;
+}
+
+/* Filter pills */
+.filter-pills {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.filter-pill {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  padding: 6px 14px;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+
+.filter-pill:hover {
+  border-color: var(--blue);
+}
+
+.filter-pill.active { 
+  background: var(--ink); 
+  color: var(--paper); 
+  border-color: var(--ink); 
+}
+
+[data-theme="dark"] .filter-pill {
+  background: var(--bg-elevated);
+  border-color: rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.85);
+}
+
+[data-theme="dark"] .filter-pill:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.3);
+}
+
+[data-theme="dark"] .filter-pill.active {
+  background: var(--blue);
+  color: white;
+  border-color: var(--blue);
+}
+
+/* Detail page */
+.detail-back {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  color: var(--steel);
+  font-size: 14px;
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+/* Item card (in measure) */
+.item-card {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  position: relative;
+  transition: all 0.15s;
+}
+
+.item-card:hover {
+  border-color: var(--paper-warm);
+  box-shadow: 0 2px 8px rgba(10,22,40,0.04);
+}
+
+.item-card-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* תמונת SVG של החלון */
+.item-window-thumb {
+  flex: 0 0 auto;
+  width: 92px;
+  height: 92px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #fafaf6 0%, #f3efe5 100%);
+  border-radius: 10px;
+  padding: 4px;
+}
+
+.item-window-thumb .window-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* אזור מידע אמצעי */
+.item-card-info {
+  flex: 1;
+  min-width: 0;
+  text-align: right;
+}
+
+.item-card-name { 
+  font-weight: 700; 
+  font-size: 15px; 
+  color: var(--text-primary);
+}
+
+.item-card-detail { 
+  font-size: 12px; 
+  color: var(--steel); 
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+/* אזור מחיר ופעולות שמאל */
+.item-card-meta {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  text-align: left;
+}
+
+.item-card-price {
+  font-family: 'Heebo', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.item-card-actions { display: flex; gap: 6px; }
+.item-card-actions button {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--ink-soft);
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+}
+.item-card-actions button:hover { background: white; border-color: var(--accent); color: var(--ink); }
+.item-card-actions .btn-dup { color: var(--accent-deep); border-color: rgba(217,119,87,0.3); }
+.item-card-actions .btn-dup:hover { background: rgba(217,119,87,0.08); border-color: var(--accent); }
+.item-card-actions .btn-del:hover { background: var(--danger-bg); border-color: var(--danger); color: var(--danger); }
+
+/* התאמה למסך צר - מובייל */
+@media (max-width: 480px) {
+  .item-window-thumb {
+    width: 72px;
+    height: 72px;
+  }
+  .item-card-actions button {
+    width: 30px;
+    height: 30px;
+    font-size: 13px;
+  }
+}
+
+/* Badge for image */
+.media-badge {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  background: rgba(0,0,0,0.7);
+  color: white;
+  font-size: 9px;
+  padding: 1px 6px;
+  border-radius: 100px;
+  font-weight: 600;
+}
+
+/* Print styles */
+@media print {
+  body { background: white; }
+  .sidebar, .mobile-header, .bottom-nav, .fab, .main-header, .toast,
+  .card-section-header button, .quote-actions, .modal-bg { display: none !important; }
+  .main { padding: 20px; }
+  .quote-doc { box-shadow: none; border: none; }
+}
+
+/* Work Order Print Mode */
+body.printing-work-order > * { display: none !important; }
+body.printing-work-order #work-order-print-area {
+  display: block !important;
+  position: static !important;
+  background: var(--bg-card);
+}
+
+/* Work Order Document */
+.work-order {
+  background: #ffffff;
+  padding: 30px 40px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #0a1628;
+}
+
+.work-order *, 
+[data-theme="dark"] .work-order * {
+  color: inherit;
+}
+
+.work-order h1, .work-order h2, .work-order h3, .work-order h4 {
+  color: #0a1628;
+}
+
+[data-theme="dark"] .work-order {
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  color: #0a1628 !important;
+}
+
+.work-order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 3px double #000;
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+}
+
+.work-order-title {
+  font-family: 'Heebo', sans-serif;
+  font-size: 28px;
+  font-weight: 900;
+  margin-bottom: 4px;
+  color: #000;
+}
+
+.work-order-subtitle {
+  font-size: 14px;
+  color: #444;
+  font-weight: 600;
+}
+
+.work-order-meta {
+  text-align: left;
+  font-size: 12px;
+}
+
+.work-order-meta-num {
+  font-family: 'Heebo', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  margin-top: 4px;
+}
+
+.work-order-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+  background: #f5f5f5;
+  padding: 14px 18px;
+  border-right: 4px solid #000;
+}
+
+.work-order-info-block-label {
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #666;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.work-order-info-block-value {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.work-order-info-block-meta {
+  font-size: 12px;
+  color: #555;
+  margin-top: 2px;
+}
+
+.work-order-section-title {
+  font-family: 'Heebo', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  margin: 24px 0 10px;
+  border-bottom: 2px solid #000;
+  padding-bottom: 4px;
+}
+
+/* תמונת חלון בדף ביצוע למפעל */
+.work-order-thumb {
+  flex: 0 0 auto;
+  width: 70px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-card);
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 3px;
+}
+
+.work-order-thumb .window-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.work-order-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  margin-bottom: 16px;
+}
+
+.work-order-table th {
+  background: #000;
+  color: white;
+  padding: 8px 6px;
+  text-align: right;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+}
+
+.work-order-table th.center { text-align: center; }
+
+.work-order-table td {
+  padding: 10px 6px;
+  border-bottom: 1px solid #ccc;
+  vertical-align: top;
+}
+
+.work-order-table td.num {
+  font-family: 'Heebo', sans-serif;
+  font-weight: 800;
+  text-align: center;
+  font-size: 14px;
+}
+
+.work-order-table .item-num {
+  background: #000;
+  color: white;
+  display: inline-block;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 26px;
+  font-weight: 800;
+  font-family: 'Heebo', sans-serif;
+}
+
+.work-order-table .dimensions {
+  font-family: 'Heebo', sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.work-order-table .dimensions-detail {
+  font-size: 11px;
+  color: #666;
+  margin-top: 2px;
+}
+
+.work-order-cuts {
+  background: #fffae6;
+  border: 1px solid #f0d062;
+  padding: 10px 14px;
+  margin: 16px 0;
+  font-size: 12px;
+  border-radius: 4px;
+}
+
+.work-order-cuts-title {
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.work-order-cuts-list {
+  font-family: monospace;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.work-order-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin: 16px 0;
+}
+
+.work-order-summary-box {
+  border: 1px solid #000;
+  padding: 10px 12px;
+  text-align: center;
+}
+
+.work-order-summary-label {
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #666;
+  font-weight: 700;
+}
+
+.work-order-summary-value {
+  font-family: 'Heebo', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  margin-top: 4px;
+}
+
+.work-order-notes {
+  background: #f5f5f5;
+  padding: 12px 16px;
+  border-right: 4px solid #d97757;
+  margin: 16px 0;
+  font-size: 12px;
+}
+
+.work-order-signature {
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+  font-size: 11px;
+}
+
+.signature-box {
+  border-top: 1px solid #000;
+  padding-top: 6px;
+  text-align: center;
+  font-weight: 600;
+  color: #444;
+}
+
+.work-order-footer-print {
+  margin-top: 20px;
+  padding-top: 14px;
+  border-top: 1px solid #000;
+  font-size: 10px;
+  color: #666;
+  text-align: center;
+}
+
+.work-order-photos {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin: 10px 0;
+}
+
+.work-order-photo {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+@media print {
+  @page { size: A4; margin: 12mm; }
+  .work-order-table th { background: #000 !important; color: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .work-order-table .item-num { background: #000 !important; color: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+
+/* Mobile menu drawer */
+.mobile-drawer {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(10,22,40,0.6);
+  z-index: 90;
+  backdrop-filter: blur(4px);
+}
+
+.mobile-drawer.show { display: block; }
+
+.mobile-drawer-content {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 280px;
+  background: #0a1628;
+  color: #f7f4ec;
+  padding: 24px 16px;
+  transform: translateX(100%);
+  animation: slideIn 0.25s forwards;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+/* ב-Dark Mode - drawer קצת יותר כהה לניגוד מהרקע */
+[data-theme="dark"] .mobile-drawer-content {
+  background: #060a14;
+  color: #ffffff;
+}
+
+/* תווית סקציה ב-drawer (ניווט / חשבון) */
+.drawer-section-label {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(247,244,236,0.4);
+  font-weight: 700;
+  padding: 0 12px 8px;
+  margin-bottom: 4px;
+}
+
+/* Drawer brand - לוגו ושם */
+.drawer-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.drawer-window-logo {
+  width: 32px;
+  height: 38px;
+  display: block;
+  color: #f7f4ec;
+}
+
+[data-theme="dark"] .drawer-window-logo {
+  color: #ffffff;
+}
+
+/* תווית מותג ב-drawer - שתישאר ברורה */
+.mobile-drawer-content .mobile-brand-name {
+  color: #f7f4ec;
+}
+
+[data-theme="dark"] .mobile-drawer-content .mobile-brand-name {
+  color: #ffffff;
+}
+
+.mobile-drawer-content .mobile-brand-name .alum {
+  color: inherit;
+}
+
+/* פריטי הניווט ב-drawer */
+.mobile-drawer-content .sidebar-item {
+  color: rgba(247,244,236,0.85);
+}
+
+.mobile-drawer-content .sidebar-item:hover {
+  background: rgba(255,255,255,0.06);
+  color: #ffffff;
+}
+
+[data-theme="dark"] .mobile-drawer-content .sidebar-item {
+  color: rgba(255,255,255,0.85);
+}
+
+[data-theme="dark"] .mobile-drawer-content .sidebar-item:hover {
+  background: rgba(255,255,255,0.08);
+}
+
+/* פריט פעיל ב-drawer */
+.mobile-drawer-content .sidebar-item.active {
+  background: rgba(217,119,87,0.15);
+  color: var(--accent);
+}
+
+.mobile-drawer-content .sidebar-item.active .sidebar-item-icon {
+  color: var(--accent);
+}
+
+/* כפתור סגירה ב-drawer */
+.mobile-drawer-content .icon-btn-dark {
+  background: rgba(255,255,255,0.08);
+  color: #f7f4ec;
+  border-color: rgba(255,255,255,0.15);
+}
+
+.mobile-drawer-content .icon-btn-dark:hover {
+  background: rgba(255,255,255,0.15);
+}
+
+@keyframes slideIn { to { transform: translateX(0); } }
+
+/* ===== QUOTE QUICK ACTIONS (כפתורי פעולה ברשימת הצעות) ===== */
+.quote-quick-action {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: var(--steel);
+  cursor: pointer;
+  transition: all 0.15s;
+  padding: 0;
+}
+
+.quote-quick-action:hover {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+  transform: scale(1.05);
+}
+
+/* ===== QUICK PRICING ROW (עריכה מהירה של הנחה/התקנה) ===== */
+.quick-pricing-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.quick-pricing-label {
+  font-size: 14px;
+  color: var(--text-primary);
+  font-weight: 500;
+  margin: 0;
+}
+
+.quick-pricing-input-wrap {
+  display: flex;
+  align-items: center;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 4px 8px;
+  transition: border-color 0.15s;
+}
+
+.quick-pricing-input-wrap:focus-within {
+  border-color: var(--accent);
+}
+
+.quick-pricing-input {
+  width: 60px;
+  border: none;
+  background: transparent;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  padding: 4px;
+  outline: none;
+  direction: ltr;
+  font-family: inherit;
+}
+
+.quick-pricing-input::-webkit-inner-spin-button,
+.quick-pricing-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.quick-pricing-prefix,
+.quick-pricing-suffix {
+  font-size: 12px;
+  color: var(--steel);
+  font-weight: 600;
+}
+
+.quick-pricing-result {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  min-width: 80px;
+  text-align: left;
+  font-family: 'Heebo', sans-serif;
+}
+
+/* ===== STICKY TOTAL BAR (במסך הצעה) ===== */
+.quote-sticky-total {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background: #0a1628;
+  color: #f7f4ec;
+  padding: 14px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 -8px 24px rgba(10,22,40,0.18);
+  z-index: 50;
+  border-top: 2px solid var(--accent);
+  animation: slideUp 0.3s ease;
+}
+
+[data-theme="dark"] .quote-sticky-total {
+  background: #060a14;
+  border-top-color: var(--blue);
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+@media (min-width: 769px) {
+  .quote-sticky-total {
+    right: 280px; /* רוחב הסיידבר בדסקטופ */
+  }
+}
+
+@media (max-width: 768px) {
+  .quote-sticky-total {
+    bottom: 0;
+    border-radius: 0;
+    margin: 0;
+    right: 0;
+    left: 0;
+    padding-bottom: max(14px, env(safe-area-inset-bottom));
+    box-shadow: 0 -4px 20px rgba(10,22,40,0.25);
+  }
+}
+
+.quote-sticky-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.quote-sticky-label {
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(247,244,236,0.6);
+  font-weight: 600;
+}
+
+.quote-sticky-amount {
+  font-family: 'Heebo', sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  color: #f7f4ec;
+}
+
+.quote-sticky-meta {
+  font-size: 13px;
+  color: rgba(247,244,236,0.7);
+  font-weight: 600;
+}
+
+[data-theme="dark"] .quote-sticky-amount {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .quote-sticky-label,
+[data-theme="dark"] .quote-sticky-meta {
+  color: rgba(255,255,255,0.7);
+}
+
+/* כשה-sticky מופיע - מוסיפים רווח לתחתית המסך */
+#screen-quote-detail.has-sticky {
+  padding-bottom: 80px;
+}
+
+@media (max-width: 768px) {
+  #screen-quote-detail.has-sticky {
+    padding-bottom: 80px;
+  }
+}
+
+/* ===== SUBSCRIPTION SCREEN ===== */
+.sub-status-card {
+  background: linear-gradient(135deg, var(--ink) 0%, var(--ink-soft) 100%);
+  color: var(--paper);
+  border-radius: 18px;
+  padding: 28px 32px;
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.sub-status-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -10%;
+  width: 60%;
+  height: 200%;
+  background: radial-gradient(ellipse, rgba(217,119,87,0.18) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.sub-status-card.free {
+  background: linear-gradient(135deg, #4a6b8a 0%, #2a3952 100%);
+}
+
+.sub-status-card.canceling {
+  background: linear-gradient(135deg, #c44a4a 0%, #8a2929 100%);
+}
+
+.sub-tier-label {
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 8px;
+  position: relative;
+}
+
+.sub-tier-name {
+  font-family: 'Heebo', sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.sub-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.sub-meta-item {
+  font-size: 13px;
+}
+
+.sub-meta-label {
+  color: rgba(247,244,236,0.55);
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.sub-meta-value {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.sub-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  position: relative;
+}
+
+.sub-actions .btn {
+  background: rgba(247,244,236,0.1);
+  border-color: rgba(247,244,236,0.2);
+  color: var(--paper);
+}
+
+.sub-actions .btn:hover {
+  background: rgba(247,244,236,0.18);
+  border-color: rgba(247,244,236,0.3);
+}
+
+.sub-actions .btn-accent {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+/* Usage bar */
+.usage-section {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.usage-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.usage-bar {
+  height: 8px;
+  background: var(--paper-warm);
+  border-radius: 100px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.usage-bar-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 100px;
+  transition: width 0.3s ease;
+}
+
+.usage-bar-fill.warning { background: var(--warning); }
+.usage-bar-fill.danger { background: var(--danger); }
+
+.usage-meta {
+  font-size: 12px;
+  color: var(--steel);
+}
+
+/* Billing history */
+.billing-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  gap: 16px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--line-soft);
+  align-items: center;
+}
+
+@media (max-width: 600px) {
+  .billing-row {
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+  }
+  .billing-row .billing-status,
+  .billing-row .billing-actions { grid-column: 2; }
+}
+
+.billing-row:last-child { border-bottom: none; }
+
+.billing-info { font-size: 14px; }
+.billing-desc { font-weight: 600; }
+.billing-date { font-size: 12px; color: var(--steel); margin-top: 2px; }
+
+.billing-amount {
+  font-family: 'Heebo', sans-serif;
+  font-weight: 800;
+  font-size: 16px;
+}
+
+.billing-status .status-pill {
+  margin: 0;
+}
+
+.billing-actions a {
+  color: var(--accent-deep);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* ===== PAYMENT SIMULATION ===== */
+.payment-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(10,22,40,0.85);
+  backdrop-filter: blur(8px);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.payment-overlay.show { display: flex; }
+
+.payment-modal {
+  background: var(--bg-card);
+  border-radius: 20px;
+  max-width: 480px;
+  width: 100%;
+  max-height: 95vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-xl);
+}
+
+.payment-header {
+  background: linear-gradient(135deg, #1e3a5f 0%, #0a1f3a 100%);
+  color: white;
+  padding: 24px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 20px 20px 0 0;
+}
+
+.payment-payplus-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Heebo', sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  direction: ltr;
+}
+
+.payment-payplus-logo svg {
+  width: 32px;
+  height: 32px;
+}
+
+.payment-secure {
+  font-size: 11px;
+  color: rgba(255,255,255,0.7);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.payment-body {
+  padding: 28px;
+}
+
+.payment-summary {
+  background: var(--paper);
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+}
+
+.payment-summary-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+  font-size: 14px;
+}
+
+.payment-summary-total {
+  border-top: 2px solid var(--ink);
+  margin-top: 8px;
+  padding-top: 10px;
+  font-family: 'Heebo', sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+}
+
+.payment-cc-row {
+  display: grid;
+  grid-template-columns: 1fr 80px 80px;
+  gap: 8px;
+}
+
+.payment-test-cards {
+  background: rgba(212,166,74,0.08);
+  border-right: 3px solid var(--warning);
+  padding: 10px 14px;
+  border-radius: 8px;
+  margin: 12px 0;
+  font-size: 12px;
+}
+
+.payment-test-cards strong { color: var(--warning); }
+
+.payment-test-cards code {
+  background: var(--bg-card);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 11px;
+  cursor: pointer;
+  border: 1px solid var(--line);
+  font-family: 'Consolas', monospace;
+  direction: ltr;
+  display: inline-block;
+}
+
+.payment-test-cards code:hover {
+  background: var(--paper-warm);
+  border-color: var(--accent);
+}
+
+/* Processing animation */
+.payment-processing {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.payment-spinner {
+  width: 60px;
+  height: 60px;
+  border: 4px solid var(--paper-warm);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 20px;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.payment-success {
+  text-align: center;
+  padding: 30px 20px;
+}
+
+.payment-success-icon {
+  width: 70px;
+  height: 70px;
+  background: var(--success);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  margin: 0 auto 20px;
+  animation: scaleIn 0.4s ease;
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* ===== INVOICE PREVIEW ===== */
+.invoice-doc {
+  background: var(--bg-card);
+  max-width: 640px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+.invoice-header {
+  background: var(--ink);
+  color: white;
+  padding: 24px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.invoice-business h2 {
+  font-family: 'Heebo', sans-serif;
+  font-size: 22px;
+  margin: 0;
+  font-weight: 800;
+}
+
+.invoice-business p { margin: 4px 0 0; font-size: 12px; opacity: 0.7; }
+
+.invoice-num {
+  text-align: left;
+  font-size: 12px;
+  color: rgba(255,255,255,0.7);
+}
+
+.invoice-num strong {
+  font-family: 'Heebo', sans-serif;
+  font-size: 20px;
+  display: block;
+  margin-top: 4px;
+  color: white;
+}
+
+.invoice-body {
+  padding: 30px 32px;
+}
+
+.invoice-customer {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+
+.invoice-customer-label {
+  font-size: 11px;
+  color: var(--steel);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.invoice-customer-name {
+  font-family: 'Heebo', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.invoice-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin: 16px 0;
+}
+
+.invoice-table th {
+  text-align: right;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--steel);
+  padding: 8px 6px;
+  border-bottom: 1px solid var(--ink);
+}
+
+.invoice-table td {
+  padding: 14px 6px;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.invoice-totals {
+  background: var(--paper);
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin: 20px 0 0;
+}
+
+.invoice-total-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+  font-size: 14px;
+}
+
+.invoice-total-grand {
+  border-top: 2px solid var(--ink);
+  margin-top: 10px;
+  padding-top: 12px;
+  font-family: 'Heebo', sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+}
+
+.invoice-payment-info {
+  background: rgba(74,138,74,0.08);
+  border-right: 3px solid var(--success);
+  padding: 12px 16px;
+  border-radius: 6px;
+  margin-top: 20px;
+  font-size: 12px;
+}
+
+.invoice-footer {
+  background: var(--paper);
+  padding: 16px 32px;
+  text-align: center;
+  font-size: 11px;
+  color: var(--steel);
+  border-top: 1px solid var(--line);
+}
+
+/* ===== EMAIL PREVIEW ===== */
+.email-preview {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.email-meta {
+  background: var(--paper);
+  padding: 12px 16px;
+  font-size: 12px;
+  border-bottom: 1px solid var(--line-soft);
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  row-gap: 4px;
+}
+
+.email-meta .label {
+  color: var(--steel);
+  font-weight: 600;
+}
+
+.email-content {
+  padding: 0;
+}
+
+.email-content iframe {
+  width: 100%;
+  border: none;
+  min-height: 600px;
+  display: block;
+}
+
+/* Settings menu (sidebar) */
+.settings-nav {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 24px;
+  overflow-x: auto;
+}
+
+.settings-tab {
+  background: transparent;
+  border: none;
+  padding: 12px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--steel);
+  cursor: pointer;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+
+.settings-tab.active {
+  color: var(--accent-deep);
+  border-bottom-color: var(--accent);
+}
+
+.settings-tab:hover { color: var(--ink); }
+
+/* Empty state for billing */
+.billing-empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--steel);
+}
+
+</style>
 </head>
 <body>
 
@@ -63,7 +3640,26 @@
   <div class="landing">
     <nav class="landing-nav">
       <div class="brand-logo">
-        <div class="brand-mark"><svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg"> <rect x="7" y="7" width="14" height="14" rx="0.5" stroke="currentColor" stroke-width="1.5" fill="none"/> <line x1="14" y1="7" x2="14" y2="21" stroke="currentColor" stroke-width="1.5"/> <line x1="7" y1="14" x2="21" y2="14" stroke="currentColor" stroke-width="1.5"/> <circle cx="7" cy="7" r="2" fill="currentColor"/> <circle cx="21" cy="7" r="2" fill="currentColor"/> <circle cx="7" cy="21" r="2" fill="currentColor"/> <circle cx="21" cy="21" r="2" fill="currentColor"/> </svg></div>
+        <div class="brand-mark">
+          <svg viewBox="0 0 64 76" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:28px;height:33px">
+            <rect x="10" y="6" width="44" height="60" rx="0.5" stroke="currentColor" stroke-width="1.5" fill="rgba(0,0,0,0.02)"/>
+            <rect x="12" y="8" width="40" height="56" rx="0.3" stroke="currentColor" stroke-width="0.6" fill="none" opacity="0.5"/>
+            <line x1="10" y1="20" x2="54" y2="20" stroke="currentColor" stroke-width="1.2"/>
+            <line x1="10" y1="52" x2="54" y2="52" stroke="currentColor" stroke-width="1.2"/>
+            <line x1="32" y1="20" x2="32" y2="52" stroke="currentColor" stroke-width="1.2"/>
+            <line x1="11" y1="21" x2="31" y2="51" stroke="currentColor" stroke-width="0.5" stroke-dasharray="1.5,1" opacity="0.6"/>
+            <line x1="31" y1="21" x2="11" y2="51" stroke="currentColor" stroke-width="0.5" stroke-dasharray="1.5,1" opacity="0.6"/>
+            <line x1="33" y1="21" x2="53" y2="51" stroke="currentColor" stroke-width="0.5" stroke-dasharray="1.5,1" opacity="0.6"/>
+            <line x1="53" y1="21" x2="33" y2="51" stroke="currentColor" stroke-width="0.5" stroke-dasharray="1.5,1" opacity="0.6"/>
+            <line x1="32" y1="34" x2="32" y2="38" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+            <line x1="6" y1="6" x2="6" y2="66" stroke="currentColor" stroke-width="0.5" opacity="0.9"/>
+            <polygon points="6,5 4.5,9 7.5,9" fill="currentColor" opacity="0.9"/>
+            <polygon points="6,67 4.5,63 7.5,63" fill="currentColor" opacity="0.9"/>
+            <line x1="10" y1="72" x2="54" y2="72" stroke="currentColor" stroke-width="0.5" opacity="0.9"/>
+            <polygon points="9,72 13,70.5 13,73.5" fill="currentColor" opacity="0.9"/>
+            <polygon points="55,72 51,70.5 51,73.5" fill="currentColor" opacity="0.9"/>
+          </svg>
+        </div>
         <span class="brand-name"><span class="alum">ALUM</span><span class="cm-wrap"><span class="cm-paren">(</span>cm<span class="cm-paren">)</span></span></span>
       </div>
       <div class="landing-nav-links">
@@ -1025,2810 +4621,16 @@
 
 </div>
 
-<script>
-// ============ STORAGE (IndexedDB) ============
-const DB_NAME = 'alumcm';
-const DB_VERSION = 2;
-let db = null;
 
-function openDB() {
-  return new Promise((resolve, reject) => {
-    const req = indexedDB.open(DB_NAME, DB_VERSION);
-    req.onerror = () => reject(req.error);
-    req.onsuccess = () => { db = req.result; resolve(db); };
-    req.onupgradeneeded = (e) => {
-      const d = e.target.result;
-      if (!d.objectStoreNames.contains('clients')) d.createObjectStore('clients', { keyPath: 'id' });
-      if (!d.objectStoreNames.contains('quotes')) d.createObjectStore('quotes', { keyPath: 'id' });
-      if (!d.objectStoreNames.contains('media')) d.createObjectStore('media', { keyPath: 'id' });
-      if (!d.objectStoreNames.contains('settings')) d.createObjectStore('settings', { keyPath: 'key' });
-      if (!d.objectStoreNames.contains('payments')) d.createObjectStore('payments', { keyPath: 'id' });
-      if (!d.objectStoreNames.contains('invoices')) d.createObjectStore('invoices', { keyPath: 'id' });
-    };
-  });
-}
+<!-- External Libraries -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-function dbGet(store, key) {
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(store, 'readonly');
-    const req = tx.objectStore(store).get(key);
-    req.onsuccess = () => resolve(req.result);
-    req.onerror = () => reject(req.error);
-  });
-}
+<!-- App Logic -->
+<script defer src="js/app.js"></script>
 
-function dbPut(store, value) {
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(store, 'readwrite');
-    const req = tx.objectStore(store).put(value);
-    req.onsuccess = () => resolve(value);
-    req.onerror = () => reject(req.error);
-  });
-}
-
-function dbDelete(store, key) {
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(store, 'readwrite');
-    const req = tx.objectStore(store).delete(key);
-    req.onsuccess = () => resolve();
-    req.onerror = () => reject(req.error);
-  });
-}
-
-function dbAll(store) {
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(store, 'readonly');
-    const req = tx.objectStore(store).getAll();
-    req.onsuccess = () => resolve(req.result);
-    req.onerror = () => reject(req.error);
-  });
-}
-
-function dbClear(store) {
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(store, 'readwrite');
-    const req = tx.objectStore(store).clear();
-    req.onsuccess = () => resolve();
-    req.onerror = () => reject(req.error);
-  });
-}
-
-// ============ STATE ============
-let user = null;
-let currentScreen = 'dashboard';
-let currentQuote = null;
-let currentItem = null;
-let itemMode = 'fixed';
-let currentItemMedia = [];
-let pendingClientForQuote = null;
-let mediaRecorder = null;
-let recordedChunks = [];
-let recordingStart = 0;
-let recordingTimer = null;
-let quotesFilter = 'all';
-
-// ============ UTIL ============
-function uid() { return Date.now().toString(36) + Math.random().toString(36).substr(2, 5); }
-
-function escapeHTML(s) {
-  if (s == null) return '';
-  return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m]);
-}
-
-function formatDate(date) {
-  if (!date) return '';
-  const d = new Date(date);
-  return d.toLocaleDateString('he-IL', {year:'numeric',month:'2-digit',day:'2-digit'});
-}
-
-function formatDateTime(date) {
-  if (!date) return '';
-  const d = new Date(date);
-  return d.toLocaleString('he-IL', {year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
-}
-
-function timeAgo(date) {
-  const diff = (Date.now() - new Date(date)) / 1000;
-  if (diff < 60) return 'לפני רגע';
-  if (diff < 3600) return `לפני ${Math.floor(diff/60)} דקות`;
-  if (diff < 86400) return `לפני ${Math.floor(diff/3600)} שעות`;
-  if (diff < 604800) return `לפני ${Math.floor(diff/86400)} ימים`;
-  return formatDate(date);
-}
-
-function formatMoney(num) {
-  return '₪ ' + Math.round(num).toLocaleString('he-IL');
-}
-
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.innerText = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2400);
-}
-
-function showModal(id) { document.getElementById(id).classList.add('show'); }
-function closeModal(id) { document.getElementById(id).classList.remove('show'); }
-
-function confirmAction(title, body, action) {
-  document.getElementById('confirm-title').innerText = title;
-  document.getElementById('confirm-body').innerText = body;
-  const btn = document.getElementById('confirm-action');
-  btn.onclick = () => { action(); closeModal('modal-confirm'); };
-  showModal('modal-confirm');
-}
-
-const STATUS_LABELS = {
-  draft: 'טיוטה', sent: 'נשלחה', viewed: 'נצפתה',
-  approved: 'אושרה', production: 'בייצור', installed: 'הותקנה', rejected: 'נדחתה'
-};
-
-const STATUS_FLOW = ['draft', 'sent', 'viewed', 'approved', 'production', 'installed'];
-
-// ============ NAVIGATION ============
-function goTo(view) {
-  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.getElementById('view-' + view).classList.add('active');
-  window.scrollTo(0, 0);
-}
-
-function showScreen(name, btn) {
-  document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
-  document.getElementById('screen-' + name).style.display = 'block';
-  document.querySelectorAll('[data-screen]').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll(`[data-screen="${name}"]`).forEach(b => b.classList.add('active'));
-  currentScreen = name;
-  
-  // החבאת sticky total bar בכל מעבר מסך
-  const stickyEl = document.getElementById('quote-sticky-total');
-  if (stickyEl && name !== 'quote-detail') {
-    stickyEl.style.display = 'none';
-  }
-  
-  if (name === 'dashboard') renderDashboard();
-  else if (name === 'quotes') renderQuotes();
-  else if (name === 'clients') renderClients();
-  else if (name === 'business') loadBusiness();
-  else if (name === 'upgrade') renderSubscriptionScreen();
-  
-  window.scrollTo(0, 0);
-}
-
-function toggleMobileMenu() {
-  const d = document.getElementById('mobile-drawer');
-  d.classList.toggle('show');
-}
-
-// ============ AUTH ============
-async function doSignup() {
-  const name = document.getElementById('signup-name').value.trim();
-  const business = document.getElementById('signup-business').value.trim();
-  const email = document.getElementById('signup-email').value.trim();
-  const password = document.getElementById('signup-password').value;
-  
-  if (!name || !email || !password) {
-    showToast('נא למלא את כל השדות');
-    return;
-  }
-  
-  user = {
-    id: uid(),
-    name, email, business,
-    plan: 'free',
-    createdAt: new Date().toISOString()
-  };
-  
-  await dbPut('settings', { key: 'user', value: user });
-  await dbPut('settings', {
-    key: 'business',
-    value: {
-      name: business,
-      phone: '', email, address: '', id: '',
-      website: '', terms: 'ההצעה תקפה ל-30 יום ממועד הוצאתה. כל המחירים כוללים אחריות יצרן.',
-      validity: 30,
-      logo: null
-    }
-  });
-  
-  enterApp();
-  showToast('ברוך הבא! 🎉');
-}
-
-async function doLogin() {
-  const email = document.getElementById('login-email').value.trim();
-  if (!email) { showToast('נא למלא אימייל'); return; }
-  
-  const stored = await dbGet('settings', 'user');
-  if (stored && stored.value.email === email) {
-    user = stored.value;
-    enterApp();
-  } else {
-    showToast('המשתמש לא נמצא — נסה הרשמה');
-  }
-}
-
-async function loginAsDemo() {
-  user = await dbGet('settings', 'user');
-  user = user ? user.value : null;
-  
-  if (!user || user.plan !== 'demo') {
-    await dbClear('clients');
-    await dbClear('quotes');
-    await dbClear('media');
-    await dbClear('settings');
-    
-    user = {
-      id: 'demo',
-      name: 'יוסי המקצוען',
-      email: 'demo@alumcm.local',
-      business: 'יוסי אלומיניום',
-      plan: 'demo',
-      createdAt: new Date().toISOString()
-    };
-    
-    await dbPut('settings', { key: 'user', value: user });
-    await dbPut('settings', {
-      key: 'business',
-      value: {
-        name: 'יוסי אלומיניום',
-        phone: '050-123-4567',
-        email: 'yossi@example.com',
-        address: 'התעשייה 12, ראשון לציון',
-        id: '123456789',
-        website: 'yossi-aluminum.co.il',
-        terms: 'ההצעה תקפה ל-30 יום. אחריות 5 שנים על פרופילים, שנתיים על אביזרים. תשלום 30/70 — מקדמה בהזמנה, יתרה בהתקנה.',
-        validity: 30,
-        logo: null
-      }
-    });
-    
-    await seedDemoData();
-  }
-  
-  enterApp();
-  showToast('ברוך הבא למצב הדגמה');
-}
-
-async function seedDemoData() {
-  // Demo clients
-  const clients = [
-    { id: uid(), name: 'דנה כהן', phone: '052-1234567', email: 'dana@example.com', address: 'הרצל 47, ראשון לציון', notes: 'לקוחה ממליצה — מומלצת ע״י משפחת לוי', createdAt: new Date(Date.now() - 7*86400000).toISOString() },
-    { id: uid(), name: 'יוסי פרץ', phone: '054-9876543', email: '', address: 'בן גוריון 12, חולון', notes: '', createdAt: new Date(Date.now() - 5*86400000).toISOString() },
-    { id: uid(), name: 'משפחת לוי', phone: '050-5556666', email: 'levi@example.com', address: 'החלוצים 8, רמת גן', notes: 'דירת 5 חדרים, רוצים לרענן את כל החלונות', createdAt: new Date(Date.now() - 14*86400000).toISOString() },
-    { id: uid(), name: 'רחל אברהם', phone: '053-1112222', email: '', address: 'סוקולוב 25, פתח תקוה', notes: '', createdAt: new Date(Date.now() - 30*86400000).toISOString() }
-  ];
-  
-  for (const c of clients) await dbPut('clients', c);
-  
-  // Demo quotes
-  const business = (await dbGet('settings', 'business')).value;
-  
-  const quotes = [
-    {
-      id: uid(),
-      number: '2026-127',
-      clientId: clients[0].id,
-      status: 'viewed',
-      createdAt: new Date(Date.now() - 7*86400000).toISOString(),
-      sentAt: new Date(Date.now() - 6*86400000).toISOString(),
-      viewedAt: new Date(Date.now() - 5*3600000).toISOString(),
-      items: [
-        { id: uid(), name: 'חלון סלון', mode: 'area', width: 180, height: 120, qty: 1, pricePerSqm: 2000, price: 4320, note: 'זכוכית טריפלקס, פרופיל אפור 7000', media: [] },
-        { id: uid(), name: 'חלון מטבח', mode: 'area', width: 90, height: 120, qty: 1, pricePerSqm: 2000, price: 2160, note: '', media: [] },
-        { id: uid(), name: 'דלת מרפסת', mode: 'area', width: 200, height: 210, qty: 1, pricePerSqm: 1300, price: 5460, note: 'דלת הזזה דו-כיוונית', media: [] }
-      ],
-      pricing: { discount: 0, install: 800, vat: 18, notes: 'מחיר כולל פירוק חלונות ישנים' },
-      timeline: [
-        { status: 'draft', at: new Date(Date.now() - 7*86400000).toISOString() },
-        { status: 'sent', at: new Date(Date.now() - 6*86400000).toISOString(), via: 'WhatsApp' },
-        { status: 'viewed', at: new Date(Date.now() - 5*3600000).toISOString(), views: 3 }
-      ]
-    },
-    {
-      id: uid(),
-      number: '2026-126',
-      clientId: clients[1].id,
-      status: 'sent',
-      createdAt: new Date(Date.now() - 2*86400000).toISOString(),
-      sentAt: new Date(Date.now() - 86400000).toISOString(),
-      items: [
-        { id: uid(), name: 'חלון חדר שינה', mode: 'fixed', qty: 2, price: 2400, note: '', media: [] },
-        { id: uid(), name: 'רשת נגד יתושים', mode: 'fixed', qty: 1, price: 1000, note: '', media: [] }
-      ],
-      pricing: { discount: 0, install: 0, vat: 18, notes: '' },
-      timeline: [
-        { status: 'draft', at: new Date(Date.now() - 2*86400000).toISOString() },
-        { status: 'sent', at: new Date(Date.now() - 86400000).toISOString(), via: 'WhatsApp' }
-      ]
-    },
-    {
-      id: uid(),
-      number: '2026-125',
-      clientId: clients[2].id,
-      status: 'approved',
-      createdAt: new Date(Date.now() - 14*86400000).toISOString(),
-      sentAt: new Date(Date.now() - 13*86400000).toISOString(),
-      viewedAt: new Date(Date.now() - 12*86400000).toISOString(),
-      approvedAt: new Date(Date.now() - 2*86400000).toISOString(),
-      items: [
-        { id: uid(), name: 'חלון סלון', mode: 'area', width: 220, height: 140, qty: 1, pricePerSqm: 2200, price: 6776, note: '', media: [] },
-        { id: uid(), name: 'חלון מטבח', mode: 'area', width: 100, height: 120, qty: 1, pricePerSqm: 2200, price: 2640, note: '', media: [] },
-        { id: uid(), name: 'חלון חדר שינה', mode: 'area', width: 150, height: 120, qty: 2, pricePerSqm: 2200, price: 3960, note: '', media: [] },
-        { id: uid(), name: 'חלון אמבטיה', mode: 'area', width: 60, height: 60, qty: 1, pricePerSqm: 2500, price: 900, note: 'זכוכית מט', media: [] },
-        { id: uid(), name: 'דלת מרפסת', mode: 'area', width: 200, height: 210, qty: 1, pricePerSqm: 1400, price: 5880, note: '', media: [] },
-        { id: uid(), name: 'תריס חיצוני', mode: 'fixed', qty: 4, price: 1800, note: 'חשמלי', media: [] }
-      ],
-      pricing: { discount: 5, install: 1500, vat: 18, notes: 'אחריות מלאה ל-5 שנים. תשלום: 30% מקדמה, 70% בהתקנה' },
-      timeline: [
-        { status: 'draft', at: new Date(Date.now() - 14*86400000).toISOString() },
-        { status: 'sent', at: new Date(Date.now() - 13*86400000).toISOString(), via: 'WhatsApp' },
-        { status: 'viewed', at: new Date(Date.now() - 12*86400000).toISOString(), views: 5 },
-        { status: 'approved', at: new Date(Date.now() - 2*86400000).toISOString() }
-      ]
-    },
-    {
-      id: uid(),
-      number: '2026-110',
-      clientId: clients[3].id,
-      status: 'installed',
-      createdAt: new Date(Date.now() - 30*86400000).toISOString(),
-      sentAt: new Date(Date.now() - 29*86400000).toISOString(),
-      viewedAt: new Date(Date.now() - 28*86400000).toISOString(),
-      approvedAt: new Date(Date.now() - 25*86400000).toISOString(),
-      installedAt: new Date(Date.now() - 7*86400000).toISOString(),
-      items: [
-        { id: uid(), name: 'חלון סלון', mode: 'area', width: 180, height: 130, qty: 1, pricePerSqm: 2100, price: 4914, note: '', media: [] },
-        { id: uid(), name: 'חלון חדר שינה', mode: 'area', width: 140, height: 110, qty: 2, pricePerSqm: 2100, price: 3234, note: '', media: [] }
-      ],
-      pricing: { discount: 0, install: 600, vat: 18, notes: '' },
-      timeline: [
-        { status: 'draft', at: new Date(Date.now() - 30*86400000).toISOString() },
-        { status: 'sent', at: new Date(Date.now() - 29*86400000).toISOString(), via: 'Email' },
-        { status: 'viewed', at: new Date(Date.now() - 28*86400000).toISOString(), views: 2 },
-        { status: 'approved', at: new Date(Date.now() - 25*86400000).toISOString() },
-        { status: 'production', at: new Date(Date.now() - 20*86400000).toISOString() },
-        { status: 'installed', at: new Date(Date.now() - 7*86400000).toISOString() }
-      ]
-    }
-  ];
-  
-  for (const q of quotes) await dbPut('quotes', q);
-}
-
-function logout() {
-  if (currentScreen === 'business') saveBusiness();
-  user = null;
-  goTo('landing');
-}
-
-// ============ THEME (Light / Dark Mode) ============
-function toggleTheme() {
-  const isDark = document.getElementById('theme-toggle').checked;
-  if (isDark) {
-    document.documentElement.setAttribute('data-theme', 'dark');
-  } else {
-    document.documentElement.removeAttribute('data-theme');
-  }
-  // שמירה ב-localStorage כדי שהבחירה תישמר
-  try {
-    localStorage.setItem('alumcm-theme', isDark ? 'dark' : 'light');
-  } catch (e) {}
-}
-
-function loadTheme() {
-  try {
-    const saved = localStorage.getItem('alumcm-theme');
-    if (saved === 'dark') {
-      document.documentElement.setAttribute('data-theme', 'dark');
-      const toggle = document.getElementById('theme-toggle');
-      if (toggle) toggle.checked = true;
-    }
-  } catch (e) {}
-}
-
-function enterApp() {
-  goTo('app');
-  document.getElementById('user-name').innerText = user.name;
-  document.getElementById('user-avatar').innerText = user.name[0];
-  
-  // ברכה דינמית לפי שעה ביום
-  const hour = new Date().getHours();
-  let greeting = 'שלום';
-  if (hour >= 5 && hour < 12) greeting = 'בוקר טוב';
-  else if (hour >= 12 && hour < 17) greeting = 'צהריים טובים';
-  else if (hour >= 17 && hour < 21) greeting = 'ערב טוב';
-  else greeting = 'לילה טוב';
-  
-  const firstName = user.name.split(' ')[0];
-  document.getElementById('welcome-msg').innerHTML = 
-    `${greeting}, <span class="greeting-name">${escapeHTML(firstName)}</span>`;
-  
-  showScreen('dashboard', document.querySelector('[data-screen="dashboard"]'));
-}
-
-// ============ BUSINESS ============
-async function loadBusiness() {
-  const b = await dbGet('settings', 'business');
-  if (!b) return;
-  const v = b.value;
-  document.getElementById('business-name').value = v.name || '';
-  document.getElementById('business-phone').value = v.phone || '';
-  document.getElementById('business-email').value = v.email || '';
-  document.getElementById('business-address').value = v.address || '';
-  document.getElementById('business-id').value = v.id || '';
-  document.getElementById('business-website').value = v.website || '';
-  document.getElementById('business-terms').value = v.terms || '';
-  document.getElementById('business-validity').value = v.validity || 30;
-  
-  const logoEl = document.getElementById('logo-upload-content');
-  if (v.logo) {
-    logoEl.innerHTML = `<img src="${v.logo}" alt="logo">`;
-  } else {
-    logoEl.innerHTML = '+';
-  }
-  
-  // סנכרון מצב הטוגל של ה-theme
-  const themeToggle = document.getElementById('theme-toggle');
-  if (themeToggle) {
-    themeToggle.checked = document.documentElement.getAttribute('data-theme') === 'dark';
-  }
-}
-
-async function saveBusiness() {
-  const b = await dbGet('settings', 'business');
-  const v = b ? b.value : {};
-  v.name = document.getElementById('business-name').value;
-  v.phone = document.getElementById('business-phone').value;
-  v.email = document.getElementById('business-email').value;
-  v.address = document.getElementById('business-address').value;
-  v.id = document.getElementById('business-id').value;
-  v.website = document.getElementById('business-website').value;
-  v.terms = document.getElementById('business-terms').value;
-  v.validity = parseInt(document.getElementById('business-validity').value) || 30;
-  await dbPut('settings', { key: 'business', value: v });
-}
-
-function handleLogoUpload(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = async (e) => {
-    const b = await dbGet('settings', 'business');
-    const v = b ? b.value : {};
-    v.logo = e.target.result;
-    await dbPut('settings', { key: 'business', value: v });
-    document.getElementById('logo-upload-content').innerHTML = `<img src="${e.target.result}" alt="logo">`;
-    showToast('הלוגו נשמר');
-  };
-  reader.readAsDataURL(file);
-}
-
-// ============ DASHBOARD ============
-async function renderDashboard() {
-  const quotes = await dbAll('quotes');
-  const clients = await dbAll('clients');
-  
-  // Stats
-  const now = new Date();
-  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
-  const lastMonthStart = new Date(now.getFullYear(), now.getMonth()-1, 1);
-  const lastMonthEnd = new Date(now.getFullYear(), now.getMonth(), 0);
-  
-  const thisMonth = quotes.filter(q => new Date(q.createdAt) >= monthStart);
-  const lastMonth = quotes.filter(q => {
-    const d = new Date(q.createdAt);
-    return d >= lastMonthStart && d <= lastMonthEnd;
-  });
-  
-  document.getElementById('stat-month').innerText = thisMonth.length;
-  
-  if (lastMonth.length > 0) {
-    const change = Math.round(((thisMonth.length - lastMonth.length) / lastMonth.length) * 100);
-    const trendEl = document.getElementById('stat-month-trend');
-    trendEl.innerText = (change >= 0 ? '+' : '') + change + '% מהחודש שעבר';
-    trendEl.className = 'stat-trend' + (change >= 0 ? '' : ' warning');
-  }
-  
-  const active = quotes.filter(q => ['sent','viewed'].includes(q.status));
-  document.getElementById('stat-active').innerText = active.length;
-  if (active.length > 0) {
-    document.getElementById('stat-active-trend').innerText = active.length + ' ממתינות לתגובה';
-  }
-  
-  const projected = active.reduce((sum, q) => sum + calcQuoteTotal(q), 0);
-  document.getElementById('stat-revenue').innerText = formatMoney(projected);
-  
-  // חישוב סטטוסים לדונאט
-  const totalQuotes = quotes.length;
-  document.getElementById('donut-total').innerText = totalQuotes;
-  
-  // קטגוריות:
-  // ירוק = סגור: approved, production, installed
-  // כחול = נשלח: sent, viewed
-  // כתום = בביצוע: production (כפול-קטגוריה? לא, בביצוע = production בלבד)
-  // צהוב = בהמתנה: draft
-  // נסדר נכון:
-  // ירוק = הותקן (installed) - הצלחה סופית
-  // כחול = נשלח/נצפה (sent, viewed) - אצל הלקוח
-  // כתום = בביצוע (approved, production) - מתבצע
-  // צהוב = טיוטה (draft) - בהמתנה
-  
-  const greenCount = quotes.filter(q => q.status === 'installed').length;
-  const blueCount = quotes.filter(q => ['sent','viewed'].includes(q.status)).length;
-  const orangeCount = quotes.filter(q => ['approved','production'].includes(q.status)).length;
-  const yellowCount = quotes.filter(q => q.status === 'draft').length;
-  
-  const circumference = 238.76; // 2 * π * 38
-  
-  function setSegment(elementId, count, total, offset) {
-    const el = document.getElementById(elementId);
-    if (!el) return 0;
-    if (total === 0 || count === 0) {
-      el.setAttribute('stroke-dasharray', `0 ${circumference}`);
-      el.setAttribute('stroke-dashoffset', '0');
-      return 0;
-    }
-    const length = (count / total) * circumference;
-    const gap = circumference - length;
-    el.setAttribute('stroke-dasharray', `${length} ${gap}`);
-    el.setAttribute('stroke-dashoffset', `${-offset}`);
-    return length;
-  }
-  
-  let runningOffset = 0;
-  runningOffset += setSegment('donut-green', greenCount, totalQuotes, runningOffset);
-  runningOffset += setSegment('donut-blue', blueCount, totalQuotes, runningOffset);
-  runningOffset += setSegment('donut-orange', orangeCount, totalQuotes, runningOffset);
-  runningOffset += setSegment('donut-yellow', yellowCount, totalQuotes, runningOffset);
-  
-  // Recent quotes
-  const recent = quotes.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 5);
-  const list = document.getElementById('dashboard-quotes-list');
-  
-  if (recent.length === 0) {
-    list.innerHTML = `<div class="empty-state">
-      <div class="empty-icon">📋</div>
-      <div class="empty-title">עדיין אין הצעות מחיר</div>
-      <div class="empty-text">צור את ההצעה הראשונה שלך — תהליך מהיר של דקות.</div>
-      <button class="btn btn-accent" onclick="newQuote()">+ הצעה חדשה</button>
-    </div>`;
-  } else {
-    list.innerHTML = recent.map(q => {
-      const client = clients.find(c => c.id === q.clientId);
-      const total = calcQuoteTotal(q);
-      return `
-        <div class="list-item" onclick="openQuote('${q.id}')">
-          <div class="list-item-info">
-            <div class="list-item-title">${escapeHTML(client?.name || 'לקוח')}</div>
-            <div class="list-item-meta">
-              <span>הצעה #${q.number}</span>
-              <span>·</span>
-              <span>${q.items.length} פריטים</span>
-              <span>·</span>
-              <span>${timeAgo(q.createdAt)}</span>
-            </div>
-          </div>
-          <div style="text-align:left;display:flex;flex-direction:column;align-items:flex-end;gap:6px">
-            <div class="list-item-amount">${formatMoney(total)}</div>
-            <span class="status-pill status-${q.status}">${STATUS_LABELS[q.status]}</span>
-          </div>
-        </div>
-      `;
-    }).join('');
-  }
-  
-  // Sidebar badge
-  document.getElementById('badge-quotes').innerText = quotes.length;
-}
-
-// ============ QUOTES LIST ============
-function setQuotesFilter(filter, btn) {
-  quotesFilter = filter;
-  document.querySelectorAll('#quotes-filters .filter-pill').forEach(p => p.classList.remove('active'));
-  btn.classList.add('active');
-  renderQuotes();
-}
-
-async function renderQuotes() {
-  const quotes = await dbAll('quotes');
-  const clients = await dbAll('clients');
-  const search = document.getElementById('quotes-search').value.toLowerCase();
-  
-  let filtered = quotes.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
-  
-  if (quotesFilter !== 'all') {
-    filtered = filtered.filter(q => q.status === quotesFilter);
-  }
-  
-  if (search) {
-    filtered = filtered.filter(q => {
-      const c = clients.find(c => c.id === q.clientId);
-      return (c?.name || '').toLowerCase().includes(search) ||
-             q.number.toLowerCase().includes(search);
-    });
-  }
-  
-  document.getElementById('quotes-count').innerText = `${filtered.length} מתוך ${quotes.length} הצעות`;
-  
-  const list = document.getElementById('quotes-list');
-  
-  if (filtered.length === 0) {
-    list.innerHTML = `<div class="empty-state">
-      <div class="empty-icon">📋</div>
-      <div class="empty-title">${search || quotesFilter !== 'all' ? 'אין תוצאות' : 'עדיין אין הצעות'}</div>
-      <div class="empty-text">${search ? 'נסה חיפוש אחר' : 'צור הצעה חדשה כדי להתחיל'}</div>
-    </div>`;
-  } else {
-    list.innerHTML = filtered.map(q => {
-      const client = clients.find(c => c.id === q.clientId);
-      const total = calcQuoteTotal(q);
-      return `
-        <div class="list-item" onclick="openQuote('${q.id}')">
-          <div class="list-item-info">
-            <div class="list-item-title">${escapeHTML(client?.name || 'לקוח')}</div>
-            <div class="list-item-meta">
-              <span>#${q.number}</span>
-              <span>·</span>
-              <span>${q.items.length} פריטים</span>
-              <span>·</span>
-              <span>${formatDate(q.createdAt)}</span>
-            </div>
-          </div>
-          <div style="text-align:left;display:flex;flex-direction:column;align-items:flex-end;gap:6px">
-            <div class="list-item-amount">${formatMoney(total)}</div>
-            <div style="display:flex;gap:6px;align-items:center">
-              <span class="status-pill status-${q.status}">${STATUS_LABELS[q.status]}</span>
-              <button class="quote-quick-action" onclick="event.stopPropagation();duplicateQuoteById('${q.id}')" title="שכפל הצעה">⎘</button>
-            </div>
-          </div>
-        </div>
-      `;
-    }).join('');
-  }
-}
-
-// ============ CLIENTS LIST ============
-async function renderClients() {
-  const clients = (await dbAll('clients')).sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
-  const quotes = await dbAll('quotes');
-  const search = document.getElementById('clients-search').value.toLowerCase();
-  
-  const filtered = search 
-    ? clients.filter(c => c.name.toLowerCase().includes(search) || (c.phone||'').includes(search))
-    : clients;
-  
-  document.getElementById('clients-count').innerText = `${clients.length} לקוחות`;
-  
-  const list = document.getElementById('clients-list');
-  
-  if (filtered.length === 0) {
-    list.innerHTML = `<div class="empty-state">
-      <div class="empty-icon">👥</div>
-      <div class="empty-title">${search ? 'אין תוצאות' : 'עדיין אין לקוחות'}</div>
-      <div class="empty-text">${search ? 'נסה חיפוש אחר' : 'הוסף לקוח חדש כדי להתחיל'}</div>
-      ${!search ? '<button class="btn btn-accent" onclick="newClient()">+ לקוח חדש</button>' : ''}
-    </div>`;
-  } else {
-    list.innerHTML = filtered.map(c => {
-      const cQuotes = quotes.filter(q => q.clientId === c.id);
-      const totalRevenue = cQuotes.filter(q => ['approved','production','installed'].includes(q.status))
-        .reduce((s, q) => s + calcQuoteTotal(q), 0);
-      return `
-        <div class="list-item" onclick="editClient('${c.id}')">
-          <div class="list-item-info">
-            <div class="list-item-title">${escapeHTML(c.name)}</div>
-            <div class="list-item-meta">
-              ${c.phone ? `<span>${escapeHTML(c.phone)}</span><span>·</span>` : ''}
-              <span>${cQuotes.length} הצעות</span>
-              ${totalRevenue > 0 ? `<span>·</span><span>${formatMoney(totalRevenue)}</span>` : ''}
-            </div>
-          </div>
-        </div>
-      `;
-    }).join('');
-  }
-}
-
-// ============ CLIENT MODAL ============
-let editingClientId = null;
-
-function newClient() {
-  editingClientId = null;
-  document.getElementById('modal-client-title').innerText = 'לקוח חדש';
-  document.getElementById('client-name').value = '';
-  document.getElementById('client-phone').value = '';
-  document.getElementById('client-email').value = '';
-  document.getElementById('client-address').value = '';
-  document.getElementById('client-notes').value = '';
-  document.getElementById('modal-client-save').onclick = saveClient;
-  showModal('modal-client');
-  setTimeout(() => document.getElementById('client-name').focus(), 100);
-}
-
-async function editClient(id) {
-  const c = await dbGet('clients', id);
-  editingClientId = id;
-  document.getElementById('modal-client-title').innerText = 'עריכת לקוח';
-  document.getElementById('client-name').value = c.name || '';
-  document.getElementById('client-phone').value = c.phone || '';
-  document.getElementById('client-email').value = c.email || '';
-  document.getElementById('client-address').value = c.address || '';
-  document.getElementById('client-notes').value = c.notes || '';
-  document.getElementById('modal-client-save').onclick = saveClient;
-  showModal('modal-client');
-}
-
-async function saveClient() {
-  const name = document.getElementById('client-name').value.trim();
-  if (!name) { showToast('חובה להזין שם'); return; }
-  
-  const client = {
-    id: editingClientId || uid(),
-    name,
-    phone: document.getElementById('client-phone').value.trim(),
-    email: document.getElementById('client-email').value.trim(),
-    address: document.getElementById('client-address').value.trim(),
-    notes: document.getElementById('client-notes').value.trim(),
-    createdAt: editingClientId ? (await dbGet('clients', editingClientId)).createdAt : new Date().toISOString()
-  };
-  
-  await dbPut('clients', client);
-  closeModal('modal-client');
-  showToast(editingClientId ? 'הלקוח עודכן' : 'הלקוח נוצר');
-  
-  if (currentScreen === 'clients') renderClients();
-  
-  if (pendingClientForQuote) {
-    pendingClientForQuote = null;
-    await createQuote(client.id);
-  }
-}
-
-// ============ NEW QUOTE FLOW ============
-async function newQuote() {
-  // Check free plan limit
-  if (user.plan === 'free') {
-    const quotes = await dbAll('quotes');
-    const monthStart = new Date();
-    monthStart.setDate(1);
-    monthStart.setHours(0,0,0,0);
-    const thisMonth = quotes.filter(q => new Date(q.createdAt) >= monthStart);
-    if (thisMonth.length >= 5) {
-      confirmAction('הגעת למגבלת החינם', 'יצרת כבר 5 הצעות החודש. שדרג ל-Pro כדי להמשיך ללא הגבלה.', () => {
-        showScreen('upgrade', document.querySelector('[data-screen="upgrade"]'));
-      });
-      return;
-    }
-  }
-  
-  const clients = (await dbAll('clients')).sort((a,b) => a.name.localeCompare(b.name));
-  const select = document.getElementById('new-quote-client-select');
-  select.innerHTML = '<option value="">— בחר —</option>' + 
-    clients.map(c => `<option value="${c.id}">${escapeHTML(c.name)}</option>`).join('');
-  showModal('modal-new-quote');
-}
-
-function newClientThenQuote() {
-  closeModal('modal-new-quote');
-  pendingClientForQuote = true;
-  newClient();
-}
-
-async function createQuoteFromSelected() {
-  const id = document.getElementById('new-quote-client-select').value;
-  if (!id) { showToast('בחר לקוח או צור חדש'); return; }
-  closeModal('modal-new-quote');
-  await createQuote(id);
-}
-
-async function createQuote(clientId) {
-  const quotes = await dbAll('quotes');
-  const year = new Date().getFullYear();
-  const yearQuotes = quotes.filter(q => q.number.startsWith(year + '-'));
-  const nextNum = yearQuotes.length + 1;
-  
-  const quote = {
-    id: uid(),
-    number: `${year}-${String(nextNum).padStart(3, '0')}`,
-    clientId,
-    status: 'draft',
-    createdAt: new Date().toISOString(),
-    items: [],
-    pricing: { discount: 0, install: 0, vat: 18, notes: '' },
-    timeline: [{ status: 'draft', at: new Date().toISOString() }]
-  };
-  
-  await dbPut('quotes', quote);
-  openQuote(quote.id);
-}
-
-// ============ QUOTE DETAIL ============
-async function openQuote(id) {
-  currentQuote = await dbGet('quotes', id);
-  showScreen('quote-detail', null);
-  renderQuoteDetail();
-}
-
-async function renderQuoteDetail() {
-  if (!currentQuote) return;
-  const client = await dbGet('clients', currentQuote.clientId);
-  const business = (await dbGet('settings', 'business'))?.value || {};
-  
-  // Restore media for items
-  for (const item of currentQuote.items) {
-    if (!item.media) item.media = [];
-  }
-  
-  const subtotal = currentQuote.items.reduce((s, i) => s + (i.price * (i.qty || 1)), 0);
-  const discountAmt = subtotal * ((currentQuote.pricing.discount || 0) / 100);
-  const afterDiscount = subtotal - discountAmt;
-  const beforeVat = afterDiscount + (currentQuote.pricing.install || 0);
-  const vatAmt = beforeVat * ((currentQuote.pricing.vat || 0) / 100);
-  const total = beforeVat + vatAmt;
-  
-  const c = document.getElementById('quote-detail-content');
-  
-  const isEditable = ['draft'].includes(currentQuote.status);
-  
-  c.innerHTML = `
-    <div class="main-header">
-      <div>
-        <h1 class="main-title">הצעה #${currentQuote.number}</h1>
-        <div class="main-subtitle">
-          <span class="status-pill status-${currentQuote.status}">${STATUS_LABELS[currentQuote.status]}</span>
-          · ${escapeHTML(client?.name || 'לקוח')} · ${formatDate(currentQuote.createdAt)}
-        </div>
-      </div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap" class="quote-actions">
-        ${currentQuote.status === 'draft' ? `<button class="btn btn-accent" onclick="markAsSent()">📤 שלח ללקוח</button>` : ''}
-        ${currentQuote.status === 'sent' || currentQuote.status === 'viewed' ? `<button class="btn btn-accent" onclick="markAsApproved()">✓ סמן כאושר</button>` : ''}
-        ${currentQuote.status === 'approved' ? `<button class="btn btn-accent" onclick="markAsProduction()">→ העבר לייצור</button>` : ''}
-        ${currentQuote.status === 'production' ? `<button class="btn btn-accent" onclick="markAsInstalled()">✓ סמן כהותקן</button>` : ''}
-        ${['approved','production','installed'].includes(currentQuote.status) ? `<button class="btn btn-pro" onclick="openWorkOrder()">📄 דף ביצוע למפעל ${user.plan === 'free' ? '⭐' : ''}</button>` : ''}
-        ${currentQuote.status !== 'draft' ? `<button class="btn" onclick="reopenForEdit()">✏️ פתח לעריכה</button>` : ''}
-        <button class="btn" onclick="duplicateQuote()">⎘ שכפל הצעה</button>
-        <button class="btn" onclick="openStatusEditor()">⚙ תקן סטטוס</button>
-        <button class="btn" onclick="window.print()">🖨 הדפס הצעה</button>
-        <button class="btn" onclick="shareWhatsApp()">💬 WhatsApp</button>
-        <button class="btn" onclick="deleteQuote()">🗑 מחק</button>
-      </div>
-    </div>
-    
-    <div style="display:grid;grid-template-columns:1fr 380px;gap:20px;align-items:start" class="quote-grid">
-      <div>
-        ${isEditable ? `
-        <div class="card-section">
-          <div class="card-section-header">
-            <div class="card-section-title">פריטים (${currentQuote.items.length})</div>
-            <button class="card-section-action" onclick="newItem()">+ פתח חדש</button>
-          </div>
-          <div style="padding:16px">
-            ${currentQuote.items.length === 0 ? `
-              <div class="empty-state" style="padding:30px">
-                <div class="empty-text">עדיין לא נוספו פתחים</div>
-                <div class="template-grid" style="margin-top:16px;max-width:600px;margin-left:auto;margin-right:auto">
-                  <div class="template-btn" onclick="newItemTemplate('חלון הזזה', 'area', {width:120, height:100})">
-                    <div class="template-icon">🪟</div>
-                    <div class="template-name">חלון הזזה</div>
-                    <div class="template-meta">120×100 ס״מ</div>
-                  </div>
-                  <div class="template-btn" onclick="newItemTemplate('חלון סלון', 'area', {width:240, height:160})">
-                    <div class="template-icon">🪟</div>
-                    <div class="template-name">חלון סלון</div>
-                    <div class="template-meta">240×160 ס״מ</div>
-                  </div>
-                  <div class="template-btn" onclick="newItemTemplate('דלת מרפסת', 'area', {width:200, height:210})">
-                    <div class="template-icon">🚪</div>
-                    <div class="template-name">דלת מרפסת</div>
-                    <div class="template-meta">200×210 ס״מ</div>
-                  </div>
-                  <div class="template-btn" onclick="newItemTemplate('רשת נגד יתושים', 'area', {width:120, height:100})">
-                    <div class="template-icon">🦟</div>
-                    <div class="template-name">רשת</div>
-                    <div class="template-meta">לפי מ״ר</div>
-                  </div>
-                  <div class="template-btn" onclick="newItemTemplate('תריס גלילה', 'area', {width:120, height:140})">
-                    <div class="template-icon">🌅</div>
-                    <div class="template-name">תריס גלילה</div>
-                    <div class="template-meta">חשמלי / ידני</div>
-                  </div>
-                  <div class="template-btn" onclick="newItemTemplate('פתח אחר', 'fixed')">
-                    <div class="template-icon">＋</div>
-                    <div class="template-name">פתח אחר</div>
-                    <div class="template-meta">מותאם אישית</div>
-                  </div>
-                </div>
-              </div>
-            ` : currentQuote.items.map((item, i) => renderItemCard(item, i)).join('')}
-          </div>
-          ${currentQuote.items.length > 0 ? `
-          <div style="padding:0 16px 16px">
-            <button class="btn" style="width:100%" onclick="newItem()">+ הוסף פתח</button>
-          </div>` : ''}
-        </div>
-        
-        <div class="card-section">
-          <div class="card-section-header">
-            <div class="card-section-title">חישובים</div>
-            <button class="card-section-action" onclick="openPricingModal()">⚙ פירוט</button>
-          </div>
-          <div style="padding:16px 24px">
-            <div class="quote-doc-total-row"><span>סכום ביניים</span><span>${formatMoney(subtotal)}</span></div>
-            
-            <div class="quick-pricing-row">
-              <label class="quick-pricing-label">הנחה</label>
-              <div class="quick-pricing-input-wrap">
-                <input type="number" min="0" max="100" class="quick-pricing-input" 
-                  value="${currentQuote.pricing.discount || 0}" 
-                  onchange="updatePricingField('discount', this.value)"
-                  onclick="this.select()">
-                <span class="quick-pricing-suffix">%</span>
-              </div>
-              <span class="quick-pricing-result">${currentQuote.pricing.discount > 0 ? '-' + formatMoney(discountAmt) : '—'}</span>
-            </div>
-            
-            <div class="quick-pricing-row">
-              <label class="quick-pricing-label">התקנה / משלוח</label>
-              <div class="quick-pricing-input-wrap">
-                <span class="quick-pricing-prefix">₪</span>
-                <input type="number" min="0" class="quick-pricing-input" 
-                  value="${currentQuote.pricing.install || 0}" 
-                  onchange="updatePricingField('install', this.value)"
-                  onclick="this.select()">
-              </div>
-              <span class="quick-pricing-result">${currentQuote.pricing.install > 0 ? '+' + formatMoney(currentQuote.pricing.install) : '—'}</span>
-            </div>
-            
-            ${currentQuote.pricing.vat > 0 ? `<div class="quote-doc-total-row" style="margin-top:8px"><span>מע״מ (${currentQuote.pricing.vat}%)</span><span>${formatMoney(vatAmt)}</span></div>` : ''}
-            
-            <div class="quote-doc-grand">
-              <div class="quote-doc-grand-label">סה״כ לתשלום</div>
-              <div class="quote-doc-grand-val">${formatMoney(total)}</div>
-            </div>
-          </div>
-        </div>
-        ` : `
-        <div class="card-section">
-          ${renderQuoteDoc(currentQuote, client, business, subtotal, discountAmt, beforeVat, vatAmt, total)}
-        </div>
-        `}
-      </div>
-      
-      <div>
-        <div class="card-section">
-          <div class="card-section-header">
-            <div class="card-section-title">סטטוס</div>
-          </div>
-          <div style="padding:8px 16px">
-            ${renderTimeline()}
-          </div>
-        </div>
-        
-        <div class="card-section">
-          <div class="card-section-header">
-            <div class="card-section-title">לקוח</div>
-            <button class="card-section-action" onclick="editClient('${client?.id}')">ערוך</button>
-          </div>
-          <div style="padding:16px">
-            <div style="font-weight:600;font-size:16px">${escapeHTML(client?.name || '')}</div>
-            ${client?.phone ? `<div style="font-size:13px;margin-top:6px">📞 ${escapeHTML(client.phone)}</div>` : ''}
-            ${client?.email ? `<div style="font-size:13px;margin-top:4px">✉ ${escapeHTML(client.email)}</div>` : ''}
-            ${client?.address ? `<div style="font-size:13px;color:var(--steel);margin-top:4px">📍 ${escapeHTML(client.address)}</div>` : ''}
-            ${client?.notes ? `<div style="font-size:12px;color:var(--steel);margin-top:10px;padding-top:10px;border-top:1px solid var(--line-soft)">${escapeHTML(client.notes)}</div>` : ''}
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <style>
-      @media (max-width: 900px) {
-        .quote-grid { grid-template-columns: 1fr !important; }
-      }
-    </style>
-  `;
-  
-  // עדכון Sticky Total Bar
-  const stickyEl = document.getElementById('quote-sticky-total');
-  const stickyAmount = document.getElementById('sticky-total-amount');
-  const stickyMeta = document.getElementById('sticky-total-meta');
-  const screenEl = document.getElementById('screen-quote-detail');
-  
-  if (currentQuote.items.length > 0) {
-    stickyEl.style.display = 'flex';
-    stickyAmount.innerText = formatMoney(total);
-    
-    const totalUnits = currentQuote.items.reduce((s, i) => s + (i.qty || 1), 0);
-    const itemsCount = currentQuote.items.length;
-    let metaText = `${itemsCount} פריט${itemsCount > 1 ? 'ים' : ''}`;
-    if (totalUnits !== itemsCount) {
-      metaText += ` · ${totalUnits} יחידות`;
-    }
-    stickyMeta.innerText = metaText;
-    screenEl.classList.add('has-sticky');
-  } else {
-    stickyEl.style.display = 'none';
-    screenEl.classList.remove('has-sticky');
-  }
-}
-
-/**
- * יצירת SVG ויזואלי של פתח אלומיניום
- * סגנון שרטוט הנדסי מקצועי
- */
-function renderWindowSVG(width, height, name = '') {
-  if (!width || !height) {
-    return `<svg viewBox="0 0 80 80" class="window-svg-empty" fill="none" stroke="currentColor" stroke-width="1.5">
-      <rect x="14" y="14" width="52" height="52" rx="0.5"/>
-      <line x1="40" y1="14" x2="40" y2="66"/>
-      <line x1="14" y1="40" x2="66" y2="40"/>
-    </svg>`;
-  }
-  
-  const ratio = width / height;
-  const maxDim = 70;
-  let svgW, svgH;
-  
-  if (ratio >= 1) {
-    svgW = maxDim;
-    svgH = maxDim / ratio;
-  } else {
-    svgH = maxDim;
-    svgW = maxDim * ratio;
-  }
-  
-  const padX = 18;
-  const padY = 14;
-  const totalW = svgW + padX * 2;
-  const totalH = svgH + padY * 2;
-  
-  const hasTwoWings = width >= 150;
-  const hasTopPanel = height >= 220 && width >= 100;
-  
-  const startX = padX;
-  const startY = padY;
-  const endX = startX + svgW;
-  const endY = startY + svgH;
-  
-  let topY = startY;
-  let bottomY = endY;
-  let middleStartY = startY;
-  let middleEndY = endY;
-  
-  if (hasTopPanel) {
-    topY = startY + svgH * 0.18;
-    bottomY = endY - svgH * 0.22;
-    middleStartY = topY;
-    middleEndY = bottomY;
-  }
-  
-  const middleX = startX + svgW / 2;
-  const stroke = "#0a1628";
-  
-  let panels = '';
-  
-  // מסגרת חיצונית - דקה
-  panels += `<rect x="${startX}" y="${startY}" width="${svgW}" height="${svgH}" stroke="${stroke}" stroke-width="0.9" fill="rgba(74,107,138,0.03)" rx="0.3"/>`;
-  
-  // מסגרת פנימית עדינה (פאנל זכוכית)
-  panels += `<rect x="${startX + 1.2}" y="${startY + 1.2}" width="${svgW - 2.4}" height="${svgH - 2.4}" stroke="${stroke}" stroke-width="0.3" fill="none" opacity="0.4"/>`;
-  
-  if (hasTopPanel) {
-    panels += `<line x1="${startX}" y1="${topY}" x2="${endX}" y2="${topY}" stroke="${stroke}" stroke-width="0.7"/>`;
-    panels += `<line x1="${startX}" y1="${bottomY}" x2="${endX}" y2="${bottomY}" stroke="${stroke}" stroke-width="0.7"/>`;
-  }
-  
-  if (hasTwoWings) {
-    panels += `<line x1="${middleX}" y1="${middleStartY}" x2="${middleX}" y2="${middleEndY}" stroke="${stroke}" stroke-width="0.7"/>`;
-    
-    // אלכסונים דקיקים מקווקווים
-    panels += `<line x1="${startX + 1.5}" y1="${middleStartY + 1.5}" x2="${middleX - 1.5}" y2="${middleEndY - 1.5}" stroke="${stroke}" stroke-width="0.35" stroke-dasharray="1.5,1" opacity="0.5"/>`;
-    panels += `<line x1="${middleX - 1.5}" y1="${middleStartY + 1.5}" x2="${startX + 1.5}" y2="${middleEndY - 1.5}" stroke="${stroke}" stroke-width="0.35" stroke-dasharray="1.5,1" opacity="0.5"/>`;
-    panels += `<line x1="${middleX + 1.5}" y1="${middleStartY + 1.5}" x2="${endX - 1.5}" y2="${middleEndY - 1.5}" stroke="${stroke}" stroke-width="0.35" stroke-dasharray="1.5,1" opacity="0.5"/>`;
-    panels += `<line x1="${endX - 1.5}" y1="${middleStartY + 1.5}" x2="${middleX + 1.5}" y2="${middleEndY - 1.5}" stroke="${stroke}" stroke-width="0.35" stroke-dasharray="1.5,1" opacity="0.5"/>`;
-    
-    // ידית אנכית במרכז (קו עבה קצר)
-    const handleY = (middleStartY + middleEndY) / 2;
-    panels += `<line x1="${middleX}" y1="${handleY - 1.5}" x2="${middleX}" y2="${handleY + 1.5}" stroke="${stroke}" stroke-width="1.4" stroke-linecap="round"/>`;
-  } else {
-    panels += `<line x1="${startX + 1.5}" y1="${middleStartY + 1.5}" x2="${endX - 1.5}" y2="${middleEndY - 1.5}" stroke="${stroke}" stroke-width="0.35" stroke-dasharray="1.5,1" opacity="0.5"/>`;
-    panels += `<line x1="${endX - 1.5}" y1="${middleStartY + 1.5}" x2="${startX + 1.5}" y2="${middleEndY - 1.5}" stroke="${stroke}" stroke-width="0.35" stroke-dasharray="1.5,1" opacity="0.5"/>`;
-  }
-  
-  // קווי מידה - רוחב (למטה)
-  const dimY = endY + 6;
-  const dimColor = "#7a96b8";
-  panels += `<line x1="${startX}" y1="${dimY}" x2="${endX}" y2="${dimY}" stroke="${dimColor}" stroke-width="0.3"/>`;
-  panels += `<line x1="${startX}" y1="${dimY - 1.8}" x2="${startX}" y2="${dimY + 1.8}" stroke="${dimColor}" stroke-width="0.4"/>`;
-  panels += `<line x1="${endX}" y1="${dimY - 1.8}" x2="${endX}" y2="${dimY + 1.8}" stroke="${dimColor}" stroke-width="0.4"/>`;
-  panels += `<text x="${(startX + endX) / 2}" y="${dimY + 5.5}" text-anchor="middle" font-size="5.5" font-family="Arial" fill="#4a6b8a" font-weight="600">${width}</text>`;
-  
-  // קווי מידה - גובה (משמאל)
-  const dimX = startX - 6;
-  panels += `<line x1="${dimX}" y1="${startY}" x2="${dimX}" y2="${endY}" stroke="${dimColor}" stroke-width="0.3"/>`;
-  panels += `<line x1="${dimX - 1.8}" y1="${startY}" x2="${dimX + 1.8}" y2="${startY}" stroke="${dimColor}" stroke-width="0.4"/>`;
-  panels += `<line x1="${dimX - 1.8}" y1="${endY}" x2="${dimX + 1.8}" y2="${endY}" stroke="${dimColor}" stroke-width="0.4"/>`;
-  panels += `<text x="${dimX - 2}" y="${(startY + endY) / 2 + 1.8}" text-anchor="end" font-size="5.5" font-family="Arial" fill="#4a6b8a" font-weight="600" transform="rotate(-90 ${dimX - 2} ${(startY + endY) / 2 + 1.8})">${height}</text>`;
-  
-  return `<svg viewBox="0 0 ${totalW} ${totalH}" class="window-svg" xmlns="http://www.w3.org/2000/svg">${panels}</svg>`;
-}
-
-function renderItemCard(item, idx) {
-  const lineTotal = item.price * (item.qty || 1);
-  let detail = '';
-  if (item.mode === 'area') {
-    const sqm = ((item.width * item.height) / 10000).toFixed(2);
-    detail = `${item.width}×${item.height} ס״מ · ${sqm} מ״ר × ${formatMoney(item.pricePerSqm)}/מ״ר`;
-  } else {
-    detail = `מחיר קבוע · ${formatMoney(item.price)}/יח׳`;
-  }
-  
-  const mediaCount = (item.media || []).length;
-  const photoCount = (item.media || []).filter(m => m.type === 'photo').length;
-  const audioCount = (item.media || []).filter(m => m.type === 'audio').length;
-  
-  // SVG ויזואלי של החלון - רק במצב area עם מידות
-  const hasMeasurements = item.mode === 'area' && item.width && item.height;
-  const windowSvg = hasMeasurements ? renderWindowSVG(item.width, item.height, item.name) : '';
-  
-  return `
-    <div class="item-card">
-      <div class="item-card-row">
-        ${hasMeasurements ? `<div class="item-window-thumb">${windowSvg}</div>` : ''}
-        <div class="item-card-info">
-          <div class="item-card-name">${escapeHTML(item.name)}</div>
-          <div class="item-card-detail">${detail}${item.qty > 1 ? ` · כמות ${item.qty}` : ''}</div>
-          ${item.note ? `<div class="item-card-detail" style="margin-top:6px">📎 ${escapeHTML(item.note)}</div>` : ''}
-          ${mediaCount > 0 ? `<div class="item-card-detail" style="margin-top:6px">${photoCount > 0 ? `📷 ${photoCount}` : ''} ${audioCount > 0 ? `🎙 ${audioCount}` : ''}</div>` : ''}
-        </div>
-        <div class="item-card-meta">
-          <div class="item-card-price">${formatMoney(lineTotal)}</div>
-          <div class="item-card-actions">
-            <button onclick="editItem(${idx})" title="ערוך">✏️</button>
-            <button class="btn-dup" onclick="duplicateItem(${idx})" title="שכפל">⎘</button>
-            <button class="btn-del" onclick="deleteItem(${idx})" title="מחק">🗑</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
-}
-
-function renderQuoteDoc(quote, client, business, subtotal, discountAmt, beforeVat, vatAmt, total) {
-  const logo = business.logo;
-  return `
-    <div class="quote-doc">
-      <div class="quote-doc-header">
-        <div>
-          ${logo ? `<img src="${logo}" style="width:50px;height:50px;border-radius:10px;object-fit:cover;margin-bottom:12px">` : `<div class="quote-doc-logo">${escapeHTML((business.name || 'A')[0])}</div>`}
-          <div class="quote-doc-business">${escapeHTML(business.name || 'העסק שלי')}</div>
-          <div class="quote-doc-business-meta">
-            ${business.phone ? `📞 ${escapeHTML(business.phone)}` : ''}
-            ${business.email ? ` · ✉ ${escapeHTML(business.email)}` : ''}
-            ${business.id ? `<br>ע.מ. ${escapeHTML(business.id)}` : ''}
-          </div>
-        </div>
-        <div class="quote-doc-num">
-          <div>הצעת מחיר</div>
-          <div class="quote-doc-num-val">#${quote.number}</div>
-          <div style="margin-top:8px">${formatDate(quote.createdAt)}</div>
-        </div>
-      </div>
-      
-      <div class="quote-doc-body">
-        <div class="quote-doc-client">
-          <div class="quote-doc-client-label">עבור</div>
-          <div class="quote-doc-client-name">${escapeHTML(client?.name || '')}</div>
-          ${client?.phone ? `<div class="quote-doc-client-meta">📞 ${escapeHTML(client.phone)}</div>` : ''}
-          ${client?.address ? `<div class="quote-doc-client-meta">📍 ${escapeHTML(client.address)}</div>` : ''}
-        </div>
-        
-        <table class="quote-doc-table">
-          <thead>
-            <tr><th>#</th><th>פריט</th><th>פירוט</th><th>כמות</th><th class="num">סה״כ</th></tr>
-          </thead>
-          <tbody>
-            ${quote.items.map((item, i) => {
-              let detail = '';
-              if (item.mode === 'area') {
-                const sqm = ((item.width*item.height)/10000).toFixed(2);
-                detail = `${item.width}×${item.height} ס״מ · ${sqm} מ״ר × ${formatMoney(item.pricePerSqm)}/מ״ר`;
-              } else {
-                detail = `מחיר קבוע ${formatMoney(item.price)}/יח׳`;
-              }
-              const hasMeasurements = item.mode === 'area' && item.width && item.height;
-              const itemSvg = hasMeasurements ? renderWindowSVG(item.width, item.height) : '';
-              return `
-                <tr>
-                  <td>${i+1}</td>
-                  <td>
-                    <div style="display:flex;align-items:center;gap:10px">
-                      ${hasMeasurements ? `<div class="quote-doc-item-thumb">${itemSvg}</div>` : ''}
-                      <div>
-                        <div class="item-name">${escapeHTML(item.name)}</div>
-                        ${item.note ? `<div class="item-detail">${escapeHTML(item.note)}</div>` : ''}
-                      </div>
-                    </div>
-                  </td>
-                  <td><div class="item-detail">${detail}</div></td>
-                  <td>${item.qty || 1}</td>
-                  <td class="num">${formatMoney(item.price * (item.qty || 1))}</td>
-                </tr>
-              `;
-            }).join('')}
-          </tbody>
-        </table>
-        
-        <div class="quote-doc-totals">
-          <div class="quote-doc-total-row"><span>סכום ביניים</span><span>${formatMoney(subtotal)}</span></div>
-          ${quote.pricing.discount > 0 ? `<div class="quote-doc-total-row discount"><span>הנחה (${quote.pricing.discount}%)</span><span>-${formatMoney(discountAmt)}</span></div>` : ''}
-          ${quote.pricing.install > 0 ? `<div class="quote-doc-total-row"><span>התקנה / משלוח</span><span>${formatMoney(quote.pricing.install)}</span></div>` : ''}
-          ${quote.pricing.vat > 0 ? `<div class="quote-doc-total-row"><span>מע״מ (${quote.pricing.vat}%)</span><span>${formatMoney(vatAmt)}</span></div>` : ''}
-          <div class="quote-doc-grand">
-            <div class="quote-doc-grand-label">סה״כ לתשלום</div>
-            <div class="quote-doc-grand-val">${formatMoney(total)}</div>
-          </div>
-        </div>
-        
-        ${quote.pricing.notes ? `
-          <div style="margin-top:20px;padding:14px;background:var(--paper);border-radius:10px;font-size:13px;color:var(--ink-soft)">
-            <strong>הערות:</strong> ${escapeHTML(quote.pricing.notes)}
-          </div>
-        ` : ''}
-      </div>
-      
-      <div class="quote-doc-footer">
-        ${escapeHTML(business.terms || '')}
-        ${business.website ? `<br><br>${escapeHTML(business.website)}` : ''}
-      </div>
-    </div>
-  `;
-}
-
-function renderTimeline() {
-  const flow = STATUS_FLOW;
-  const currentIdx = flow.indexOf(currentQuote.status);
-  
-  return `<div class="timeline">${flow.map((status, idx) => {
-    const event = currentQuote.timeline.find(e => e.status === status);
-    let cls = '';
-    let icon = '';
-    
-    if (idx < currentIdx || (idx === currentIdx && currentIdx === flow.length - 1)) {
-      cls = 'done';
-      icon = '✓';
-    } else if (idx === currentIdx) {
-      cls = 'active';
-      icon = '●';
-    }
-    
-    return `
-      <div class="timeline-row ${cls}">
-        <div class="timeline-dot">${icon}</div>
-        <div class="timeline-content">
-          <div class="timeline-status">${STATUS_LABELS[status]}</div>
-          ${event ? `<div class="timeline-time">${formatDateTime(event.at)}${event.via ? ' · ' + event.via : ''}${event.views ? ' · ' + event.views + ' צפיות' : ''}</div>` : ''}
-        </div>
-      </div>
-    `;
-  }).join('')}</div>`;
-}
-
-function calcQuoteTotal(quote) {
-  const subtotal = quote.items.reduce((s, i) => s + (i.price * (i.qty || 1)), 0);
-  const discountAmt = subtotal * ((quote.pricing?.discount || 0) / 100);
-  const afterDiscount = subtotal - discountAmt;
-  const beforeVat = afterDiscount + (quote.pricing?.install || 0);
-  const vatAmt = beforeVat * ((quote.pricing?.vat || 0) / 100);
-  return beforeVat + vatAmt;
-}
-
-// ============ QUOTE STATUS ============
-async function markAsSent() {
-  currentQuote.status = 'sent';
-  currentQuote.sentAt = new Date().toISOString();
-  currentQuote.timeline.push({ status: 'sent', at: currentQuote.sentAt, via: 'מערכת' });
-  await dbPut('quotes', currentQuote);
-  renderQuoteDetail();
-  showToast('ההצעה סומנה כנשלחה');
-}
-
-async function markAsApproved() {
-  currentQuote.status = 'approved';
-  currentQuote.approvedAt = new Date().toISOString();
-  currentQuote.timeline.push({ status: 'approved', at: currentQuote.approvedAt });
-  await dbPut('quotes', currentQuote);
-  renderQuoteDetail();
-  showToast('ההצעה אושרה! 🎉');
-}
-
-async function markAsProduction() {
-  currentQuote.status = 'production';
-  currentQuote.timeline.push({ status: 'production', at: new Date().toISOString() });
-  await dbPut('quotes', currentQuote);
-  renderQuoteDetail();
-  showToast('הועבר לייצור');
-}
-
-async function markAsInstalled() {
-  currentQuote.status = 'installed';
-  currentQuote.installedAt = new Date().toISOString();
-  currentQuote.timeline.push({ status: 'installed', at: currentQuote.installedAt });
-  await dbPut('quotes', currentQuote);
-  renderQuoteDetail();
-  showToast('פרויקט הושלם! 🎉');
-}
-
-// ============ STATUS FIX (תיקון סטטוס ידני) ============
-function openStatusEditor() {
-  if (!currentQuote) return;
-  
-  document.getElementById('status-current').innerText = STATUS_LABELS[currentQuote.status] || currentQuote.status;
-  document.getElementById('status-new').value = currentQuote.status;
-  document.getElementById('status-reason').value = '';
-  
-  showModal('modal-status-editor');
-}
-
-async function applyStatusFix() {
-  const newStatus = document.getElementById('status-new').value;
-  const reason = document.getElementById('status-reason').value.trim();
-  
-  if (newStatus === currentQuote.status) {
-    showToast('הסטטוס לא שונה');
-    return;
-  }
-  
-  const oldStatus = currentQuote.status;
-  
-  // עדכון הסטטוס
-  currentQuote.status = newStatus;
-  
-  // נקה תאריכים של סטטוסים שאנחנו לא בהם יותר
-  if (newStatus === 'draft') {
-    currentQuote.sentAt = null;
-    currentQuote.viewedAt = null;
-    currentQuote.approvedAt = null;
-    currentQuote.installedAt = null;
-  } else if (newStatus === 'sent') {
-    currentQuote.viewedAt = null;
-    currentQuote.approvedAt = null;
-    currentQuote.installedAt = null;
-    if (!currentQuote.sentAt) currentQuote.sentAt = new Date().toISOString();
-  } else if (newStatus === 'viewed') {
-    currentQuote.approvedAt = null;
-    currentQuote.installedAt = null;
-    if (!currentQuote.sentAt) currentQuote.sentAt = new Date().toISOString();
-    if (!currentQuote.viewedAt) currentQuote.viewedAt = new Date().toISOString();
-  } else if (newStatus === 'approved') {
-    currentQuote.installedAt = null;
-    if (!currentQuote.approvedAt) currentQuote.approvedAt = new Date().toISOString();
-  } else if (newStatus === 'installed') {
-    if (!currentQuote.installedAt) currentQuote.installedAt = new Date().toISOString();
-  }
-  
-  // הוסף רשומה ל-timeline
-  currentQuote.timeline.push({
-    status: newStatus,
-    at: new Date().toISOString(),
-    manual: true,
-    fromStatus: oldStatus,
-    reason: reason || 'תיקון ידני'
-  });
-  
-  await dbPut('quotes', currentQuote);
-  closeModal('modal-status-editor');
-  renderQuoteDetail();
-  showToast(`הסטטוס שונה ל-${STATUS_LABELS[newStatus]}`);
-}
-
-async function deleteQuote() {
-  confirmAction('מחיקת הצעה', 'האם אתה בטוח? פעולה זו לא ניתנת לביטול.', async () => {
-    await dbDelete('quotes', currentQuote.id);
-    showToast('ההצעה נמחקה');
-    showScreen('quotes', document.querySelector('[data-screen="quotes"]'));
-  });
-}
-
-// ============ DUPLICATE QUOTE ============
-/**
- * שכפול הצעת מחיר קיימת
- * יוצר הצעה חדשה במצב טיוטה עם כל הפריטים, התמחור והמדיה
- */
-async function duplicateQuote() {
-  // בדיקת מגבלת חבילה חינמית
-  if (user.plan === 'free') {
-    const quotes = await dbAll('quotes');
-    const monthStart = new Date();
-    monthStart.setDate(1);
-    monthStart.setHours(0,0,0,0);
-    const thisMonth = quotes.filter(q => new Date(q.createdAt) >= monthStart);
-    if (thisMonth.length >= 5) {
-      confirmAction('הגעת למגבלת החינם', 'יצרת כבר 5 הצעות החודש. שדרג ל-Pro כדי להמשיך ללא הגבלה.', () => {
-        showScreen('upgrade', document.querySelector('[data-screen="upgrade"]'));
-      });
-      return;
-    }
-  }
-  
-  confirmAction('שכפול הצעה', `ההצעה הנוכחית (#${currentQuote.number}) תשוכפל להצעה חדשה במצב טיוטה. תוכל לערוך את העותק החדש בלי להשפיע על המקורי.`, async () => {
-    // יצירת מספר הצעה חדש
-    const allQuotes = await dbAll('quotes');
-    const year = new Date().getFullYear();
-    const yearQuotes = allQuotes.filter(q => q.number && q.number.startsWith(year + '-'));
-    const newNum = `${year}-${String(yearQuotes.length + 1).padStart(3, '0')}`;
-    
-    // העתק עמוק של ההצעה
-    const newQuote = JSON.parse(JSON.stringify(currentQuote));
-    
-    // שינויים נדרשים
-    newQuote.id = uid();
-    newQuote.number = newNum;
-    newQuote.status = 'draft';
-    newQuote.createdAt = new Date().toISOString();
-    newQuote.sentAt = null;
-    newQuote.viewedAt = null;
-    newQuote.approvedAt = null;
-    newQuote.installedAt = null;
-    newQuote.timeline = [{
-      status: 'draft',
-      at: new Date().toISOString(),
-      duplicatedFrom: currentQuote.number
-    }];
-    
-    // החלפת ID של פריטים (לא לחלוק עם המקור)
-    if (newQuote.items) {
-      newQuote.items.forEach(item => {
-        item.id = uid();
-        // המדיה נשארת — היא זהה כי זה אותו פתח
-      });
-    }
-    
-    await dbPut('quotes', newQuote);
-    
-    // מעבר להצעה החדשה
-    currentQuote = newQuote;
-    showToast(`שוכפלה כהצעה #${newNum}`);
-    renderQuoteDetail();
-  });
-}
-
-/**
- * שכפול הצעה לפי ID (מהרשימה, כשהיא לא פתוחה)
- */
-async function duplicateQuoteById(id) {
-  const quote = await dbGet('quotes', id);
-  if (!quote) return;
-  currentQuote = quote;
-  await duplicateQuote();
-}
-
-/**
- * פתיחה מחדש לעריכה - מחזיר הצעה שנשלחה למצב טיוטה
- * שימוש: כשצריך לתקן הצעה שנשלחה ללקוח (טעות במחיר, טעות בפריט וכו')
- */
-async function reopenForEdit() {
-  const statusLabel = STATUS_LABELS[currentQuote.status];
-  
-  confirmAction(
-    'פתיחה מחדש לעריכה',
-    `ההצעה #${currentQuote.number} נמצאת כעת במצב "${statusLabel}". פתיחה מחדש תחזיר אותה למצב "טיוטה" ותאפשר עריכה מלאה.\n\n⚠ חשוב לדעת:\n• אם ההצעה כבר נשלחה ללקוח — שלח לו את הגרסה המעודכנת\n• אם הסטטוס היה "אושרה / בייצור / הותקנה" — חשוב לתאם עם הלקוח לפני שינויים\n\nהאם להמשיך?`,
-    async () => {
-      const oldStatus = currentQuote.status;
-      currentQuote.status = 'draft';
-      
-      // שמירה של ההיסטוריה
-      currentQuote.timeline = currentQuote.timeline || [];
-      currentQuote.timeline.push({
-        status: 'draft',
-        at: new Date().toISOString(),
-        reopenedFrom: oldStatus,
-        reason: 'נפתחה מחדש לעריכה'
-      });
-      
-      await dbPut('quotes', currentQuote);
-      renderQuoteDetail();
-      showToast('ההצעה נפתחה לעריכה');
-    }
-  );
-}
-
-// ============ ITEM MODAL ============
-function newItem() {
-  currentItem = null;
-  currentItemMedia = [];
-  document.getElementById('modal-item-title').innerText = 'פתח חדש';
-  document.getElementById('item-name').value = '';
-  document.getElementById('item-width').value = '';
-  document.getElementById('item-height').value = '';
-  document.getElementById('item-qty').value = 1;
-  document.getElementById('item-qty-area').value = 1;
-  document.getElementById('item-price').value = '';
-  document.getElementById('item-price-sqm').value = '';
-  document.getElementById('item-min-price').value = '';
-  document.getElementById('item-note').value = '';
-  setItemMode('fixed');
-  renderItemMedia();
-  updateAreaPreview();
-  showModal('modal-item');
-  setTimeout(() => document.getElementById('item-name').focus(), 100);
-}
-
-function newItemTemplate(name, mode, dims) {
-  newItem();
-  document.getElementById('item-name').value = name;
-  
-  if (mode === 'area') {
-    setItemMode('area');
-  } else {
-    setItemMode('fixed');
-  }
-  
-  if (dims) {
-    if (dims.width) document.getElementById('item-width').value = dims.width;
-    if (dims.height) document.getElementById('item-height').value = dims.height;
-    updateAreaPreview();
-  }
-  
-  // פוקוס לשדה המחיר אחרי המידות
-  setTimeout(() => {
-    if (mode === 'area') {
-      document.getElementById('item-price-sqm').focus();
-    } else {
-      document.getElementById('item-price').focus();
-    }
-  }, 100);
-}
-
-function editItem(idx) {
-  const item = currentQuote.items[idx];
-  currentItem = idx;
-  currentItemMedia = [...(item.media || [])];
-  
-  document.getElementById('modal-item-title').innerText = 'עריכת פתח';
-  document.getElementById('item-name').value = item.name;
-  document.getElementById('item-width').value = item.width || '';
-  document.getElementById('item-height').value = item.height || '';
-  document.getElementById('item-note').value = item.note || '';
-  
-  if (item.mode === 'area') {
-    setItemMode('area');
-    document.getElementById('item-qty-area').value = item.qty || 1;
-    document.getElementById('item-price-sqm').value = item.pricePerSqm || '';
-    document.getElementById('item-min-price').value = item.minPrice || '';
-  } else {
-    setItemMode('fixed');
-    document.getElementById('item-qty').value = item.qty || 1;
-    document.getElementById('item-price').value = item.price || '';
-    document.getElementById('item-min-price').value = '';
-  }
-  
-  renderItemMedia();
-  updateAreaPreview();
-  showModal('modal-item');
-}
-
-function setItemMode(mode) {
-  itemMode = mode;
-  document.getElementById('mode-fixed').classList.toggle('active', mode === 'fixed');
-  document.getElementById('mode-area').classList.toggle('active', mode === 'area');
-  document.getElementById('fixed-price-fields').style.display = mode === 'fixed' ? 'block' : 'none';
-  document.getElementById('area-price-fields').style.display = mode === 'area' ? 'block' : 'none';
-  updateAreaPreview();
-}
-
-function updateAreaPreview() {
-  const w = parseFloat(document.getElementById('item-width').value) || 0;
-  const h = parseFloat(document.getElementById('item-height').value) || 0;
-  const sqm = (w * h) / 10000;
-  
-  let html = '';
-  if (w > 0 && h > 0) {
-    html = `<div style="font-size:13px;color:var(--steel);margin-bottom:4px">${w} × ${h} ס״מ</div>`;
-    html += `<div class="area-result">${sqm.toFixed(2)} מ״ר</div>`;
-    
-    if (itemMode === 'area') {
-      const p = parseFloat(document.getElementById('item-price-sqm').value) || 0;
-      const q = parseInt(document.getElementById('item-qty-area').value) || 1;
-      const minPrice = parseFloat(document.getElementById('item-min-price').value) || 0;
-      
-      if (p > 0) {
-        const calculatedPrice = sqm * p;
-        const finalPrice = Math.max(calculatedPrice, minPrice);
-        const isMinApplied = minPrice > 0 && minPrice > calculatedPrice;
-        
-        if (isMinApplied) {
-          html += `<div style="margin-top:6px;font-size:13px;color:var(--steel);text-decoration:line-through">${formatMoney(calculatedPrice)} × ${q}</div>`;
-          html += `<div style="margin-top:2px;font-size:14px;color:var(--accent-deep)">⚠ מחיר מינימום: ${formatMoney(minPrice)} × ${q} = <strong>${formatMoney(finalPrice * q)}</strong></div>`;
-        } else {
-          html += `<div style="margin-top:6px;font-size:14px;color:var(--ink)">${formatMoney(calculatedPrice)} × ${q} = <strong>${formatMoney(finalPrice * q)}</strong></div>`;
-        }
-      }
-    } else {
-      const p = parseFloat(document.getElementById('item-price').value) || 0;
-      const q = parseInt(document.getElementById('item-qty').value) || 1;
-      if (p > 0) {
-        html += `<div style="margin-top:6px;font-size:14px;color:var(--ink)">${formatMoney(p)} × ${q} = <strong>${formatMoney(p * q)}</strong></div>`;
-      }
-    }
-  } else {
-    html = `<div style="font-size:13px;color:var(--steel)">השטח יוצג כשתזין מידות</div>`;
-  }
-  
-  document.getElementById('area-preview').innerHTML = html;
-}
-
-document.addEventListener('input', e => {
-  if (['item-price','item-price-sqm','item-qty','item-qty-area','item-min-price'].includes(e.target.id)) {
-    updateAreaPreview();
-  }
-});
-
-function renderItemMedia() {
-  const strip = document.getElementById('item-media-strip');
-  strip.innerHTML = currentItemMedia.map((m, i) => {
-    if (m.type === 'photo') {
-      return `<div class="media-item">
-        <img src="${m.data}">
-        <button class="media-remove" onclick="removeMedia(${i})">✕</button>
-      </div>`;
-    } else if (m.type === 'audio') {
-      return `<div class="media-item audio">
-        🎙
-        <span class="media-badge">${m.duration || 0}s</span>
-        <button class="media-remove" onclick="removeMedia(${i})">✕</button>
-      </div>`;
-    }
-  }).join('');
-}
-
-function removeMedia(idx) {
-  currentItemMedia.splice(idx, 1);
-  renderItemMedia();
-}
-
-function handleItemPhoto(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-  
-  const limit = user.plan === 'free' ? 2 : 10;
-  const photos = currentItemMedia.filter(m => m.type === 'photo').length;
-  
-  if (photos >= limit) {
-    confirmAction('הגעת למגבלה', `בחבילה החינמית אפשר עד ${limit} תמונות לפתח. שדרג ל-Pro לעד 10 תמונות.`, () => {
-      showScreen('upgrade', document.querySelector('[data-screen="upgrade"]'));
-    });
-    event.target.value = '';
-    return;
-  }
-  
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    // Compress
-    const img = new Image();
-    img.onload = () => {
-      const canvas = document.createElement('canvas');
-      const maxDim = 1200;
-      let w = img.width, h = img.height;
-      if (w > maxDim || h > maxDim) {
-        if (w > h) { h = h * maxDim / w; w = maxDim; }
-        else { w = w * maxDim / h; h = maxDim; }
-      }
-      canvas.width = w;
-      canvas.height = h;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0, w, h);
-      const compressed = canvas.toDataURL('image/jpeg', 0.8);
-      
-      currentItemMedia.push({ type: 'photo', data: compressed, at: new Date().toISOString() });
-      renderItemMedia();
-      showToast('תמונה נוספה');
-    };
-    img.src = e.target.result;
-  };
-  reader.readAsDataURL(file);
-  event.target.value = '';
-}
-
-// ============ AUDIO RECORDING ============
-async function startRecording() {
-  const limit = user.plan === 'free' ? 30 : 180;
-  
-  try {
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    mediaRecorder = new MediaRecorder(stream);
-    recordedChunks = [];
-    
-    mediaRecorder.ondataavailable = (e) => {
-      if (e.data.size > 0) recordedChunks.push(e.data);
-    };
-    
-    mediaRecorder.onstop = async () => {
-      const blob = new Blob(recordedChunks, { type: 'audio/webm' });
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const duration = Math.round((Date.now() - recordingStart) / 1000);
-        currentItemMedia.push({ type: 'audio', data: e.target.result, duration, at: new Date().toISOString() });
-        renderItemMedia();
-        showToast(`הקלטה נוספה (${duration} שניות)`);
-      };
-      reader.readAsDataURL(blob);
-      stream.getTracks().forEach(t => t.stop());
-    };
-    
-    recordingStart = Date.now();
-    mediaRecorder.start();
-    
-    document.getElementById('recording-overlay').classList.add('show');
-    
-    recordingTimer = setInterval(() => {
-      const sec = Math.floor((Date.now() - recordingStart) / 1000);
-      document.getElementById('recording-time').innerText = 
-        String(Math.floor(sec/60)).padStart(2,'0') + ':' + String(sec%60).padStart(2,'0');
-      
-      if (sec >= limit) {
-        stopRecording();
-        showToast(`הגעת למגבלת ${limit} שניות`);
-      }
-    }, 100);
-  } catch (err) {
-    showToast('לא ניתן לגשת למיקרופון. אשר הרשאות.');
-  }
-}
-
-function stopRecording() {
-  if (mediaRecorder && mediaRecorder.state === 'recording') {
-    mediaRecorder.stop();
-  }
-  if (recordingTimer) {
-    clearInterval(recordingTimer);
-    recordingTimer = null;
-  }
-  document.getElementById('recording-overlay').classList.remove('show');
-}
-
-async function saveItem() {
-  const name = document.getElementById('item-name').value.trim();
-  if (!name) { showToast('חובה להזין שם'); return; }
-  
-  let item = { id: currentItem !== null ? currentQuote.items[currentItem].id : uid(), name, mode: itemMode, media: currentItemMedia, note: document.getElementById('item-note').value.trim() };
-  
-  const w = parseFloat(document.getElementById('item-width').value);
-  const h = parseFloat(document.getElementById('item-height').value);
-  
-  if (itemMode === 'area') {
-    if (!w || !h) { showToast('חובה להזין רוחב וגובה'); return; }
-    const psqm = parseFloat(document.getElementById('item-price-sqm').value);
-    if (isNaN(psqm) || psqm < 0) { showToast('חובה להזין מחיר למ״ר'); return; }
-    
-    item.width = w;
-    item.height = h;
-    item.pricePerSqm = psqm;
-    item.qty = parseInt(document.getElementById('item-qty-area').value) || 1;
-    
-    // חישוב מחיר עם מינימום
-    const calculatedPrice = (w * h / 10000) * psqm;
-    const minPrice = parseFloat(document.getElementById('item-min-price').value) || 0;
-    item.minPrice = minPrice;
-    item.price = Math.max(calculatedPrice, minPrice);
-  } else {
-    if (w) item.width = w;
-    if (h) item.height = h;
-    const p = parseFloat(document.getElementById('item-price').value);
-    if (isNaN(p) || p < 0) { showToast('חובה להזין מחיר'); return; }
-    item.price = p;
-    item.qty = parseInt(document.getElementById('item-qty').value) || 1;
-  }
-  
-  if (currentItem !== null) {
-    currentQuote.items[currentItem] = item;
-  } else {
-    currentQuote.items.push(item);
-  }
-  
-  await dbPut('quotes', currentQuote);
-  closeModal('modal-item');
-  renderQuoteDetail();
-  showToast(currentItem !== null ? 'הפתח עודכן' : 'הפתח נוסף');
-}
-
-async function duplicateItem(idx) {
-  const original = currentQuote.items[idx];
-  // Deep clone כולל מדיה
-  const item = JSON.parse(JSON.stringify(original));
-  item.id = uid();
-  // הוסף ליד הפריט המקורי, לא בסוף
-  currentQuote.items.splice(idx + 1, 0, item);
-  await dbPut('quotes', currentQuote);
-  renderQuoteDetail();
-  showToast('הפתח שוכפל');
-}
-
-async function deleteItem(idx) {
-  confirmAction('מחיקת פתח', 'האם אתה בטוח?', async () => {
-    currentQuote.items.splice(idx, 1);
-    await dbPut('quotes', currentQuote);
-    renderQuoteDetail();
-    showToast('הפתח נמחק');
-  });
-}
-
-// ============ PRICING MODAL ============
-function openPricingModal() {
-  document.getElementById('pricing-discount').value = currentQuote.pricing.discount || 0;
-  document.getElementById('pricing-install').value = currentQuote.pricing.install || 0;
-  document.getElementById('pricing-vat').value = currentQuote.pricing.vat || 18;
-  document.getElementById('pricing-notes').value = currentQuote.pricing.notes || '';
-  showModal('modal-pricing');
-}
-
-async function savePricing() {
-  currentQuote.pricing = {
-    discount: parseFloat(document.getElementById('pricing-discount').value) || 0,
-    install: parseFloat(document.getElementById('pricing-install').value) || 0,
-    vat: parseFloat(document.getElementById('pricing-vat').value) || 0,
-    notes: document.getElementById('pricing-notes').value
-  };
-  await dbPut('quotes', currentQuote);
-  closeModal('modal-pricing');
-  renderQuoteDetail();
-  showToast('החישובים נשמרו');
-}
-
-/**
- * עדכון מהיר של שדה תמחור (הנחה / התקנה) ישירות מסיכום ההצעה
- */
-async function updatePricingField(field, value) {
-  const numValue = parseFloat(value) || 0;
-  if (!currentQuote.pricing) currentQuote.pricing = {};
-  currentQuote.pricing[field] = numValue;
-  await dbPut('quotes', currentQuote);
-  renderQuoteDetail();
-}
-
-// ============ SHARING ============
-async function shareWhatsApp() {
-  const client = await dbGet('clients', currentQuote.clientId);
-  const total = calcQuoteTotal(currentQuote);
-  const business = (await dbGet('settings', 'business'))?.value || {};
-  
-  const text = `שלום ${client?.name || ''},\n\nמצורפת הצעת מחיר #${currentQuote.number} מ-${business.name || 'העסק'}.\n\nסה״כ: ${formatMoney(total)}\nמספר פריטים: ${currentQuote.items.length}\n\nבכל שאלה אשמח לעזור.\nתודה,\n${user.name}\n\n— נשלח מ-ALUM(cm)`;
-  
-window.print();
-  
-  if (currentQuote.status === 'draft') {
-    setTimeout(() => {
-      confirmAction('סמן כנשלח?', 'האם תרצה לסמן את ההצעה כנשלחה?', () => markAsSent());
-    }, 500);
-  }
-}
-
-// ============ SUBSCRIPTION SYSTEM ============
-
-/**
- * רנדור מסך המנוי - מציג מצב דינמי לפי החבילה הנוכחית
- */
-async function renderSubscriptionScreen() {
-  const sub = await getCurrentSubscription();
-  const payments = (await dbAll('payments')) || [];
-  const quotes = await dbAll('quotes');
-  
-  // ספירת הצעות החודש
-  const monthStart = new Date();
-  monthStart.setDate(1);
-  monthStart.setHours(0,0,0,0);
-  const thisMonthQuotes = quotes.filter(q => new Date(q.createdAt) >= monthStart).length;
-  
-  const isFree = user.plan === 'free' || user.plan === 'demo';
-  const isCanceling = sub && sub.cancel_at;
-  
-  let cardClass = 'sub-status-card';
-  if (isFree) cardClass += ' free';
-  if (isCanceling) cardClass += ' canceling';
-  
-  // כותרת ה-card לפי המצב
-  let tierLabel, tierName, metaItems = [], actions = [];
-  
-  if (isFree) {
-    tierLabel = 'חבילה חינמית';
-    tierName = 'התחלה';
-    metaItems = [
-      { label: 'הצעות בחודש', value: `${thisMonthQuotes} / 5` },
-      { label: 'פיצ\'רים', value: 'בסיסיים' }
-    ];
-    actions = `<button class="btn btn-accent" onclick="startUpgrade('pro_monthly')">⭐ שדרג ל-Pro</button>`;
-  } else if (isCanceling) {
-    tierLabel = 'Pro · בתהליך ביטול';
-    tierName = sub.plan === 'pro_annual' ? 'Pro שנתי' : 'Pro חודשי';
-    metaItems = [
-      { label: 'פעיל עד', value: formatDate(sub.cancel_at) },
-      { label: 'לאחר מכן', value: 'יעבור ל-Free' }
-    ];
-    actions = `
-      <button class="btn btn-accent" onclick="resumeSubscription()">חידוש מנוי</button>
-    `;
-  } else {
-    tierLabel = 'Pro פעיל';
-    tierName = sub.plan === 'pro_annual' ? 'Pro שנתי' : 'Pro חודשי';
-    metaItems = [
-      { label: 'חיוב הבא', value: formatDate(sub.current_period_end) },
-      { label: 'סכום חיוב', value: sub.plan === 'pro_annual' ? '₪ 990' : '₪ 99' }
-    ];
-    actions = `
-      <button class="btn" onclick="cancelSubscription()">בטל מנוי</button>
-      ${sub.plan === 'pro_monthly' ? `<button class="btn btn-accent" onclick="startUpgrade('pro_annual')">עבור לשנתי - חיסכון 17%</button>` : ''}
-    `;
-  }
-  
-  // אזור שימוש (רק ל-Free)
-  const usagePct = (thisMonthQuotes / 5) * 100;
-  const usageBarClass = usagePct >= 100 ? 'danger' : usagePct >= 80 ? 'warning' : '';
-  
-  const usageHtml = isFree ? `
-    <div class="usage-section">
-      <div class="usage-row">
-        <strong>שימוש החודש</strong>
-        <span>${thisMonthQuotes} / 5 הצעות</span>
-      </div>
-      <div class="usage-bar">
-        <div class="usage-bar-fill ${usageBarClass}" style="width: ${Math.min(100, usagePct)}%"></div>
-      </div>
-      <div class="usage-meta">
-        ${thisMonthQuotes >= 5 
-          ? '⚠ הגעת למגבלת החינם - שדרג כדי להמשיך' 
-          : `נותרו ${5 - thisMonthQuotes} הצעות החודש`}
-      </div>
-    </div>
-  ` : '';
-  
-  // היסטוריית חיובים
-  const paymentsHtml = payments.length > 0 ? `
-    <div class="card-section">
-      <div class="card-section-header">
-        <div class="card-section-title">היסטוריית חיובים</div>
-      </div>
-      <div>
-        ${payments.sort((a,b) => new Date(b.created_at) - new Date(a.created_at)).map(p => `
-          <div class="billing-row">
-            <div class="billing-info">
-              <div class="billing-desc">${escapeHTML(p.description)}</div>
-              <div class="billing-date">${formatDateTime(p.created_at)}${p.invoice_number ? ` · חשבונית #${p.invoice_number}` : ''}</div>
-            </div>
-            <div class="billing-amount">${formatMoney(p.amount)}</div>
-            <div class="billing-status">
-              <span class="status-pill ${p.status === 'paid' ? 'status-approved' : p.status === 'failed' ? 'status-rejected' : 'status-sent'}">
-                ${p.status === 'paid' ? 'שולם' : p.status === 'failed' ? 'נכשל' : 'בהמתנה'}
-              </span>
-            </div>
-            <div class="billing-actions">
-              ${p.invoice_id ? `<a href="javascript:void(0)" onclick="showInvoice('${p.invoice_id}')">📄 הצג</a>` : ''}
-            </div>
-          </div>
-        `).join('')}
-      </div>
-    </div>
-  ` : '';
-  
-  // הצעת שדרוג מלאה (רק ל-Free)
-  const upgradePricingHtml = isFree ? `
-    <div style="margin-top:32px">
-      <h2 style="font-family:'Heebo',sans-serif;font-size:24px;font-weight:800;margin-bottom:16px">חבילות תשלום</h2>
-      <div class="pricing-grid" style="margin-top:0">
-        <div class="pricing-card">
-          <div class="pricing-tier-label">חודשי</div>
-          <div class="pricing-tier-name">גמישות מלאה</div>
-          <div class="pricing-amount">
-            <span class="pricing-amount-num">99</span>
-            <span class="pricing-amount-currency">₪/חודש</span>
-          </div>
-          <div class="pricing-period">חיוב חודשי, ביטול בכל עת</div>
-          <ul class="pricing-features">
-            <li>הצעות מחיר ללא הגבלה</li>
-            <li>הלוגו והמיתוג שלך</li>
-            <li>10 תמונות לפתח · הקלטה עד 3 דקות</li>
-            <li>📄 דף ביצוע למפעל</li>
-            <li>תמיכה ב-WhatsApp</li>
-          </ul>
-          <button class="btn btn-accent" style="width:100%" onclick="startUpgrade('pro_monthly')">בחר Pro חודשי</button>
-        </div>
-        
-        <div class="pricing-card pro">
-          <div class="pricing-tier-label">שנתי · חיסכון 17%</div>
-          <div class="pricing-tier-name">המומלץ</div>
-          <div class="pricing-amount">
-            <span class="pricing-amount-num">990</span>
-            <span class="pricing-amount-currency">₪/שנה</span>
-          </div>
-          <div class="pricing-period">שווה ל-₪ 82.50 לחודש (חיסכון של 198₪)</div>
-          <ul class="pricing-features">
-            <li>הכל מהחודשי</li>
-            <li>חיסכון של 17% (198₪ בשנה)</li>
-            <li>חיוב אחד בלבד</li>
-            <li>שיחה אישית עם תמיכה</li>
-            <li>גישה מוקדמת לפיצ'רים חדשים</li>
-          </ul>
-          <button class="btn btn-accent" style="width:100%" onclick="startUpgrade('pro_annual')">בחר Pro שנתי</button>
-        </div>
-      </div>
-    </div>
-  ` : '';
-  
-  // הרכבת המסך
-  document.getElementById('subscription-content').innerHTML = `
-    <div class="${cardClass}">
-      <div class="sub-tier-label">${tierLabel}</div>
-      <div class="sub-tier-name">${tierName}</div>
-      <div class="sub-meta-grid">
-        ${metaItems.map(m => `
-          <div class="sub-meta-item">
-            <div class="sub-meta-label">${m.label}</div>
-            <div class="sub-meta-value">${m.value}</div>
-          </div>
-        `).join('')}
-      </div>
-      <div class="sub-actions">${actions}</div>
-    </div>
-    
-    ${usageHtml}
-    ${paymentsHtml}
-    ${upgradePricingHtml}
-  `;
-}
-
-/**
- * קבלת המנוי הנוכחי
- */
-async function getCurrentSubscription() {
-  const result = await dbGet('settings', 'subscription');
-  return result?.value || null;
-}
-
-/**
- * שמירת מנוי
- */
-async function saveSubscription(sub) {
-  await dbPut('settings', { key: 'subscription', value: sub });
-}
-
-// ============ UPGRADE FLOW ============
-
-let upgradePlan = null;
-
-/**
- * התחלת תהליך שדרוג - פותח מודאל "PayPlus"
- */
-function startUpgrade(plan) {
-  upgradePlan = plan;
-  const amount = plan === 'pro_annual' ? 990 : 99;
-  const planLabel = plan === 'pro_annual' ? 'מנוי שנתי' : 'מנוי חודשי';
-  
-  document.getElementById('payment-body').innerHTML = `
-    <div class="payment-summary">
-      <div class="payment-summary-row">
-        <span>${planLabel} ALUM(cm)</span>
-        <span>${formatMoney(amount)}</span>
-      </div>
-      <div class="payment-summary-row" style="font-size:12px;color:var(--steel)">
-        <span>מע״מ כלול</span>
-        <span></span>
-      </div>
-      <div class="payment-summary-row payment-summary-total">
-        <span>סה״כ לחיוב</span>
-        <span>${formatMoney(amount)}</span>
-      </div>
-    </div>
-    
-    <div class="payment-test-cards">
-      <strong>💡 מצב בדיקה:</strong> השתמש בכרטיס לדוגמה<br>
-      <code onclick="fillTestCard('4580 0000 0000 0000')">4580 0000 0000 0000</code>
-      תאריך: <code onclick="fillTestCard('','12','28')">12/28</code>
-      CVV: <code onclick="fillTestCard('','','123')">123</code>
-    </div>
-    
-    <div class="input-group">
-      <label>שם בעל הכרטיס</label>
-      <input class="input" id="cc-name" placeholder="ישראל ישראלי">
-    </div>
-    
-    <div class="input-group">
-      <label>מספר כרטיס</label>
-      <input class="input" id="cc-number" placeholder="0000 0000 0000 0000" maxlength="19" oninput="formatCcNumber(this)">
-    </div>
-    
-    <div class="payment-cc-row">
-      <div class="input-group">
-        <label>תוקף</label>
-        <input class="input" id="cc-expiry" placeholder="MM/YY" maxlength="5" oninput="formatCcExpiry(this)">
-      </div>
-      <div class="input-group">
-        <label>CVV</label>
-        <input class="input" id="cc-cvv" placeholder="000" maxlength="3" type="password">
-      </div>
-      <div class="input-group">
-        <label>ת.ז.</label>
-        <input class="input" id="cc-id" placeholder="000000000" maxlength="9">
-      </div>
-    </div>
-    
-    <button class="btn btn-accent" style="width:100%; margin-top:16px;" onclick="processPayment()">
-      🔒 חייב ${formatMoney(amount)}
-    </button>
-    
-    <button class="btn" style="width:100%; margin-top:8px;" onclick="closeModal('payment-overlay'); document.getElementById('payment-overlay').classList.remove('show')">
-      ביטול
-    </button>
-    
-    <p style="text-align:center;font-size:11px;color:var(--steel);margin-top:16px">
-      התשלום מאובטח על ידי PayPlus · כל הפרטים מוצפנים SSL · ע.מ. PayPlus 514xxxxxx
-    </p>
-  `;
-  
-  document.getElementById('payment-overlay').classList.add('show');
-}
-
-function formatCcNumber(input) {
-  let v = input.value.replace(/\s/g, '').replace(/[^0-9]/g, '');
-  v = v.match(/.{1,4}/g)?.join(' ') || v;
-  input.value = v;
-}
-
-function formatCcExpiry(input) {
-  let v = input.value.replace(/\D/g, '');
-  if (v.length >= 2) v = v.slice(0,2) + '/' + v.slice(2,4);
-  input.value = v;
-}
-
-function fillTestCard(num, exp, cvv) {
-  if (num) document.getElementById('cc-number').value = num;
-  if (exp) document.getElementById('cc-expiry').value = exp + '/28';
-  if (cvv) document.getElementById('cc-cvv').value = cvv;
-  if (!document.getElementById('cc-name').value) {
-    document.getElementById('cc-name').value = user.name || 'ישראל ישראלי';
-  }
-  if (!document.getElementById('cc-id').value) {
-    document.getElementById('cc-id').value = '123456789';
-  }
-}
-
-/**
- * עיבוד התשלום (סימולציה של PayPlus)
- */
-async function processPayment() {
-  const ccNumber = document.getElementById('cc-number').value.replace(/\s/g, '');
-  const ccName = document.getElementById('cc-name').value;
-  const ccExpiry = document.getElementById('cc-expiry').value;
-  const ccCvv = document.getElementById('cc-cvv').value;
-  
-  if (ccNumber.length < 13 || !ccName || !ccExpiry || !ccCvv) {
-    showToast('נא למלא את כל הפרטים');
-    return;
-  }
-  
-  // הצגת מסך processing
-  document.getElementById('payment-body').innerHTML = `
-    <div class="payment-processing">
-      <div class="payment-spinner"></div>
-      <h3 style="font-family:'Heebo',sans-serif;margin-bottom:8px">מעבד תשלום...</h3>
-      <p style="color:var(--steel);font-size:14px">מאמת את פרטי הכרטיס מול חברת האשראי</p>
-    </div>
-  `;
-  
-  // המתנה (סימולציה של זמן עיבוד)
-  await sleep(2200);
-  
-  // בדיקת כרטיס "אמיתי" - 4580 = success, 4581 = decline
-  const willSucceed = ccNumber.startsWith('458');
-  
-  if (!willSucceed) {
-    document.getElementById('payment-body').innerHTML = `
-      <div class="payment-processing">
-        <div style="font-size:60px;margin-bottom:20px">❌</div>
-        <h3 style="color:var(--danger);font-family:'Heebo',sans-serif;margin-bottom:8px">העסקה נדחתה</h3>
-        <p style="color:var(--steel);font-size:14px;margin-bottom:24px">הכרטיס נדחה על ידי חברת האשראי. נסה כרטיס אחר.</p>
-        <button class="btn" onclick="startUpgrade('${upgradePlan}')">חזור ונסה שוב</button>
-      </div>
-    `;
-    return;
-  }
-  
-  // הצלחה!
-  await completeUpgrade(ccNumber.slice(-4));
-}
-
-function sleep(ms) {
-  return new Promise(r => setTimeout(r, ms));
-}
-
-/**
- * השלמת התשלום - יצירת מנוי, חשבונית, ומייל
- */
-async function completeUpgrade(ccLast4) {
-  const plan = upgradePlan;
-  const amount = plan === 'pro_annual' ? 990 : 99;
-  const planLabel = plan === 'pro_annual' ? 'מנוי שנתי' : 'מנוי חודשי';
-  
-  const now = new Date();
-  const periodEnd = new Date(now);
-  if (plan === 'pro_monthly') {
-    periodEnd.setMonth(periodEnd.getMonth() + 1);
-  } else {
-    periodEnd.setFullYear(periodEnd.getFullYear() + 1);
-  }
-  
-  // 1. יצירת מנוי
-  const subscription = {
-    plan,
-    status: 'active',
-    current_period_start: now.toISOString(),
-    current_period_end: periodEnd.toISOString(),
-    cancel_at: null,
-    cc_last4: ccLast4,
-    created_at: now.toISOString()
-  };
-  await saveSubscription(subscription);
-  
-  // 2. עדכון user plan
-  user.plan = plan;
-  await dbPut('settings', { key: 'user', value: user });
-  
-  // 3. יצירת חשבונית
-  const invoiceNumber = generateInvoiceNumber();
-  const invoiceId = uid();
-  const business = (await dbGet('settings', 'business'))?.value || {};
-  
-  const invoice = {
-    id: invoiceId,
-    number: invoiceNumber,
-    amount,
-    plan,
-    plan_label: planLabel,
-    period_start: now.toISOString(),
-    period_end: periodEnd.toISOString(),
-    customer_name: business.name || user.name,
-    customer_email: user.email,
-    customer_phone: business.phone || '',
-    customer_tax_id: business.id || '',
-    cc_last4: ccLast4,
-    issued_at: now.toISOString()
-  };
-  await dbPut('invoices', invoice);
-  
-  // 4. רישום תשלום
-  const payment = {
-    id: uid(),
-    invoice_id: invoiceId,
-    amount,
-    status: 'paid',
-    description: `${planLabel} ALUM(cm)`,
-    invoice_number: invoiceNumber,
-    cc_last4: ccLast4,
-    created_at: now.toISOString()
-  };
-  await dbPut('payments', payment);
-  
-  // 5. הצגת מסך הצלחה
-  document.getElementById('payment-body').innerHTML = `
-    <div class="payment-success">
-      <div class="payment-success-icon">✓</div>
-      <h2 style="font-family:'Heebo',sans-serif;font-size:28px;font-weight:800;margin-bottom:8px">התשלום אושר!</h2>
-      <p style="color:var(--steel);margin-bottom:20px">החשבון שלך שודרג ל-${planLabel} Pro</p>
-      
-      <div style="background:var(--paper);border-radius:12px;padding:16px;text-align:right;margin-bottom:20px">
-        <div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0;color:var(--steel)">
-          <span>חשבונית מס/קבלה</span>
-          <span style="font-family:Consolas,monospace;direction:ltr">#${invoiceNumber}</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0;color:var(--steel)">
-          <span>תשלום בכרטיס</span>
-          <span style="direction:ltr">**** ${ccLast4}</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;font-weight:800;font-size:16px;padding:8px 0 0;border-top:1px solid var(--line);margin-top:8px">
-          <span>סה״כ</span>
-          <span>${formatMoney(amount)}</span>
-        </div>
-      </div>
-      
-      <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <button class="btn btn-accent" style="flex:1" onclick="closeModalAndNavigate('${invoiceId}')">חזור לאפליקציה</button>
-        <button class="btn" onclick="showInvoice('${invoiceId}')">📄 הצג חשבונית</button>
-        <button class="btn" onclick="showPaymentEmail('${invoiceId}')">📧 הצג מייל</button>
-      </div>
-    </div>
-  `;
-  
-  showToast('🎉 שודרגת ל-Pro!');
-}
-
-function closeModalAndNavigate(invoiceId) {
-  document.getElementById('payment-overlay').classList.remove('show');
-  showScreen('upgrade', document.querySelector('[data-screen="upgrade"]'));
-}
-
-/**
- * יצירת מספר חשבונית רץ
- */
-function generateInvoiceNumber() {
-  const year = new Date().getFullYear();
-  const counter = parseInt(localStorage.getItem('invoice_counter') || '0') + 1;
-  localStorage.setItem('invoice_counter', counter);
-  return `${year}${String(counter).padStart(5, '0')}`;
-}
-
-/**
- * הצגת חשבונית
- */
-async function showInvoice(invoiceId) {
-  const invoice = await dbGet('invoices', invoiceId);
-  if (!invoice) {
-    showToast('חשבונית לא נמצאה');
-    return;
-  }
-  
-  const subtotalNoVat = invoice.amount / 1.18;
-  const vatAmount = invoice.amount - subtotalNoVat;
-  
-  document.getElementById('invoice-content').innerHTML = `
-    <div class="invoice-doc" id="invoice-doc">
-      <div class="invoice-header">
-        <div class="invoice-business">
-          <h2>ALUM(cm)</h2>
-          <p>שרות לחלון בע״מ · ח.פ. 514xxxxxx</p>
-          <p>support@alumcm.co.il</p>
-        </div>
-        <div class="invoice-num">
-          חשבונית מס/קבלה
-          <strong>#${invoice.number}</strong>
-          <div style="margin-top:8px">${formatDate(invoice.issued_at)}</div>
-        </div>
-      </div>
-      
-      <div class="invoice-body">
-        <div class="invoice-customer">
-          <div class="invoice-customer-label">עבור</div>
-          <div class="invoice-customer-name">${escapeHTML(invoice.customer_name)}</div>
-          ${invoice.customer_phone ? `<div style="font-size:13px;color:var(--ink-soft)">📞 ${escapeHTML(invoice.customer_phone)}</div>` : ''}
-          ${invoice.customer_email ? `<div style="font-size:13px;color:var(--ink-soft)">✉ ${escapeHTML(invoice.customer_email)}</div>` : ''}
-          ${invoice.customer_tax_id ? `<div style="font-size:13px;color:var(--ink-soft)">ע.מ./ח.פ. ${escapeHTML(invoice.customer_tax_id)}</div>` : ''}
-        </div>
-        
-        <table class="invoice-table">
-          <thead>
-            <tr><th>תיאור</th><th style="text-align:left">כמות</th><th style="text-align:left">מחיר</th></tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-                <strong>${escapeHTML(invoice.plan_label)} ALUM(cm)</strong><br>
-                <span style="font-size:11px;color:var(--steel)">תקופה: ${formatDate(invoice.period_start)} - ${formatDate(invoice.period_end)}</span>
-              </td>
-              <td style="text-align:left">1</td>
-              <td style="text-align:left;font-family:'Heebo',sans-serif;font-weight:700">${formatMoney(invoice.amount)}</td>
-            </tr>
-          </tbody>
-        </table>
-        
-        <div class="invoice-totals">
-          <div class="invoice-total-row">
-            <span>סכום ביניים (לפני מע״מ)</span>
-            <span>${formatMoney(subtotalNoVat)}</span>
-          </div>
-          <div class="invoice-total-row">
-            <span>מע״מ 18%</span>
-            <span>${formatMoney(vatAmount)}</span>
-          </div>
-          <div class="invoice-total-row invoice-total-grand">
-            <span>סה״כ ששולם</span>
-            <span>${formatMoney(invoice.amount)}</span>
-          </div>
-        </div>
-        
-        <div class="invoice-payment-info">
-          <strong>פרטי תשלום</strong><br>
-          שולם בכרטיס אשראי המסתיים ב-${invoice.cc_last4} · ${formatDateTime(invoice.issued_at)}<br>
-          סליקה ע״י PayPlus
-        </div>
-      </div>
-      
-      <div class="invoice-footer">
-        חשבונית מס דיגיטלית הופקה אוטומטית באמצעות Invoice4U · ALUM(cm) — מבית שרות לחלון
-      </div>
-    </div>
-  `;
-  
-  showModal('modal-invoice');
-}
-
-function downloadInvoice() {
-  // הכנה להדפסה - מסתיר את הכל חוץ מהחשבונית
-  window.print();
-}
-
-/**
- * הצגת המייל שנשלח ללקוח
- */
-async function showPaymentEmail(invoiceId) {
-  const invoice = await dbGet('invoices', invoiceId);
-  if (!invoice) return;
-  
-  const periodStart = formatDate(invoice.period_start);
-  const periodEnd = formatDate(invoice.period_end);
-  
-  document.getElementById('email-to').innerText = invoice.customer_email;
-  document.getElementById('email-subject').innerText = `אישור תשלום — ${invoice.plan_label} ALUM(cm)`;
-  document.getElementById('email-body').innerHTML = `
-    <div style="background:#f7f4ec;padding:24px;font-family:Arial,sans-serif">
-      <table style="background:white;max-width:600px;margin:0 auto;border-radius:12px;overflow:hidden;box-shadow:0 4px 12px rgba(10,22,40,0.08);width:100%;border-collapse:collapse" dir="rtl">
-        <tr>
-          <td style="background:#0a1628;padding:20px;text-align:center">
-            <span style="font-size:22px;font-weight:800;color:white;letter-spacing:-0.5px">ALUM</span><span style="font-size:14px;font-weight:700;color:#d97757">(cm)</span>
-          </td>
-        </tr>
-        <tr>
-          <td style="padding:32px;color:#0a1628;text-align:right;line-height:1.6">
-            <h1 style="font-size:22px;color:#4a8a4a;margin:0 0 8px">✓ התשלום עבר בהצלחה</h1>
-            <p style="margin:0 0 20px">שלום ${escapeHTML(invoice.customer_name)},<br>תודה רבה! השדרוג ל-Pro פעיל ומחובר לחשבון שלך.</p>
-            
-            <div style="background:#f7f4ec;border-radius:8px;padding:16px;margin-bottom:16px">
-              <h3 style="font-size:14px;margin:0 0 10px">פרטי החיוב</h3>
-              <table style="width:100%;font-size:13px;border-collapse:collapse">
-                <tr><td style="padding:4px 0;color:#4a6b8a">חבילה:</td><td style="padding:4px 0;text-align:left;font-weight:600">${invoice.plan_label} Pro</td></tr>
-                <tr><td style="padding:4px 0;color:#4a6b8a">תקופה:</td><td style="padding:4px 0;text-align:left">${periodStart} - ${periodEnd}</td></tr>
-                <tr><td style="padding:4px 0;color:#4a6b8a">בכרטיס:</td><td style="padding:4px 0;text-align:left">**** ${invoice.cc_last4}</td></tr>
-                <tr><td style="padding:10px 0 4px;border-top:1px solid #efeadc;color:#4a6b8a">סה״כ:</td><td style="padding:10px 0 4px;text-align:left;border-top:1px solid #efeadc;font-weight:800;font-size:16px">${formatMoney(invoice.amount)}</td></tr>
-              </table>
-            </div>
-            
-            <div style="background:#efeadc;border-right:4px solid #d97757;padding:14px 16px;border-radius:6px;margin-bottom:16px">
-              <p style="margin:0 0 6px;font-weight:600">📄 חשבונית מס/קבלה</p>
-              <p style="margin:0 0 8px;font-size:12px">מספר חשבונית: <strong>#${invoice.number}</strong></p>
-              <a href="javascript:void(0)" style="color:#d97757;text-decoration:none;font-weight:600;font-size:12px">הורד חשבונית בפורמט PDF ←</a>
-            </div>
-            
-            <div style="text-align:center;margin:24px 0">
-              <a href="javascript:void(0)" style="display:inline-block;background:#d97757;color:white;text-decoration:none;padding:12px 28px;border-radius:8px;font-weight:700">עבור לחשבון</a>
-            </div>
-            
-            <p style="font-size:12px;color:#4a6b8a;margin:16px 0 0">
-              ${invoice.plan === 'pro_monthly' ? 'החיוב הבא יתבצע אוטומטית בעוד חודש מאותו כרטיס.' : 'החיוב הבא יתבצע אוטומטית בעוד שנה מאותו כרטיס.'}
-              ניתן לבטל בכל עת מעמוד ניהול המנוי.
-            </p>
-          </td>
-        </tr>
-        <tr>
-          <td style="background:#efeadc;padding:20px;text-align:center;color:#4a6b8a;font-size:11px">
-            ALUM(cm) — מערכת הצעות מחיר חכמה לבעלי מקצוע באלומיניום<br>
-            <span style="font-style:italic">מבית <a href="https://service-window.co.il" style="color:#d97757;text-decoration:none">שרות לחלון</a></span>
-          </td>
-        </tr>
-      </table>
-    </div>
-  `;
-  
-  showModal('modal-email');
-}
-
-/**
- * ביטול מנוי
- */
-async function cancelSubscription() {
-  confirmAction('ביטול מנוי', 'החשבון שלך יישאר פעיל עד סוף תקופת החיוב הנוכחית, ואז יעבור אוטומטית לחבילה חינמית. האם להמשיך?', async () => {
-    const sub = await getCurrentSubscription();
-    if (!sub) return;
-    
-    sub.cancel_at = sub.current_period_end;
-    sub.canceled_at = new Date().toISOString();
-    await saveSubscription(sub);
-    
-    showToast('המנוי בוטל - תוקף עד ' + formatDate(sub.cancel_at));
-    renderSubscriptionScreen();
-  });
-}
-
-/**
- * חידוש מנוי שבוטל
- */
-async function resumeSubscription() {
-  const sub = await getCurrentSubscription();
-  if (!sub) return;
-  
-  sub.cancel_at = null;
-  sub.canceled_at = null;
-  sub.status = 'active';
-  await saveSubscription(sub);
-  
-  showToast('🎉 המנוי חודש!');
-  renderSubscriptionScreen();
-}
-
-// פונקציה ישנה - נשארת לתאימות
-async function upgradeToPro() {
-  startUpgrade('pro_monthly');
-}
-
-// ============ WORK ORDER (דף ביצוע למפעל) ============
-async function openWorkOrder() {
-  // בדיקת Pro
-  if (user.plan === 'free') {
-    confirmAction('פיצ\'ר Pro', 'דף ביצוע למפעל זמין רק במנוי Pro. הדף מציג רשימת פריטים מסודרת לייצור עם מידות והערות, ללא מחירים. שדרג עכשיו?', () => {
-      closeModal('modal-confirm');
-      showScreen('upgrade', document.querySelector('[data-screen="upgrade"]'));
-    });
-    return;
-  }
-  
-  const client = await dbGet('clients', currentQuote.clientId);
-  const business = (await dbGet('settings', 'business'))?.value || {};
-  
-  document.getElementById('work-order-content').innerHTML = renderWorkOrder(currentQuote, client, business);
-  showModal('modal-work-order');
-}
-
-function renderWorkOrder(quote, client, business) {
-  // חישוב סטטיסטיקות מצרפיות
-  const totalItems = quote.items.length;
-  const totalUnits = quote.items.reduce((s, i) => s + (i.qty || 1), 0);
-  const totalArea = quote.items.reduce((s, i) => {
-    if (i.mode === 'area' && i.width && i.height) {
-      return s + ((i.width * i.height) / 10000) * (i.qty || 1);
-    }
-    return s;
-  }, 0);
-  const itemsWithMedia = quote.items.filter(i => (i.media || []).length > 0).length;
-  
-  // חישוב חתכי פרופיל אוטומטיים (אורכי חיתוך)
-  const cuts = calculateCuts(quote.items);
-  
-  return `
-    <div class="work-order" id="work-order-print-area">
-      <div class="work-order-header">
-        <div>
-          <div class="work-order-title">דף ביצוע למפעל</div>
-          <div class="work-order-subtitle">WORK ORDER · FACTORY PRODUCTION</div>
-          <div style="font-size:11px;color:#666;margin-top:4px">${escapeHTML(business.name || '')}</div>
-        </div>
-        <div class="work-order-meta">
-          <div>הזמנה</div>
-          <div class="work-order-meta-num">#${quote.number}</div>
-          <div style="margin-top:8px">תאריך הזמנה: ${formatDate(quote.approvedAt || quote.createdAt)}</div>
-          <div>תאריך הדפסה: ${formatDate(new Date().toISOString())}</div>
-        </div>
-      </div>
-      
-      <div class="work-order-info">
-        <div>
-          <div class="work-order-info-block-label">לקוח</div>
-          <div class="work-order-info-block-value">${escapeHTML(client?.name || '')}</div>
-          ${client?.phone ? `<div class="work-order-info-block-meta">📞 ${escapeHTML(client.phone)}</div>` : ''}
-        </div>
-        <div>
-          <div class="work-order-info-block-label">כתובת התקנה</div>
-          <div class="work-order-info-block-value" style="font-size:13px">${escapeHTML(client?.address || '—')}</div>
-        </div>
-      </div>
-      
-      <div class="work-order-summary-grid">
-        <div class="work-order-summary-box">
-          <div class="work-order-summary-label">פריטים</div>
-          <div class="work-order-summary-value">${totalItems}</div>
-        </div>
-        <div class="work-order-summary-box">
-          <div class="work-order-summary-label">יחידות</div>
-          <div class="work-order-summary-value">${totalUnits}</div>
-        </div>
-        <div class="work-order-summary-box">
-          <div class="work-order-summary-label">סה״כ מ״ר</div>
-          <div class="work-order-summary-value">${totalArea.toFixed(2)}</div>
-        </div>
-        <div class="work-order-summary-box">
-          <div class="work-order-summary-label">סטטוס</div>
-          <div class="work-order-summary-value" style="font-size:14px;text-transform:uppercase">${STATUS_LABELS[quote.status]}</div>
-        </div>
-      </div>
-      
-      <div class="work-order-section-title">📐 רשימת פריטים לייצור</div>
-      
-      <table class="work-order-table">
-        <thead>
-          <tr>
-            <th class="center" style="width:50px">#</th>
-            <th>פריט</th>
-            <th class="center" style="width:140px">מידות</th>
-            <th class="center" style="width:60px">כמות</th>
-            <th class="center" style="width:80px">שטח (מ״ר)</th>
-            <th>פירוט / הערות</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${quote.items.map((item, i) => {
-            let dimensions = '—';
-            let area = '—';
-            if (item.width && item.height) {
-              dimensions = `<div class="dimensions">${item.width} × ${item.height}</div><div class="dimensions-detail">רוחב × גובה (ס״מ)</div>`;
-              const sqm = (item.width * item.height) / 10000;
-              area = `${sqm.toFixed(2)} × ${item.qty || 1}<br><strong>${(sqm * (item.qty || 1)).toFixed(2)}</strong>`;
-            }
-            const hasMeasurements = item.mode === 'area' && item.width && item.height;
-            const itemSvg = hasMeasurements ? renderWindowSVG(item.width, item.height) : '';
-            return `
-              <tr>
-                <td class="num"><span class="item-num">${i+1}</span></td>
-                <td>
-                  <div style="display:flex;align-items:center;gap:10px">
-                    ${hasMeasurements ? `<div class="work-order-thumb">${itemSvg}</div>` : ''}
-                    <div>
-                      <div style="font-weight:700;font-size:14px">${escapeHTML(item.name)}</div>
-                      ${item.mode === 'area' ? `<div style="font-size:10px;color:#999;margin-top:2px">תמחור לפי מ״ר</div>` : `<div style="font-size:10px;color:#999;margin-top:2px">מחיר קבוע</div>`}
-                    </div>
-                  </div>
-                </td>
-                <td class="num">${dimensions}</td>
-                <td class="num">${item.qty || 1}</td>
-                <td class="num">${area}</td>
-                <td>
-                  ${item.note ? escapeHTML(item.note) : '<span style="color:#aaa">—</span>'}
-                </td>
-              </tr>
-            `;
-          }).join('')}
-        </tbody>
-      </table>
-      
-      ${cuts.length > 0 ? `
-        <div class="work-order-cuts">
-          <div class="work-order-cuts-title">📋 הערה למפעל</div>
-          <div style="font-size:12px;line-height:1.6">
-            המידות לעיל הן <strong>מידות חיצוניות של הפתח</strong>. חישוב חתכי הפרופיל יבוצע במפעל לפי:
-            <ul style="margin:8px 0;padding-right:20px;font-size:11px">
-              <li>סוג הפרופיל הספציפי (7000 / 9000 / קליל / וכו׳)</li>
-              <li>סוג הפתיחה (הזזה / ציר / נטוי)</li>
-              <li>זווית החיתוך (45° / 90°)</li>
-              <li>תוספת לעיבוד וריווח לזיגוג</li>
-            </ul>
-          </div>
-        </div>
-      ` : ''}
-      
-      ${quote.pricing.notes ? `
-        <div class="work-order-notes">
-          <strong>הערות מההצעה:</strong> ${escapeHTML(quote.pricing.notes)}
-        </div>
-      ` : ''}
-      
-      ${itemsWithMedia > 0 ? `
-        <div class="work-order-section-title">📷 תמונות התקנה (${itemsWithMedia} פריטים)</div>
-        ${quote.items.filter(i => (i.media || []).filter(m => m.type === 'photo').length > 0).map((item, i) => {
-          const photos = (item.media || []).filter(m => m.type === 'photo');
-          return `
-            <div style="margin-bottom:14px">
-              <div style="font-weight:700;font-size:13px;margin-bottom:6px">פריט: ${escapeHTML(item.name)}</div>
-              <div class="work-order-photos">
-                ${photos.map(p => `<img class="work-order-photo" src="${p.data}" alt="">`).join('')}
-              </div>
-            </div>
-          `;
-        }).join('')}
-      ` : ''}
-      
-      <div class="work-order-section-title">📋 הוראות לייצור</div>
-      <table style="width:100%;border-collapse:collapse;font-size:12px">
-        <tr>
-          <td style="padding:6px;border-bottom:1px solid #ddd;width:30%;color:#666">תאריך התחלת ייצור צפוי:</td>
-          <td style="padding:6px;border-bottom:1px solid #ddd">_______________________</td>
-        </tr>
-        <tr>
-          <td style="padding:6px;border-bottom:1px solid #ddd;color:#666">תאריך סיום ייצור צפוי:</td>
-          <td style="padding:6px;border-bottom:1px solid #ddd">_______________________</td>
-        </tr>
-        <tr>
-          <td style="padding:6px;border-bottom:1px solid #ddd;color:#666">צבע פרופיל:</td>
-          <td style="padding:6px;border-bottom:1px solid #ddd">_______________________</td>
-        </tr>
-        <tr>
-          <td style="padding:6px;border-bottom:1px solid #ddd;color:#666">סוג זכוכית:</td>
-          <td style="padding:6px;border-bottom:1px solid #ddd">_______________________</td>
-        </tr>
-        <tr>
-          <td style="padding:6px;color:#666">אביזרים:</td>
-          <td style="padding:6px">_______________________</td>
-        </tr>
-      </table>
-      
-      <div class="work-order-signature">
-        <div class="signature-box">חתימת מנהל ייצור</div>
-        <div class="signature-box">חתימת בודק איכות</div>
-        <div class="signature-box">חתימת מתקין</div>
-      </div>
-      
-      <div class="work-order-footer-print">
-        מסמך פנימי · ${escapeHTML(business.name || '')} · נוצר ע״י ALUM(cm)
-      </div>
-    </div>
-  `;
-}
-
-// חישוב אורכי חיתוך פרופיל לפי מידות (פריימטרי)
-function calculateCuts(items) {
-  const cuts = [];
-  items.forEach((item, idx) => {
-    if (!item.width || !item.height) return;
-    const qty = item.qty || 1;
-    
-    // חלון/דלת סטנדרטי: 2 אורכים אופקיים (רוחב) + 2 אורכים אנכיים (גובה)
-    // יחידה אחת = 2×רוחב + 2×גובה
-    const horizontalLength = item.width * 2 * qty;
-    const verticalLength = item.height * 2 * qty;
-    const totalLength = (horizontalLength + verticalLength) / 100; // ס״מ → מטר
-    
-    cuts.push({
-      itemIdx: idx,
-      name: item.name,
-      cuts: `אופקי: ${(horizontalLength/100).toFixed(2)} מ׳ (${qty}×${item.width*2} ס״מ) | אנכי: ${(verticalLength/100).toFixed(2)} מ׳ (${qty}×${item.height*2} ס״מ) | סה״כ: ${totalLength.toFixed(2)} מ׳`
-    });
-  });
-  return cuts;
-}
-
-function printWorkOrder() {
-  document.body.classList.add('printing-work-order');
-  // הזז את ה-print area ל-body root
-  const printArea = document.getElementById('work-order-print-area');
-  const originalParent = printArea.parentElement;
-  document.body.appendChild(printArea);
-  
-  setTimeout(() => {
-    window.print();
-    
-    setTimeout(() => {
-      // החזר את ה-print area למקומו
-      originalParent.appendChild(printArea);
-      document.body.classList.remove('printing-work-order');
-    }, 100);
-  }, 100);
-}
-
-// ============ KEYBOARD HANDLING ============
-// כשמתמקדים בשדה, ודא שהוא נראה גם כשהמקלדת פתוחה
-function setupKeyboardHandling() {
-  // עובד עם Visual Viewport API — תומך בכל הדפדפנים המודרניים
-  if (window.visualViewport) {
-    window.visualViewport.addEventListener('resize', () => {
-      const focused = document.activeElement;
-      if (focused && (focused.tagName === 'INPUT' || focused.tagName === 'TEXTAREA' || focused.tagName === 'SELECT')) {
-        setTimeout(() => {
-          focused.scrollIntoView({ block: 'center', behavior: 'smooth' });
-        }, 100);
-      }
-    });
-  }
-
-  // גלילה אוטומטית כשמתמקדים בשדה במובייל
-  document.addEventListener('focusin', (e) => {
-    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') {
-      // חכה שהמקלדת תיפתח
-      setTimeout(() => {
-        e.target.scrollIntoView({ block: 'center', behavior: 'smooth' });
-      }, 300);
-    }
-  });
-}
-
-// ============ INIT ============
-async function init() {
-  loadTheme();
-  await openDB();
-  setupKeyboardHandling();
-  
-  // Check existing session
-  const existing = await dbGet('settings', 'user');
-  if (existing && existing.value) {
-    user = existing.value;
-    enterApp();
-  }
-}
-
-init();
-</script>
-  </script>
-
+<!-- PWA Service Worker -->
 <script>
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
@@ -3838,97 +4640,50 @@ if ("serviceWorker" in navigator) {
   });
 }
 </script>
+
+<!-- PWA Install Banner -->
 <script>
 let deferredPrompt;
-
 const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
-
     if (isMobile && !localStorage.getItem('pwaPromptClosed')) {
         showInstallBanner();
     }
 });
 
 function showInstallBanner() {
-
     const banner = document.createElement('div');
-
     banner.innerHTML = `
         <div id="installBanner" style="
-            position:fixed;
-            bottom:20px;
-            left:20px;
-            right:20px;
-            background:#0a1628;
-            color:white;
-            padding:16px;
-            border-radius:16px;
-            z-index:99999;
+            position:fixed;bottom:20px;left:20px;right:20px;
+            background:#0a1628;color:white;padding:16px;
+            border-radius:16px;z-index:99999;
             box-shadow:0 10px 30px rgba(0,0,0,0.35);
-            font-family:Arial;
-            direction:rtl;
-        ">
-            <div style="font-size:18px;font-weight:bold;margin-bottom:8px;">
-                התקן את ALUM(cm)
-            </div>
-
-            <div style="font-size:14px;opacity:0.9;margin-bottom:14px;">
-                גישה מהירה ונוחה כאפליקציה מלאה
-            </div>
-
-            <button id="installBtn" style="
-                background:#ff6b00;
-                color:white;
-                border:none;
-                padding:12px 18px;
-                border-radius:10px;
-                font-size:16px;
-                margin-left:10px;
-                cursor:pointer;
-            ">
-                התקן עכשיו
-            </button>
-
-            <button id="closeInstall" style="
-                background:transparent;
-                color:#ccc;
-                border:none;
-                font-size:15px;
-                cursor:pointer;
-            ">
-                אולי אחר כך
-            </button>
-        </div>
-    `;
-
+            font-family:Arial;direction:rtl;">
+            <div style="font-size:18px;font-weight:bold;margin-bottom:8px;">התקן את ALUM(cm)</div>
+            <div style="font-size:14px;opacity:0.9;margin-bottom:14px;">גישה מהירה ונוחה כאפליקציה מלאה</div>
+            <button id="installBtn" style="background:#ff6b00;color:white;border:none;padding:12px 18px;border-radius:10px;font-size:16px;margin-left:10px;cursor:pointer;">התקן עכשיו</button>
+            <button id="closeInstall" style="background:transparent;color:#ccc;border:none;font-size:15px;cursor:pointer;">אולי אחר כך</button>
+        </div>`;
     document.body.appendChild(banner);
 
     document.getElementById('installBtn').addEventListener('click', async () => {
-
         if (!deferredPrompt) return;
-
         deferredPrompt.prompt();
-
         const result = await deferredPrompt.userChoice;
-
-        console.log(result);
-
         deferredPrompt = null;
-
         document.getElementById('installBanner').remove();
     });
 
     document.getElementById('closeInstall').addEventListener('click', () => {
-
         localStorage.setItem('pwaPromptClosed', 'true');
-
         document.getElementById('installBanner').remove();
     });
 }
 </script>
-<script defer src="js/app.js"></script>
+
 </body>
 </html>
