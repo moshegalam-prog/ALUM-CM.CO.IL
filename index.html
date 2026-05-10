@@ -2893,12 +2893,32 @@ async function shareWhatsApp() {
   
   const text = `שלום ${client?.name || ''},\n\nמצורפת הצעת מחיר #${currentQuote.number} מ-${business.name || 'העסק'}.\n\nסה״כ: ${formatMoney(total)}\nמספר פריטים: ${currentQuote.items.length}\n\nבכל שאלה אשמח לעזור.\nתודה,\n${user.name}\n\n— נשלח מ-ALUM(cm)`;
   
-  const phone = (client?.phone || '').replace(/[^\d]/g, '').replace(/^0/, '972');
-  const url = phone 
-    ? `https://wa.me/${phone}?text=${encodeURIComponent(text)}`
-    : `https://wa.me/?text=${encodeURIComponent(text)}`;
-  
-  window.open(url, '_blank');
+ const printWindow = window.open('', '_blank');
+
+printWindow.document.write(`
+<html dir="rtl">
+<head>
+<title>הצעה ${currentQuote.number}</title>
+<style>
+body{
+    font-family:Arial;
+    padding:20px;
+    direction:rtl;
+}
+</style>
+</head>
+<body>
+${document.querySelector('.quote-doc').outerHTML}
+</body>
+</html>
+`);
+
+printWindow.document.close();
+
+setTimeout(() => {
+    printWindow.print();
+}, 500);
+
   
   if (currentQuote.status === 'draft') {
     setTimeout(() => {
