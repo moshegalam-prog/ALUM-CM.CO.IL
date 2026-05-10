@@ -3343,12 +3343,10 @@ async function init() {
   // בדיקת חזרה מ-Grow אחרי תשלום
   const params = new URLSearchParams(window.location.search);
   if (params.get('upgrade')) {
-    // טפל אחרי ה-enterApp
     setTimeout(handleGrowReturn, 1000);
   }
   
   // בדיקת URL ציבורי - הצעת מחיר לצפייה
-  const params = new URLSearchParams(window.location.search);
   const publicQuoteToken = params.get('quote');
   if (publicQuoteToken) {
     await showPublicQuote(publicQuoteToken);
