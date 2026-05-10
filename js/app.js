@@ -39,7 +39,7 @@ async function dbGet(store, key) {
       if (key === 'user') {
         const { data: { session } } = await sb.auth.getSession();
         if (!session) return null;
-        const { data: profile } = await sb.from('profiles').select('*').eq('id', session.user.id).single();
+        const { data: profile } = await sb.from('profiles').select('*').eq('id', session.user.id).maybeSingle();
         return { 
           key: 'user', 
           value: profile ? {
@@ -52,7 +52,7 @@ async function dbGet(store, key) {
         };
       }
       if (key === 'business') {
-        const { data } = await sb.from('business').select('*').eq('user_id', currentUserId).single();
+        const { data } = await sb.from('business').select('*').eq('user_id', currentUserId).maybeSingle();
         return data ? { key: 'business', value: businessFromDb(data) } : null;
       }
       return null;
@@ -643,7 +643,7 @@ async function doLogin() {
     currentUserId = data.user.id;
     
     // טעינת profile
-    const { data: profile } = await sb.from('profiles').select('*').eq('id', data.user.id).single();
+    const { data: profile } = await sb.from('profiles').select('*').eq('id', data.user.id).maybeSingle();
     
     if (profile) {
       user = {
@@ -3396,7 +3396,7 @@ async function showPublicQuote(token) {
       .from('quotes')
       .select('*, quote_items(*)')
       .eq('public_token', token)
-      .single();
+      .maybeSingle();
     
     if (!quote) {
       document.body.innerHTML = `
@@ -3412,7 +3412,7 @@ async function showPublicQuote(token) {
       .from('business')
       .select('*')
       .eq('user_id', quote.user_id)
-      .single();
+      .maybeSingle();
     
     // עדכון viewed_at
     if (!quote.viewed_at) {
