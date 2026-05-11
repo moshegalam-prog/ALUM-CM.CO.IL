@@ -218,6 +218,13 @@ input, textarea, select { font-family: inherit; }
   font-size: 14px;
   color: var(--text-primary);
   transition: all 0.2s;
+  display: inline-flex;
+align-items: center;
+justify-content: center;
+gap: 8px;
+white-space: nowrap;
+min-width: 160px;
+overflow: visible;
 }
 
 .btn:hover { border-color: var(--text-primary); }
