@@ -66,7 +66,8 @@ async function dbGet(store, key) {
     if (store === 'quotes') {
       const { data: quote } = await sb.from('quotes').select('*').eq('id', key).maybeSingle();
       if (!quote) return null;
-      const { data: items } = await sb.from('quote_items').select('*').eq('quote_id', key).order('order_idx');
+      // 🛠️ FIX: order by 'position' (לא order_idx — לא קיים בטבלה)
+      const { data: items } = await sb.from('quote_items').select('*').eq('quote_id', key).order('position');
       return quoteFromDb(quote, items || []);
     }
     
@@ -134,7 +135,9 @@ async function dbPut(store, value) {
       if (qErr) { console.error('save quote error:', qErr); return value; }
       
       // מחיקת פריטים ישנים והוספת חדשים
-      await sb.from('quote_items').delete().eq('quote_id', value.id);
+      const { error: dErr } = await sb.from('quote_items').delete().eq('quote_id', value.id);
+      if (dErr) console.error('delete items error:', dErr);
+      
       if (items.length > 0) {
         const { error: iErr } = await sb.from('quote_items').insert(items);
         if (iErr) console.error('save items error:', iErr);
@@ -185,11 +188,14 @@ async function dbAll(store) {
     
     if (store === 'quotes') {
       const { data: quotes } = await sb.from('quotes').select('*').eq('user_id', currentUserId).order('created_at', { ascending: false });
-      if (!quotes) return [];
+      if (!quotes || quotes.length === 0) return [];
       
       // טעינת items לכל ההצעות
       const ids = quotes.map(q => q.id);
-      const { data: allItems } = await sb.from('quote_items').select('*').in('quote_id', ids).order('order_idx');
+      // 🛠️ FIX: order by 'position' (לא order_idx — לא קיים בטבלה)
+      const { data: allItems, error: itemsErr } = await sb.from('quote_items').select('*').in('quote_id', ids).order('position');
+      if (itemsErr) console.error('load items error:', itemsErr);
+      
       const itemsByQuote = {};
       (allItems || []).forEach(it => {
         if (!itemsByQuote[it.quote_id]) itemsByQuote[it.quote_id] = [];
@@ -200,9 +206,8 @@ async function dbAll(store) {
     }
     
     if (store === 'media') {
-      // item_media מקושר דרך quote_items.quote_id → quotes.user_id
-      // נטען רק media של המשתמש הנוכחי
-      const { data } = await supabase
+      // 🛠️ FIX: היה 'supabase' (לא קיים) — צריך 'sb'
+      const { data } = await sb
         .from('item_media')
         .select('*, quote_items!inner(quote_id, quotes!inner(user_id))')
         .eq('quote_items.quotes.user_id', currentUserId);
@@ -279,7 +284,8 @@ function quoteFromDb(q, items) {
     installedAt: q.installed_at,
     rejectedAt: q.rejected_at,
     publicToken: q.public_token,
-    history: q.history || []
+    history: q.history || [],
+    timeline: q.history || []  // 🛠️ FIX: גם timeline (תאימות לאחור)
   };
 }
 
@@ -299,7 +305,7 @@ function quoteToDb(q) {
     notes: pricing.notes || '',
     total: q.total || 0,
     public_token: q.publicToken || null,
-    history: q.history || [],
+    history: q.history || q.timeline || [],  // 🛠️ FIX: timeline נשמר כ-history
     created_at: q.createdAt || new Date().toISOString(),
     sent_at: q.sentAt || null,
     viewed_at: q.viewedAt || null,
@@ -325,8 +331,8 @@ function itemFromDb(i) {
     price: i.price_per_unit ? parseFloat(i.price_per_unit) : null,
     pricePerSqm: i.price_per_sqm ? parseFloat(i.price_per_sqm) : null,
     minPrice: i.min_price ? parseFloat(i.min_price) : null,
-    note: i.note,
-    media: i.media_ids || []
+    note: i.note || '',
+    media: Array.isArray(i.media_ids) ? i.media_ids : []
   };
 }
 
@@ -357,7 +363,7 @@ function itemToDb(i, quoteId, position) {
     min_price: i.minPrice || null,
     total_price: totalPrice,
     note: i.note || null,
-    media_ids: i.media || []
+    media_ids: Array.isArray(i.media) ? i.media : []
   };
 }
 
@@ -482,13 +488,20 @@ function formatMoney(num) {
 
 function showToast(msg) {
   const t = document.getElementById('toast');
+  if (!t) return;
   t.innerText = msg;
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2400);
 }
 
-function showModal(id) { document.getElementById(id).classList.add('show'); }
-function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+function showModal(id) { 
+  const el = document.getElementById(id);
+  if (el) el.classList.add('show'); 
+}
+function closeModal(id) { 
+  const el = document.getElementById(id);
+  if (el) el.classList.remove('show'); 
+}
 
 function confirmAction(title, body, action) {
   document.getElementById('confirm-title').innerText = title;
@@ -1007,17 +1020,6 @@ async function renderDashboard() {
   // חישוב סטטוסים לדונאט
   const totalQuotes = quotes.length;
   document.getElementById('donut-total').innerText = totalQuotes;
-  
-  // קטגוריות:
-  // ירוק = סגור: approved, production, installed
-  // כחול = נשלח: sent, viewed
-  // כתום = בביצוע: production (כפול-קטגוריה? לא, בביצוע = production בלבד)
-  // צהוב = בהמתנה: draft
-  // נסדר נכון:
-  // ירוק = הותקן (installed) - הצלחה סופית
-  // כחול = נשלח/נצפה (sent, viewed) - אצל הלקוח
-  // כתום = בביצוע (approved, production) - מתבצע
-  // צהוב = טיוטה (draft) - בהמתנה
   
   const greenCount = quotes.filter(q => q.status === 'installed').length;
   const blueCount = quotes.filter(q => ['sent','viewed'].includes(q.status)).length;
@@ -1794,7 +1796,14 @@ function calcQuoteTotal(quote) {
 }
 
 // ============ QUOTE STATUS ============
+// 🛠️ FIX: וידוא ש-timeline הוא array לפני push (קריטי!)
+function ensureTimeline() {
+  if (!Array.isArray(currentQuote.timeline)) currentQuote.timeline = [];
+  if (!Array.isArray(currentQuote.history)) currentQuote.history = [];
+}
+
 async function markAsSent() {
+  ensureTimeline();
   currentQuote.status = 'sent';
   currentQuote.sentAt = new Date().toISOString();
   currentQuote.timeline.push({ status: 'sent', at: currentQuote.sentAt, via: 'מערכת' });
@@ -1804,6 +1813,7 @@ async function markAsSent() {
 }
 
 async function markAsApproved() {
+  ensureTimeline();
   currentQuote.status = 'approved';
   currentQuote.approvedAt = new Date().toISOString();
   currentQuote.timeline.push({ status: 'approved', at: currentQuote.approvedAt });
@@ -1813,6 +1823,7 @@ async function markAsApproved() {
 }
 
 async function markAsProduction() {
+  ensureTimeline();
   currentQuote.status = 'production';
   currentQuote.timeline.push({ status: 'production', at: new Date().toISOString() });
   await dbPut('quotes', currentQuote);
@@ -1821,6 +1832,7 @@ async function markAsProduction() {
 }
 
 async function markAsInstalled() {
+  ensureTimeline();
   currentQuote.status = 'installed';
   currentQuote.installedAt = new Date().toISOString();
   currentQuote.timeline.push({ status: 'installed', at: currentQuote.installedAt });
@@ -1841,6 +1853,7 @@ function openStatusEditor() {
 }
 
 async function applyStatusFix() {
+  ensureTimeline();
   const newStatus = document.getElementById('status-new').value;
   const reason = document.getElementById('status-reason').value.trim();
   
@@ -1984,11 +1997,11 @@ async function reopenForEdit() {
     'פתיחה מחדש לעריכה',
     `ההצעה #${currentQuote.number} נמצאת כעת במצב "${statusLabel}". פתיחה מחדש תחזיר אותה למצב "טיוטה" ותאפשר עריכה מלאה.\n\n⚠ חשוב לדעת:\n• אם ההצעה כבר נשלחה ללקוח — שלח לו את הגרסה המעודכנת\n• אם הסטטוס היה "אושרה / בייצור / הותקנה" — חשוב לתאם עם הלקוח לפני שינויים\n\nהאם להמשיך?`,
     async () => {
+      ensureTimeline();
       const oldStatus = currentQuote.status;
       currentQuote.status = 'draft';
       
       // שמירה של ההיסטוריה
-      currentQuote.timeline = currentQuote.timeline || [];
       currentQuote.timeline.push({
         status: 'draft',
         at: new Date().toISOString(),
