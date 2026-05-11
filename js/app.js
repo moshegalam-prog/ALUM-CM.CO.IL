@@ -1359,7 +1359,7 @@ async function renderQuoteDetail() {
         <button class="btn" onclick="openStatusEditor()">⚙ תקן סטטוס</button>
         <button class="btn" onclick="window.print()">🖨 הדפס הצעה</button>
        
-     <button class="btn" onclick="shareWhatsAppPDF()" style="background:var(--green);border-color:var(--green);color:white !important;white-space:nowrap;padding:10px 16px;">שלח וואצאפ</button>
+     <button class="btn" onclick="shareWhatsAppPDF()" style="background:#25D366;border:1px solid #25D366;color:#fff !important;display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;padding:10px 16px;min-width:140px;white-space:nowrap;">שלח וואצאפ</button>
         <button class="btn" onclick="sendQuoteEmail()">📧 שלח במייל</button>
         <button class="btn" onclick="downloadQuotePDF()">⬇ הורד PDF</button>
         <button class="btn" onclick="deleteQuote()">🗑 מחק</button>
