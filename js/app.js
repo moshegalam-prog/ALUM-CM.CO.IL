@@ -1348,21 +1348,53 @@ async function renderQuoteDetail() {
           · ${escapeHTML(client?.name || 'לקוח')} · ${formatDate(currentQuote.createdAt)}
         </div>
       </div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap" class="quote-actions">
-        ${currentQuote.status === 'draft' ? `<button class="btn btn-accent" onclick="markAsSent()">📤 שלח ללקוח</button>` : ''}
-        ${currentQuote.status === 'sent' || currentQuote.status === 'viewed' ? `<button class="btn btn-accent" onclick="markAsApproved()">✓ סמן כאושר</button>` : ''}
-        ${currentQuote.status === 'approved' ? `<button class="btn btn-accent" onclick="markAsProduction()">→ העבר לייצור</button>` : ''}
-        ${currentQuote.status === 'production' ? `<button class="btn btn-accent" onclick="markAsInstalled()">✓ סמן כהותקן</button>` : ''}
-        ${['approved','production','installed'].includes(currentQuote.status) ? `<button class="btn btn-pro" onclick="openWorkOrder()">📄 דף ביצוע למפעל ${user.plan === 'free' ? '⭐' : ''}</button>` : ''}
-        ${currentQuote.status !== 'draft' ? `<button class="btn" onclick="reopenForEdit()">✏️ פתח לעריכה</button>` : ''}
-        <button class="btn" onclick="duplicateQuote()">⎘ שכפל הצעה</button>
-        <button class="btn" onclick="openStatusEditor()">⚙ תקן סטטוס</button>
-        <button class="btn" onclick="window.print()">🖨 הדפס הצעה</button>
-        <button class="btn" onclick="shareWhatsApp()">💬 WhatsApp טקסט</button>
-        <button class="btn btn-primary" onclick="shareWhatsAppPDF()" style="background:var(--green);border-color:var(--green);color:white">📎 WhatsApp PDF</button>
-        <button class="btn" onclick="sendQuoteEmail()">📧 שלח במייל</button>
-        <button class="btn" onclick="downloadQuotePDF()">⬇ הורד PDF</button>
-        <button class="btn" onclick="deleteQuote()">🗑 מחק</button>
+      <div class="quote-actions-grouped">
+        
+        <!-- קבוצה 1: פעולת סטטוס ראשית -->
+        <div class="action-group action-group-primary">
+          ${currentQuote.status === 'draft' ? `
+            <button class="btn btn-accent btn-primary-action" onclick="markAsSent()">📤 שלח ללקוח</button>` : ''}
+          ${currentQuote.status === 'sent' || currentQuote.status === 'viewed' ? `
+            <button class="btn btn-accent btn-primary-action" onclick="markAsApproved()">✓ סמן כאושר</button>` : ''}
+          ${currentQuote.status === 'approved' ? `
+            <button class="btn btn-accent btn-primary-action" onclick="markAsProduction()">→ העבר לייצור</button>` : ''}
+          ${currentQuote.status === 'production' ? `
+            <button class="btn btn-accent btn-primary-action" onclick="markAsInstalled()">✓ סמן כהותקן</button>` : ''}
+          ${currentQuote.status === 'installed' ? `
+            <button class="btn btn-success btn-primary-action" disabled>✓ הפרויקט הסתיים</button>` : ''}
+          ${currentQuote.status === 'rejected' ? `
+            <button class="btn btn-primary-action" onclick="reopenForEdit()">↻ פתח לעריכה מחדש</button>` : ''}
+        </div>
+        
+        <!-- קבוצה 2: שיתוף ללקוח -->
+        <div class="action-group action-group-share">
+          <div class="action-group-label">📤 שיתוף ללקוח</div>
+          <div class="action-group-buttons">
+            <button class="btn btn-share" onclick="shareWhatsAppSmart()" title="שלח ב-WhatsApp (PDF אם יש טלפון)">💬 WhatsApp</button>
+            <button class="btn btn-share" onclick="sendQuoteEmail()" title="שלח במייל">📧 מייל</button>
+            <button class="btn btn-share" onclick="downloadQuotePDF()" title="הורד PDF למחשב">⬇ הורד PDF</button>
+          </div>
+        </div>
+        
+        <!-- קבוצה 3: עריכה ועוד -->
+        <div class="action-group action-group-more">
+          <div class="dropdown-wrap">
+            <button class="btn btn-more" onclick="toggleActionsMenu(event)">⋯ עוד פעולות</button>
+            <div class="dropdown-menu" id="actions-dropdown">
+              ${['approved','production','installed'].includes(currentQuote.status) ? `
+                <button class="dropdown-item" onclick="closeActionsMenu();openWorkOrder()">📄 דף ביצוע למפעל ${user.plan === 'free' ? '⭐' : ''}</button>
+                <div class="dropdown-divider"></div>` : ''}
+              ${currentQuote.status !== 'draft' ? `
+                <button class="dropdown-item" onclick="closeActionsMenu();reopenForEdit()">✏️ פתח לעריכה</button>` : ''}
+              <button class="dropdown-item" onclick="closeActionsMenu();duplicateQuote()">⎘ שכפל הצעה</button>
+              <button class="dropdown-item" onclick="closeActionsMenu();openStatusEditor()">⚙ תקן סטטוס ידנית</button>
+              <button class="dropdown-item" onclick="closeActionsMenu();window.print()">🖨 הדפס הצעה</button>
+              <div class="dropdown-divider"></div>
+              <button class="dropdown-item dropdown-item-danger" onclick="closeActionsMenu();deleteQuote()">🗑 מחק הצעה</button>
+            </div>
+          </div>
+        </div>
+        
       </div>
     </div>
     
@@ -2710,6 +2742,57 @@ async function shareWhatsApp() {
       confirmAction('סמן כנשלח?', 'האם תרצה לסמן את ההצעה כנשלחה?', () => markAsSent());
     }, 500);
   }
+}
+
+/**
+ * WhatsApp חכם — מאחד את 2 הכפתורים הקודמים (טקסט + PDF):
+ * אם יש טלפון תקין → שולח PDF + טקסט.
+ * אם אין טלפון → פותח עם טקסט בלבד וקישור לצפייה.
+ */
+async function shareWhatsAppSmart() {
+  const client = await dbGet('clients', currentQuote.clientId);
+  const phone = (client?.phone || '').replace(/[^\d]/g, '');
+  
+  // אם יש טלפון תקין (לפחות 9 ספרות) — מנסה לשלוח PDF
+  if (phone && phone.length >= 9) {
+    try {
+      await shareWhatsAppPDF();
+      return;
+    } catch (e) {
+      console.warn('shareWhatsAppPDF failed, fallback to text:', e);
+      // ממשיך לטקסט
+    }
+  }
+  
+  // ללא טלפון או fallback — שולח רק טקסט עם לינק
+  await shareWhatsApp();
+}
+
+/**
+ * פתיחה/סגירה של תפריט "עוד פעולות"
+ */
+function toggleActionsMenu(event) {
+  if (event) event.stopPropagation();
+  const menu = document.getElementById('actions-dropdown');
+  if (!menu) return;
+  
+  const isOpen = menu.classList.contains('show');
+  
+  // סגור כל תפריט פתוח אחר
+  document.querySelectorAll('.dropdown-menu.show').forEach(m => m.classList.remove('show'));
+  
+  if (!isOpen) {
+    menu.classList.add('show');
+    // listener שסוגר בלחיצה מחוץ לתפריט
+    setTimeout(() => {
+      document.addEventListener('click', closeActionsMenu, { once: true });
+    }, 10);
+  }
+}
+
+function closeActionsMenu() {
+  const menu = document.getElementById('actions-dropdown');
+  if (menu) menu.classList.remove('show');
 }
 
 // ============ SUBSCRIPTION SYSTEM ============
