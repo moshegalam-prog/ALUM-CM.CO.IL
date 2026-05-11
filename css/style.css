@@ -2490,14 +2490,37 @@ min-height: 220px;
 
 /* Print styles */
 @media print {
-  body { background: white; }
-  * {
-  color: #111 !important;
-  opacity: 1 !important;
-  text-shadow: none !important;
-  box-shadow: none !important;
+ @media print {
+
+*{
+   -webkit-print-color-adjust: exact !important;
+   print-color-adjust: exact !important;
 }
 
+body{
+   background:white !important;
+}
+
+.quote-doc-header{
+    background:#06152d !important;
+    color:white !important;
+}
+
+.quote-doc-header *{
+    color:white !important;
+}
+
+.quote-doc{
+    box-shadow:none !important;
+    border:none !important;
+}
+
+#preview-area-container,
+#print-preview-app{
+    background:#ffffff !important;
+}
+
+}
 .detail-back {
   display: none !important;
 }
