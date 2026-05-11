@@ -2499,6 +2499,12 @@ min-height: 220px;
 a[href="#quotes"]{
     display:none !important;
 }
+ .preview-controls,
+.zoom-controls,
+.preview-zoom,
+.floating-controls{
+    display:none !important;
+} 
 *{
    -webkit-print-color-adjust: exact !important;
    print-color-adjust: exact !important;
