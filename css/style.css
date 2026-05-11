@@ -2490,7 +2490,9 @@ min-height: 220px;
 
 /* Print styles */
 @media print {
- @media print {
+.detail-back{
+   display:none !important;
+}
 
 *{
    -webkit-print-color-adjust: exact !important;
