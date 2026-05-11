@@ -3649,3 +3649,300 @@ body.printing-work-order #work-order-print-area {
   padding: 40px 20px;
   color: var(--steel);
 }
+/* ============================================================
+   ALUM(cm) — תוספות CSS
+   להוסיף בסוף css/style.css
+   ============================================================ */
+
+
+/* ============================================================
+   1. סידור כפתורי פעולה ב-3 קבוצות
+   ============================================================ */
+
+.quote-actions-grouped {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.action-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.action-group-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--steel, #4a6b8a);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+
+.action-group-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* --- קבוצה 1: פעולה ראשית (כפתור גדול ובולט) --- */
+.action-group-primary .btn-primary-action {
+  width: 100%;
+  padding: 14px 20px;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(229, 122, 75, 0.25);
+  transition: all 0.2s;
+}
+
+.action-group-primary .btn-primary-action:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(229, 122, 75, 0.35);
+}
+
+.action-group-primary .btn-primary-action:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+
+/* --- קבוצה 2: שיתוף (כפתורים בינוניים בשורה) --- */
+.btn-share {
+  flex: 1;
+  min-width: 110px;
+  padding: 11px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  background: var(--paper, #f8f9fb);
+  border: 1px solid var(--line-soft, rgba(10, 22, 40, 0.08));
+  border-radius: 12px;
+  color: var(--ink, #0a1628);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-share:hover {
+  background: var(--bg-section, #f0f4fa);
+  border-color: var(--accent, #e57a4b);
+}
+
+/* --- קבוצה 3: כפתור "עוד" + תפריט נפתח --- */
+.dropdown-wrap {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.btn-more {
+  width: 100%;
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  background: transparent;
+  border: 1px dashed var(--line, rgba(10, 22, 40, 0.15));
+  border-radius: 10px;
+  color: var(--steel, #4a6b8a);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-more:hover {
+  background: var(--paper, #f8f9fb);
+  border-style: solid;
+  color: var(--ink, #0a1628);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: var(--card, white);
+  border: 1px solid var(--line, rgba(10, 22, 40, 0.1));
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(10, 22, 40, 0.12);
+  padding: 6px;
+  z-index: 100;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: all 0.18s ease;
+  max-height: 0;
+  overflow: hidden;
+}
+
+.dropdown-menu.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  max-height: 500px;
+}
+
+.dropdown-item {
+  display: block;
+  width: 100%;
+  padding: 10px 14px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  text-align: right;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink, #0a1628);
+  cursor: pointer;
+  transition: background 0.12s;
+}
+
+.dropdown-item:hover {
+  background: var(--paper, #f8f9fb);
+}
+
+.dropdown-item-danger {
+  color: #c44a4a;
+}
+
+.dropdown-item-danger:hover {
+  background: rgba(196, 74, 74, 0.08);
+}
+
+.dropdown-divider {
+  height: 1px;
+  background: var(--line-soft, rgba(10, 22, 40, 0.06));
+  margin: 4px 8px;
+}
+
+/* כפתור הצלחה (כשפרויקט הסתיים) */
+.btn-success {
+  background: #16a34a !important;
+  border-color: #16a34a !important;
+  color: white !important;
+}
+
+
+/* ============================================================
+   2. רספונסיביות למובייל
+   ============================================================ */
+
+@media (max-width: 600px) {
+  .action-group-primary .btn-primary-action {
+    padding: 16px 20px;
+    font-size: 17px;
+  }
+  
+  .btn-share {
+    min-width: 90px;
+    padding: 12px 10px;
+    font-size: 13px;
+  }
+  
+  .action-group-share .action-group-buttons {
+    gap: 6px;
+  }
+}
+
+
+/* ============================================================
+   3. תיקון הדפסה — צבעי רקע + הסתרת פעולות
+   ============================================================ */
+
+@media print {
+  
+  /* --- כפיית הדפסת רקעים וצבעים (קריטי!) --- */
+  *,
+  *::before,
+  *::after {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+  
+  /* --- הסתרת כל אזורי הניווט וכפתורי הפעולה --- */
+  .quote-actions,
+  .quote-actions-grouped,
+  .main-header > div:nth-child(2),
+  #quote-sticky-total,
+  .sidebar,
+  .mobile-header,
+  .topbar,
+  .nav-bar,
+  .dropdown-menu,
+  .btn,
+  button {
+    display: none !important;
+  }
+  
+  /* --- כותרת ההצעה (הכהה) — חיוני שתופיע נכון --- */
+  .quote-doc-header {
+    background: #0a1628 !important;
+    color: white !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  .quote-doc-header *,
+  .quote-doc-header .quote-doc-business,
+  .quote-doc-header .quote-doc-business-meta,
+  .quote-doc-header .quote-doc-num,
+  .quote-doc-header .quote-doc-num-val,
+  .quote-doc-header .quote-doc-logo {
+    color: white !important;
+  }
+  
+  .quote-doc-logo {
+    background: rgba(255, 255, 255, 0.15) !important;
+    color: white !important;
+  }
+  
+  /* --- כותרות עליונות בטבלת ההצעה --- */
+  .quote-doc-table thead {
+    background: #0a1628 !important;
+    color: white !important;
+  }
+  
+  .quote-doc-table thead th {
+    color: white !important;
+    background: #0a1628 !important;
+  }
+  
+  /* --- שורת הסה"כ הגדולה --- */
+  .quote-doc-grand {
+    border-top: 2px solid #0a1628 !important;
+  }
+  
+  /* --- מוודא שכל המסמך נראה במצב Light אפילו אם המשתמש ב-Dark --- */
+  html[data-theme="dark"] .quote-doc,
+  html[data-theme="dark"] .quote-doc * {
+    background: white !important;
+    color: #0a1628 !important;
+  }
+  
+  html[data-theme="dark"] .quote-doc-header,
+  html[data-theme="dark"] .quote-doc-header * {
+    background: #0a1628 !important;
+    color: white !important;
+  }
+  
+  /* --- מבטל מסגרות עודפות --- */
+  body, html {
+    background: white !important;
+  }
+  
+  /* --- הצגה תקינה של הצעה במלוא הרוחב --- */
+  .quote-doc {
+    width: 100% !important;
+    max-width: none !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    page-break-inside: avoid;
+  }
+  
+  /* --- הסתרת אזורים שאינם רלוונטיים להדפסה --- */
+  .timeline,
+  .card-section .card-section-header button,
+  .quote-actions {
+    display: none !important;
+  }
+}
