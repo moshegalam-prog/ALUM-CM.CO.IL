@@ -1531,7 +1531,7 @@ function toast(msg, type = '') {
   setTimeout(() => t.classList.remove('show'), 2800);
 }
 
-function planPill(plan) {
+function planPill(plan) {if (plan === 'suspended') return '<span class="pill" style="background:rgba(196,74,74,0.15);color:var(--danger)">מושהה ⏸️</span>';
   if (!plan || plan === 'free') return '<span class="pill pill-free">Free</span>';
   if (plan === 'pro_monthly') return '<span class="pill pill-pro-monthly">Pro חודשי</span>';
   if (plan === 'pro_annual') return '<span class="pill pill-pro-annual">Pro שנתי</span>';
