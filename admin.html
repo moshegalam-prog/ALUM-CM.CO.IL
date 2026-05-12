@@ -1499,10 +1499,10 @@ const res = await fetch(`${SUPABASE_URL}/functions/v1/delete-user`, {
 const result = await res.json();
 if (!res.ok) { toast('שגיאה: ' + result.error, 'error'); return; }
       if (error) { toast('שגיאה: ' + error.message, 'error'); return; }
-      allUsers = allUsers.filter(u => u.id !== userId);
+   allUsers = allUsers.filter(u => u.id !== userId);
 renderUsers();
 toast('המשתמש נמחק', 'success');
-await loadUsers(); await loadStats();
+setTimeout(async () => { await loadUsers(); await loadStats(); }, 3000);
       await loadUsers(); await loadStats();
     }
   );
