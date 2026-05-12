@@ -1482,7 +1482,22 @@ async function deleteUser(userId) {
     '⚠️ מחיקת משתמש',
     `האם למחוק לצמיתות את ${user.full_name || user.email}?\n\nכל הנתונים שלו יימחקו ולא ניתן לשחזר.`,
     async () => {
-      const { error } = await sb.from('profiles').delete().eq('id', userId);
+      // מחק מ-profiles
+await sb.from('profiles').delete().eq('id', userId);
+
+// מחק מ-auth.users דרך Edge Function
+const { data: { session } } = await sb.auth.getSession();
+const res = await fetch(`${SUPABASE_URL}/functions/v1/delete-user`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${session.access_token}`
+  },
+  body: JSON.stringify({ userId })
+});
+
+const result = await res.json();
+if (!res.ok) { toast('שגיאה: ' + result.error, 'error'); return; }
       if (error) { toast('שגיאה: ' + error.message, 'error'); return; }
       toast('המשתמש נמחק', 'success');
       await loadUsers(); await loadStats();
