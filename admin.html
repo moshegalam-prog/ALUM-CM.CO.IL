@@ -1469,7 +1469,17 @@ async function suspendUser(userId) {
     }
   );
 }
-
+async function resetPassword(email) {
+  confirmAction(
+    'איפוס סיסמה',
+    `האם לשלוח אימייל איפוס סיסמה אל ${email}?`,
+    async () => {
+      const { error } = await sb.auth.resetPasswordForEmail(email);
+      if (error) { toast('שגיאה: ' + error.message, 'error'); return; }
+      toast('אימייל איפוס נשלח ✓', 'success');
+    }
+  );
+}
 async function deleteUser(userId) {
   const user = allUsers.find(u => u.id === userId);
   if (!user) return;
