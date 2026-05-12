@@ -3374,8 +3374,12 @@ async function init() {
     
     if (session) {
       currentUserId = session.user.id;
-      const { data: profile } = await sb.from('profiles').select('*').eq('id', session.user.id).maybeSingle();
-      
+const { data: profile } = await sb.from('profiles').select('*').eq('id', session.user.id).maybeSingle();
+if (profile?.plan === 'suspended') {
+  await sb.auth.signOut();
+  document.body.innerHTML = '<div style="text-align:center;padding:60px;font-family:sans-serif;direction:rtl"><h2>החשבון שלך הושהה</h2><p>לפרטים נוספים צור קשר עם התמיכה.</p></div>';
+  return null;
+}      
       if (profile) {
         user = {
           id: profile.id,
