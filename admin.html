@@ -1,0 +1,1538 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ALUM(cm) — פאנל ניהול</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" href="/favicon-32x32.png">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  :root {
+    --ink: #0a1628;
+    --ink-soft: #1a2942;
+    --paper: #f8f9fb;
+    --accent: #d97757;
+    --accent-deep: #b85d3e;
+    --steel: #4a6b8a;
+    --steel-light: #7a96b8;
+    --blue: #3a7bd5;
+    --blue-deep: #2563eb;
+    --success: #16a34a;
+    --warning: #d4a64a;
+    --danger: #c44a4a;
+    --line: rgba(10, 22, 40, 0.1);
+    --line-soft: rgba(10, 22, 40, 0.05);
+    --shadow-sm: 0 1px 3px rgba(10, 22, 40, 0.05);
+    --shadow-md: 0 4px 12px rgba(10, 22, 40, 0.08);
+    --shadow-lg: 0 12px 32px rgba(10, 22, 40, 0.12);
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    height: 100%;
+    font-family: 'Heebo', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ===== TOP BAR ===== */
+  .topbar {
+    background: var(--ink);
+    color: white;
+    padding: 14px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: var(--shadow-md);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+
+  .topbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-weight: 800;
+    font-size: 20px;
+    letter-spacing: -0.5px;
+  }
+
+  .topbar-brand .alum { color: white; }
+  .topbar-brand .cm { color: var(--accent); font-size: 0.7em; }
+  .topbar-brand .admin-badge {
+    background: var(--accent);
+    color: white;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .topbar-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+  }
+
+  .topbar-user-info { text-align: left; }
+  .topbar-user-name { font-weight: 600; }
+  .topbar-user-role { color: rgba(255, 255, 255, 0.6); font-size: 11px; margin-top: 2px; }
+
+  .btn-logout {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 7px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
+  }
+
+  .btn-logout:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  /* ===== LAYOUT ===== */
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 28px;
+  }
+
+  @media (max-width: 768px) {
+    .container { padding: 16px; }
+  }
+
+  /* ===== AUTH GATE ===== */
+  .auth-gate {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .auth-gate-card {
+    background: white;
+    border-radius: 18px;
+    padding: 40px 32px;
+    max-width: 420px;
+    width: 100%;
+    box-shadow: var(--shadow-lg);
+    text-align: center;
+  }
+
+  .auth-gate-icon {
+    font-size: 64px;
+    margin-bottom: 16px;
+  }
+
+  .auth-gate h1 {
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 8px;
+  }
+
+  .auth-gate p {
+    color: var(--steel);
+    margin-bottom: 24px;
+  }
+
+  .auth-gate input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    font-size: 15px;
+    margin-bottom: 12px;
+    font-family: inherit;
+  }
+
+  .auth-gate button {
+    width: 100%;
+    padding: 14px;
+    background: var(--ink);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
+  }
+
+  .auth-gate button:hover {
+    background: var(--ink-soft);
+  }
+
+  .auth-gate .error {
+    color: var(--danger);
+    font-size: 13px;
+    margin-top: 12px;
+  }
+
+  /* ===== LOADING ===== */
+  .loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    color: var(--steel);
+  }
+
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--line);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-left: 12px;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* ===== STATS GRID ===== */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+
+  @media (max-width: 900px) {
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .stat-card {
+    background: white;
+    border-radius: 14px;
+    padding: 20px 22px;
+    border: 1px solid var(--line-soft);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .stat-card.highlight {
+    background: linear-gradient(135deg, var(--ink) 0%, var(--ink-soft) 100%);
+    color: white;
+  }
+
+  .stat-card.highlight .stat-label { color: rgba(255, 255, 255, 0.7); }
+  .stat-card.highlight .stat-num { color: white; }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--steel);
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .stat-num {
+    font-size: 36px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -1px;
+  }
+
+  .stat-num.accent { color: var(--accent); }
+  .stat-num.success { color: var(--success); }
+  .stat-num.blue { color: var(--blue); }
+
+  .stat-trend {
+    font-size: 12px;
+    margin-top: 8px;
+    color: var(--steel);
+  }
+
+  .stat-trend.up { color: var(--success); }
+  .stat-trend.down { color: var(--danger); }
+
+  /* ===== SECTIONS ===== */
+  .section {
+    background: white;
+    border-radius: 14px;
+    border: 1px solid var(--line-soft);
+    margin-bottom: 20px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .section-header {
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--line-soft);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .section-title {
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  .section-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .filter-input {
+    padding: 7px 12px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    font-size: 13px;
+    font-family: inherit;
+    width: 220px;
+  }
+
+  .filter-select {
+    padding: 7px 10px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    font-size: 13px;
+    background: white;
+    font-family: inherit;
+    cursor: pointer;
+  }
+
+  /* ===== TABLE ===== */
+  .table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  thead {
+    background: var(--paper);
+  }
+
+  thead th {
+    padding: 12px 16px;
+    text-align: right;
+    font-weight: 600;
+    color: var(--steel);
+    font-size: 12px;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+  }
+
+  tbody td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--line-soft);
+    vertical-align: middle;
+  }
+
+  tbody tr:hover {
+    background: var(--paper);
+  }
+
+  tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  .cell-name {
+    font-weight: 600;
+  }
+
+  .cell-email {
+    color: var(--steel);
+    font-size: 13px;
+    direction: ltr;
+    text-align: right;
+  }
+
+  .cell-date {
+    color: var(--steel);
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  .cell-amount {
+    font-weight: 700;
+    direction: ltr;
+    text-align: right;
+  }
+
+  /* ===== PILLS ===== */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .pill::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  .pill-free {
+    background: rgba(122, 150, 184, 0.15);
+    color: var(--steel);
+  }
+
+  .pill-pro-monthly {
+    background: rgba(58, 123, 213, 0.15);
+    color: var(--blue);
+  }
+
+  .pill-pro-annual {
+    background: rgba(217, 119, 87, 0.15);
+    color: var(--accent-deep);
+  }
+
+  .pill-admin {
+    background: var(--ink);
+    color: white;
+  }
+
+  .pill-admin::before {
+    background: var(--accent);
+  }
+
+  /* ===== ACTION BUTTONS ===== */
+  .actions-menu {
+    position: relative;
+  }
+
+  .btn-dots {
+    background: transparent;
+    border: 1px solid var(--line);
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--steel);
+    transition: all 0.15s;
+  }
+
+  .btn-dots:hover {
+    background: var(--paper);
+    border-color: var(--ink);
+  }
+
+  .dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    box-shadow: var(--shadow-lg);
+    min-width: 180px;
+    padding: 6px;
+    z-index: 100;
+    margin-top: 4px;
+    display: none;
+  }
+
+  .dropdown.show {
+    display: block;
+  }
+
+  .dropdown-item {
+    display: block;
+    width: 100%;
+    padding: 9px 12px;
+    background: transparent;
+    border: none;
+    text-align: right;
+    font-size: 13px;
+    color: var(--ink);
+    cursor: pointer;
+    border-radius: 6px;
+    font-family: inherit;
+  }
+
+  .dropdown-item:hover {
+    background: var(--paper);
+  }
+
+  .dropdown-item.danger {
+    color: var(--danger);
+  }
+
+  .dropdown-item.danger:hover {
+    background: rgba(196, 74, 74, 0.08);
+  }
+
+  .dropdown-divider {
+    height: 1px;
+    background: var(--line-soft);
+    margin: 4px 8px;
+  }
+
+  /* ===== MODAL ===== */
+  .modal-bg {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 22, 40, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .modal-bg.show {
+    display: flex;
+  }
+
+  .modal {
+    background: white;
+    border-radius: 16px;
+    max-width: 480px;
+    width: 100%;
+    box-shadow: var(--shadow-lg);
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .modal-header {
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--line-soft);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .modal-title {
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  .modal-close {
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    color: var(--steel);
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    line-height: 1;
+  }
+
+  .modal-close:hover {
+    background: var(--paper);
+  }
+
+  .modal-body {
+    padding: 24px;
+  }
+
+  .form-group {
+    margin-bottom: 16px;
+  }
+
+  .form-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--steel);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .form-input,
+  .form-select,
+  .form-textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: inherit;
+    background: white;
+  }
+
+  .form-input:focus,
+  .form-select:focus,
+  .form-textarea:focus {
+    outline: none;
+    border-color: var(--blue);
+  }
+
+  .modal-footer {
+    padding: 16px 24px;
+    border-top: 1px solid var(--line-soft);
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start;
+  }
+
+  .btn {
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    border: 1px solid transparent;
+    transition: all 0.15s;
+  }
+
+  .btn-primary {
+    background: var(--ink);
+    color: white;
+  }
+
+  .btn-primary:hover {
+    background: var(--ink-soft);
+  }
+
+  .btn-accent {
+    background: var(--accent);
+    color: white;
+  }
+
+  .btn-accent:hover {
+    background: var(--accent-deep);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--ink);
+    border-color: var(--line);
+  }
+
+  .btn-ghost:hover {
+    background: var(--paper);
+  }
+
+  /* ===== EMPTY STATE ===== */
+  .empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--steel);
+  }
+
+  .empty-icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+    opacity: 0.4;
+  }
+
+  .empty-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+
+  /* ===== TOAST ===== */
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--ink);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 100px;
+    font-size: 14px;
+    z-index: 300;
+    opacity: 0;
+    transition: all 0.3s;
+    pointer-events: none;
+    box-shadow: var(--shadow-lg);
+    white-space: nowrap;
+  }
+
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .toast.error {
+    background: var(--danger);
+  }
+
+  .toast.success {
+    background: var(--success);
+  }
+
+  /* ===== TABS ===== */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--line);
+    overflow-x: auto;
+  }
+
+  .tab {
+    padding: 12px 18px;
+    background: transparent;
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--steel);
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    font-family: inherit;
+  }
+
+  .tab.active {
+    color: var(--ink);
+    border-bottom-color: var(--accent);
+  }
+
+  .tab:hover {
+    color: var(--ink);
+  }
+
+  .tab-badge {
+    background: var(--line);
+    color: var(--steel);
+    padding: 2px 7px;
+    border-radius: 100px;
+    font-size: 11px;
+    margin-right: 6px;
+  }
+
+  .tab.active .tab-badge {
+    background: var(--accent);
+    color: white;
+  }
+
+  /* ===== HIDDEN ===== */
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<!-- ============ AUTH GATE ============ -->
+<div id="auth-gate" class="auth-gate hidden">
+  <div class="auth-gate-card">
+    <div class="auth-gate-icon">🔒</div>
+    <h1>פאנל ניהול ALUM(cm)</h1>
+    <p>נא להתחבר עם חשבון אדמין</p>
+    <input id="login-email" type="email" placeholder="אימייל">
+    <input id="login-password" type="password" placeholder="סיסמה">
+    <button onclick="doLogin()">התחבר</button>
+    <div id="login-error" class="error hidden"></div>
+  </div>
+</div>
+
+<!-- ============ NO ACCESS ============ -->
+<div id="no-access" class="auth-gate hidden">
+  <div class="auth-gate-card">
+    <div class="auth-gate-icon">🚫</div>
+    <h1>אין הרשאת גישה</h1>
+    <p>החשבון שלך אינו אדמין במערכת.</p>
+    <button onclick="goToApp()">חזרה לאפליקציה</button>
+  </div>
+</div>
+
+<!-- ============ MAIN ADMIN PANEL ============ -->
+<div id="admin-panel" class="hidden">
+  
+  <!-- Top bar -->
+  <div class="topbar">
+    <div class="topbar-brand">
+      <span><span class="alum">ALUM</span><span class="cm">(cm)</span></span>
+      <span class="admin-badge">ADMIN</span>
+    </div>
+    <div class="topbar-user">
+      <div class="topbar-user-info">
+        <div class="topbar-user-name" id="admin-name">—</div>
+        <div class="topbar-user-role" id="admin-role">—</div>
+      </div>
+      <button class="btn-logout" onclick="doLogout()">יציאה</button>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- Loading state -->
+    <div id="loading-state" class="loading">
+      <div class="spinner"></div>
+      <span>טוען נתונים...</span>
+    </div>
+
+    <!-- Main content -->
+    <div id="main-content" class="hidden">
+
+      <!-- ============ STATS ============ -->
+      <div class="stats-grid">
+        <div class="stat-card highlight">
+          <div class="stat-label">סה״כ משתמשים</div>
+          <div class="stat-num" id="stat-total">—</div>
+          <div class="stat-trend" id="stat-total-trend">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">משתמשי Pro</div>
+          <div class="stat-num accent" id="stat-pro">—</div>
+          <div class="stat-trend" id="stat-pro-detail">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">משתמשי Free</div>
+          <div class="stat-num blue" id="stat-free">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">הכנסה חודשית (MRR)</div>
+          <div class="stat-num success" id="stat-mrr">—</div>
+          <div class="stat-trend" id="stat-revenue">—</div>
+        </div>
+      </div>
+
+      <!-- ============ TABS ============ -->
+      <div class="tabs">
+        <button class="tab active" data-tab="users" onclick="switchTab('users')">
+          👥 משתמשים <span class="tab-badge" id="badge-users">0</span>
+        </button>
+        <button class="tab" data-tab="payments" onclick="switchTab('payments')">
+          💰 תשלומים <span class="tab-badge" id="badge-payments">0</span>
+        </button>
+        <button class="tab" data-tab="admins" onclick="switchTab('admins')">
+          🔑 מנהלים <span class="tab-badge" id="badge-admins">0</span>
+        </button>
+      </div>
+
+      <!-- ============ USERS TAB ============ -->
+      <div id="tab-users" class="tab-content">
+        <div class="section">
+          <div class="section-header">
+            <div class="section-title">רשימת משתמשים</div>
+            <div class="section-actions">
+              <input id="users-search" class="filter-input" type="search" placeholder="חיפוש לפי שם/אימייל..." oninput="renderUsers()">
+              <select id="users-filter" class="filter-select" onchange="renderUsers()">
+                <option value="all">הכל</option>
+                <option value="pro">Pro בלבד</option>
+                <option value="free">Free בלבד</option>
+                <option value="new">חדשים החודש</option>
+              </select>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table id="users-table">
+              <thead>
+                <tr>
+                  <th>שם</th>
+                  <th>אימייל</th>
+                  <th>חבילה</th>
+                  <th>הצעות</th>
+                  <th>ערך חיים</th>
+                  <th>נרשם</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="users-tbody">
+                <tr><td colspan="7" class="empty">טוען...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ PAYMENTS TAB ============ -->
+      <div id="tab-payments" class="tab-content hidden">
+        <div class="section">
+          <div class="section-header">
+            <div class="section-title">תשלומים אחרונים</div>
+            <div class="section-actions">
+              <select id="payments-filter" class="filter-select" onchange="renderPayments()">
+                <option value="all">כל התשלומים</option>
+                <option value="success">מוצלחים</option>
+                <option value="failed">נכשלו</option>
+                <option value="this_month">החודש</option>
+              </select>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table id="payments-table">
+              <thead>
+                <tr>
+                  <th>תאריך</th>
+                  <th>משתמש</th>
+                  <th>חבילה</th>
+                  <th>סכום</th>
+                  <th>סטטוס</th>
+                  <th>חשבונית</th>
+                </tr>
+              </thead>
+              <tbody id="payments-tbody">
+                <tr><td colspan="6" class="empty">טוען...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ ADMINS TAB ============ -->
+      <div id="tab-admins" class="tab-content hidden">
+        <div class="section">
+          <div class="section-header">
+            <div class="section-title">מנהלי המערכת</div>
+            <div class="section-actions">
+              <span style="font-size:12px;color:var(--steel)">להוספת מנהל — מצא משתמש ברשימה ולחץ "הפוך למנהל"</span>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table id="admins-table">
+              <thead>
+                <tr>
+                  <th>שם</th>
+                  <th>אימייל</th>
+                  <th>תפקיד</th>
+                  <th>נוסף בתאריך</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="admins-tbody">
+                <tr><td colspan="5" class="empty">טוען...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ============ EDIT USER MODAL ============ -->
+<div id="modal-edit-user" class="modal-bg">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">עריכת משתמש</div>
+      <button class="modal-close" onclick="closeModal('modal-edit-user')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">שם</label>
+        <input id="edit-user-name" class="form-input" type="text" readonly>
+      </div>
+      <div class="form-group">
+        <label class="form-label">אימייל</label>
+        <input id="edit-user-email" class="form-input" type="text" readonly>
+      </div>
+      <div class="form-group">
+        <label class="form-label">חבילה</label>
+        <select id="edit-user-plan" class="form-select">
+          <option value="free">Free</option>
+          <option value="pro_monthly">Pro חודשי</option>
+          <option value="pro_annual">Pro שנתי</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">סיום ניסיון (אופציונלי)</label>
+        <input id="edit-user-trial" class="form-input" type="date">
+      </div>
+      <div class="form-group" style="background:var(--paper);padding:12px;border-radius:10px;font-size:12px;color:var(--steel)">
+        💡 שינוי החבילה ידנית מאפשר לתת לחבר/בודק Pro בחינם, או לבטל מנוי לאחר סירוב תשלום.
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-accent" onclick="saveUserEdit()">שמור שינויים</button>
+      <button class="btn btn-ghost" onclick="closeModal('modal-edit-user')">ביטול</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ ADD ADMIN CONFIRM ============ -->
+<div id="modal-confirm" class="modal-bg">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="confirm-title">אישור</div>
+      <button class="modal-close" onclick="closeModal('modal-confirm')">×</button>
+    </div>
+    <div class="modal-body">
+      <p id="confirm-body" style="font-size:14px;line-height:1.6"></p>
+    </div>
+    <div class="modal-footer">
+      <button id="confirm-btn" class="btn btn-accent">אישור</button>
+      <button class="btn btn-ghost" onclick="closeModal('modal-confirm')">ביטול</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TOAST ============ -->
+<div id="toast" class="toast"></div>
+
+<script>
+// ============ CONFIG ============
+const SUPABASE_URL = 'https://gpbphwgoygcfzebmsplk.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdwYnBod2dveWdjZnplYm1zcGxrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc2NzYwMzIsImV4cCI6MjA5MzI1MjAzMn0.3bbOukgs8NhxcdNNUH2svg1gptgwUAKBdvCE3np2Ivc';
+
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  auth: { persistSession: true, autoRefreshToken: true }
+});
+
+// ============ STATE ============
+let currentUser = null;
+let currentAdmin = null;
+let allUsers = [];
+let allPayments = [];
+let allAdmins = [];
+let editingUserId = null;
+
+// ============ INIT ============
+async function init() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) {
+    showAuthGate();
+    return;
+  }
+  currentUser = session.user;
+  await checkAdminAccess();
+}
+
+async function checkAdminAccess() {
+  try {
+    const { data: admin, error } = await sb
+      .from('admins')
+      .select('*')
+      .eq('user_id', currentUser.id)
+      .maybeSingle();
+
+    if (error) {
+      console.error('Admin check error:', error);
+      showNoAccess();
+      return;
+    }
+
+    if (!admin) {
+      showNoAccess();
+      return;
+    }
+
+    currentAdmin = admin;
+    showAdminPanel();
+    await loadAllData();
+  } catch (e) {
+    console.error('checkAdminAccess error:', e);
+    showNoAccess();
+  }
+}
+
+function showAuthGate() {
+  hide('admin-panel');
+  hide('no-access');
+  show('auth-gate');
+}
+
+function showNoAccess() {
+  hide('admin-panel');
+  hide('auth-gate');
+  show('no-access');
+}
+
+function showAdminPanel() {
+  hide('auth-gate');
+  hide('no-access');
+  show('admin-panel');
+  document.getElementById('admin-name').textContent = currentAdmin.full_name || currentAdmin.email || 'אדמין';
+  document.getElementById('admin-role').textContent = currentAdmin.role === 'superadmin' ? 'מנהל-על' : 'מנהל';
+}
+
+function hide(id) { document.getElementById(id).classList.add('hidden'); }
+function show(id) { document.getElementById(id).classList.remove('hidden'); }
+
+// ============ AUTH ============
+async function doLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-password').value;
+  const errorEl = document.getElementById('login-error');
+
+  if (!email || !password) {
+    errorEl.textContent = 'נא למלא אימייל וסיסמה';
+    show('login-error');
+    return;
+  }
+
+  errorEl.classList.add('hidden');
+
+  const { data, error } = await sb.auth.signInWithPassword({ email, password });
+
+  if (error) {
+    errorEl.textContent = error.message.includes('Invalid') ? 'אימייל או סיסמה שגויים' : error.message;
+    show('login-error');
+    return;
+  }
+
+  currentUser = data.user;
+  await checkAdminAccess();
+}
+
+async function doLogout() {
+  await sb.auth.signOut();
+  window.location.reload();
+}
+
+function goToApp() {
+  window.location.href = '/';
+}
+
+// ============ LOAD DATA ============
+async function loadAllData() {
+  show('loading-state');
+  hide('main-content');
+
+  try {
+    await Promise.all([
+      loadStats(),
+      loadUsers(),
+      loadPayments(),
+      loadAdmins()
+    ]);
+
+    hide('loading-state');
+    show('main-content');
+  } catch (e) {
+    console.error('loadAllData error:', e);
+    toast('שגיאה בטעינת נתונים: ' + e.message, 'error');
+  }
+}
+
+async function loadStats() {
+  const { data, error } = await sb.from('admin_stats').select('*').maybeSingle();
+  if (error) { console.error('stats error:', error); return; }
+  if (!data) return;
+
+  document.getElementById('stat-total').textContent = data.total_users || 0;
+  document.getElementById('stat-pro').textContent = data.pro_users || 0;
+  document.getElementById('stat-free').textContent = data.free_users || 0;
+  document.getElementById('stat-mrr').textContent = '₪ ' + Math.round(data.mrr || 0).toLocaleString('he-IL');
+
+  // Trends
+  const newThisMonth = data.new_users_this_month || 0;
+  const newLastMonth = data.new_users_last_month || 0;
+  if (newLastMonth > 0) {
+    const pct = Math.round(((newThisMonth - newLastMonth) / newLastMonth) * 100);
+    const trendEl = document.getElementById('stat-total-trend');
+    trendEl.textContent = `${pct >= 0 ? '+' : ''}${pct}% מהחודש שעבר (${newThisMonth} חדשים)`;
+    trendEl.className = 'stat-trend ' + (pct >= 0 ? 'up' : 'down');
+  } else if (newThisMonth > 0) {
+    document.getElementById('stat-total-trend').textContent = `+${newThisMonth} חדשים החודש`;
+  }
+
+  document.getElementById('stat-pro-detail').textContent =
+    `${data.pro_monthly_users || 0} חודשי · ${data.pro_annual_users || 0} שנתי`;
+
+  document.getElementById('stat-revenue').textContent =
+    `₪ ${Math.round(data.revenue_this_month || 0).toLocaleString('he-IL')} החודש`;
+}
+
+async function loadUsers() {
+  const { data, error } = await sb
+    .from('admin_users_extended')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) { console.error('users error:', error); allUsers = []; return; }
+  allUsers = data || [];
+  document.getElementById('badge-users').textContent = allUsers.length;
+  renderUsers();
+}
+
+async function loadPayments() {
+  const { data, error } = await sb
+    .from('payments')
+    .select('*, profiles(email, full_name)')
+    .order('paid_at', { ascending: false })
+    .limit(100);
+
+  if (error) { console.error('payments error:', error); allPayments = []; return; }
+  allPayments = data || [];
+  document.getElementById('badge-payments').textContent = allPayments.length;
+  renderPayments();
+}
+
+async function loadAdmins() {
+  const { data, error } = await sb
+    .from('admins')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) { console.error('admins error:', error); allAdmins = []; return; }
+  allAdmins = data || [];
+  document.getElementById('badge-admins').textContent = allAdmins.length;
+  renderAdmins();
+}
+
+// ============ RENDER ============
+function renderUsers() {
+  const search = (document.getElementById('users-search').value || '').toLowerCase().trim();
+  const filter = document.getElementById('users-filter').value;
+
+  let filtered = allUsers;
+
+  if (filter === 'pro') filtered = filtered.filter(u => u.plan === 'pro_monthly' || u.plan === 'pro_annual');
+  else if (filter === 'free') filtered = filtered.filter(u => !u.plan || u.plan === 'free');
+  else if (filter === 'new') {
+    const monthStart = new Date(); monthStart.setDate(1); monthStart.setHours(0,0,0,0);
+    filtered = filtered.filter(u => new Date(u.created_at) >= monthStart);
+  }
+
+  if (search) {
+    filtered = filtered.filter(u =>
+      (u.full_name || '').toLowerCase().includes(search) ||
+      (u.email || '').toLowerCase().includes(search)
+    );
+  }
+
+  const tbody = document.getElementById('users-tbody');
+  if (filtered.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="7"><div class="empty">
+      <div class="empty-icon">👤</div>
+      <div class="empty-title">${search || filter !== 'all' ? 'אין תוצאות' : 'אין משתמשים'}</div>
+    </div></td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = filtered.map(u => `
+    <tr>
+      <td class="cell-name">
+        ${escapeHtml(u.full_name || '—')}
+        ${u.is_admin ? '<span class="pill pill-admin" style="margin-right:6px">ADMIN</span>' : ''}
+      </td>
+      <td class="cell-email">${escapeHtml(u.email || '—')}</td>
+      <td>${planPill(u.plan)}</td>
+      <td>${u.quotes_count || 0}</td>
+      <td class="cell-amount">₪ ${Math.round(u.lifetime_value || 0).toLocaleString('he-IL')}</td>
+      <td class="cell-date">${formatDate(u.created_at)}</td>
+      <td>
+        <div class="actions-menu">
+          <button class="btn-dots" onclick="toggleDropdown(event, 'dd-user-${u.id}')">⋯</button>
+          <div id="dd-user-${u.id}" class="dropdown">
+            <button class="dropdown-item" onclick="closeDropdowns();editUser('${u.id}')">✏️ ערוך משתמש</button>
+            <button class="dropdown-item" onclick="closeDropdowns();upgradeUser('${u.id}','pro_monthly')">⭐ שדרג ל-Pro חודשי</button>
+            <button class="dropdown-item" onclick="closeDropdowns();upgradeUser('${u.id}','pro_annual')">⭐ שדרג ל-Pro שנתי</button>
+            <button class="dropdown-item" onclick="closeDropdowns();downgradeUser('${u.id}')">↓ הורד ל-Free</button>
+            <div class="dropdown-divider"></div>
+            ${!u.is_admin
+              ? `<button class="dropdown-item" onclick="closeDropdowns();makeAdmin('${u.id}','${escapeAttr(u.email)}','${escapeAttr(u.full_name||'')}')">🔑 הפוך למנהל</button>`
+              : (u.id !== currentAdmin.user_id
+                ? `<button class="dropdown-item danger" onclick="closeDropdowns();removeAdmin('${u.id}')">🚫 הסר ממנהלים</button>`
+                : '')
+            }
+          </div>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function renderPayments() {
+  const filter = document.getElementById('payments-filter').value;
+  let filtered = allPayments;
+
+  if (filter === 'success') filtered = filtered.filter(p => p.status === 'success');
+  else if (filter === 'failed') filtered = filtered.filter(p => p.status === 'failed');
+  else if (filter === 'this_month') {
+    const monthStart = new Date(); monthStart.setDate(1); monthStart.setHours(0,0,0,0);
+    filtered = filtered.filter(p => new Date(p.paid_at) >= monthStart);
+  }
+
+  const tbody = document.getElementById('payments-tbody');
+  if (filtered.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="6"><div class="empty">
+      <div class="empty-icon">💰</div>
+      <div class="empty-title">אין תשלומים להצגה</div>
+    </div></td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = filtered.map(p => `
+    <tr>
+      <td class="cell-date">${formatDateTime(p.paid_at)}</td>
+      <td class="cell-name">${escapeHtml(p.profiles?.full_name || p.profiles?.email || '—')}</td>
+      <td>${p.plan === 'pro_annual' ? 'Pro שנתי' : (p.plan === 'pro_monthly' ? 'Pro חודשי' : (p.plan || '—'))}</td>
+      <td class="cell-amount">₪ ${Math.round(p.amount || 0).toLocaleString('he-IL')}</td>
+      <td>${paymentStatusPill(p.status)}</td>
+      <td>${p.invoice_url
+        ? `<a href="${escapeAttr(p.invoice_url)}" target="_blank" style="color:var(--blue);text-decoration:none;font-size:13px">📄 צפה</a>`
+        : '<span style="color:var(--steel);font-size:13px">—</span>'}</td>
+    </tr>
+  `).join('');
+}
+
+function renderAdmins() {
+  const tbody = document.getElementById('admins-tbody');
+  if (allAdmins.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="5"><div class="empty">
+      <div class="empty-icon">🔑</div>
+      <div class="empty-title">אין מנהלים</div>
+    </div></td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = allAdmins.map(a => `
+    <tr>
+      <td class="cell-name">${escapeHtml(a.full_name || '—')}</td>
+      <td class="cell-email">${escapeHtml(a.email || '—')}</td>
+      <td>
+        <span class="pill ${a.role === 'superadmin' ? 'pill-pro-annual' : 'pill-pro-monthly'}">
+          ${a.role === 'superadmin' ? 'מנהל-על' : 'מנהל'}
+        </span>
+      </td>
+      <td class="cell-date">${formatDate(a.created_at)}</td>
+      <td>
+        ${a.user_id !== currentAdmin.user_id
+          ? `<button class="btn btn-ghost" style="font-size:12px;padding:6px 12px" onclick="removeAdmin('${a.user_id}')">🚫 הסר</button>`
+          : '<span style="color:var(--steel);font-size:12px">(אתה)</span>'}
+      </td>
+    </tr>
+  `).join('');
+}
+
+// ============ ACTIONS ============
+function editUser(userId) {
+  const user = allUsers.find(u => u.id === userId);
+  if (!user) return;
+
+  editingUserId = userId;
+  document.getElementById('edit-user-name').value = user.full_name || '';
+  document.getElementById('edit-user-email').value = user.email || '';
+  document.getElementById('edit-user-plan').value = user.plan || 'free';
+  document.getElementById('edit-user-trial').value = user.trial_ends_at
+    ? new Date(user.trial_ends_at).toISOString().split('T')[0]
+    : '';
+
+  show('modal-edit-user');
+  document.getElementById('modal-edit-user').classList.add('show');
+}
+
+async function saveUserEdit() {
+  if (!editingUserId) return;
+
+  const newPlan = document.getElementById('edit-user-plan').value;
+  const trialDate = document.getElementById('edit-user-trial').value;
+
+  const updates = { plan: newPlan };
+  if (trialDate) updates.trial_ends_at = new Date(trialDate).toISOString();
+
+  const { error } = await sb.from('profiles').update(updates).eq('id', editingUserId);
+
+  if (error) {
+    toast('שגיאה: ' + error.message, 'error');
+    return;
+  }
+
+  closeModal('modal-edit-user');
+  toast('המשתמש עודכן בהצלחה', 'success');
+  await loadUsers();
+  await loadStats();
+}
+
+async function upgradeUser(userId, plan) {
+  const user = allUsers.find(u => u.id === userId);
+  if (!user) return;
+
+  confirmAction(
+    'שדרוג ידני ל-Pro',
+    `האם לשדרג את ${user.full_name || user.email} ל-${plan === 'pro_annual' ? 'Pro שנתי' : 'Pro חודשי'}?\n\nשדרוג ידני אינו יוצר חיוב אוטומטי — המשתמש יקבל גישה מלאה ללא תשלום.`,
+    async () => {
+      const { error } = await sb.from('profiles').update({ plan }).eq('id', userId);
+      if (error) { toast('שגיאה: ' + error.message, 'error'); return; }
+      toast('המשתמש שודרג בהצלחה ✓', 'success');
+      await loadUsers();
+      await loadStats();
+    }
+  );
+}
+
+async function downgradeUser(userId) {
+  const user = allUsers.find(u => u.id === userId);
+  if (!user) return;
+
+  confirmAction(
+    'הורדה ל-Free',
+    `האם להוריד את ${user.full_name || user.email} מ-Pro ל-Free?\n\nהמשתמש יאבד גישה לפיצ'רים המתקדמים.`,
+    async () => {
+      const { error } = await sb.from('profiles').update({ plan: 'free' }).eq('id', userId);
+      if (error) { toast('שגיאה: ' + error.message, 'error'); return; }
+
+      // ביטול מנוי פעיל אם יש
+      await sb.from('subscriptions')
+        .update({ status: 'canceled', canceled_at: new Date().toISOString() })
+        .eq('user_id', userId)
+        .in('status', ['active', 'canceling']);
+
+      toast('המשתמש הורד ל-Free', 'success');
+      await loadUsers();
+      await loadStats();
+    }
+  );
+}
+
+async function makeAdmin(userId, email, fullName) {
+  if (currentAdmin.role !== 'superadmin') {
+    toast('רק מנהל-על יכול להוסיף מנהלים', 'error');
+    return;
+  }
+
+  confirmAction(
+    'הפיכה למנהל',
+    `האם להפוך את ${fullName || email} למנהל?\n\nהמשתמש יקבל גישה מלאה לפאנל הניהול, ויוכל לראות את כל המשתמשים, התשלומים והנתונים.`,
+    async () => {
+      const { error } = await sb.from('admins').insert({
+        user_id: userId,
+        email,
+        full_name: fullName,
+        role: 'admin',
+        created_by: currentAdmin.user_id
+      });
+
+      if (error) { toast('שגיאה: ' + error.message, 'error'); return; }
+      toast('המנהל נוסף בהצלחה ✓', 'success');
+      await loadAdmins();
+      await loadUsers();
+    }
+  );
+}
+
+async function removeAdmin(userId) {
+  if (currentAdmin.role !== 'superadmin') {
+    toast('רק מנהל-על יכול להסיר מנהלים', 'error');
+    return;
+  }
+
+  const admin = allAdmins.find(a => a.user_id === userId);
+  if (!admin) return;
+
+  confirmAction(
+    'הסרת מנהל',
+    `האם להסיר את ${admin.full_name || admin.email} מרשימת המנהלים?\n\nהמשתמש לא יוכל עוד לגשת לפאנל הניהול.`,
+    async () => {
+      const { error } = await sb.from('admins').delete().eq('user_id', userId);
+      if (error) { toast('שגיאה: ' + error.message, 'error'); return; }
+      toast('המנהל הוסר', 'success');
+      await loadAdmins();
+      await loadUsers();
+    }
+  );
+}
+
+// ============ HELPERS ============
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === name));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+  document.getElementById('tab-' + name).classList.remove('hidden');
+}
+
+function toggleDropdown(event, id) {
+  event.stopPropagation();
+  const dropdown = document.getElementById(id);
+  if (!dropdown) return;
+  const isOpen = dropdown.classList.contains('show');
+  closeDropdowns();
+  if (!isOpen) {
+    dropdown.classList.add('show');
+    setTimeout(() => document.addEventListener('click', closeDropdowns, { once: true }), 10);
+  }
+}
+
+function closeDropdowns() {
+  document.querySelectorAll('.dropdown.show').forEach(d => d.classList.remove('show'));
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('show');
+}
+
+function confirmAction(title, body, action) {
+  document.getElementById('confirm-title').textContent = title;
+  document.getElementById('confirm-body').textContent = body;
+  const btn = document.getElementById('confirm-btn');
+  btn.onclick = () => { action(); closeModal('modal-confirm'); };
+  document.getElementById('modal-confirm').classList.add('show');
+}
+
+function toast(msg, type = '') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + type + ' show';
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+function planPill(plan) {
+  if (!plan || plan === 'free') return '<span class="pill pill-free">Free</span>';
+  if (plan === 'pro_monthly') return '<span class="pill pill-pro-monthly">Pro חודשי</span>';
+  if (plan === 'pro_annual') return '<span class="pill pill-pro-annual">Pro שנתי</span>';
+  return `<span class="pill pill-free">${escapeHtml(plan)}</span>`;
+}
+
+function paymentStatusPill(status) {
+  const map = {
+    success: { cls: 'pill-pro-annual', label: 'הצליח' },
+    failed: { cls: 'pill-free', label: 'נכשל' },
+    pending: { cls: 'pill-pro-monthly', label: 'בהמתנה' },
+    refunded: { cls: 'pill-free', label: 'הוחזר' }
+  };
+  const s = map[status] || { cls: 'pill-free', label: status || '—' };
+  return `<span class="pill ${s.cls}">${s.label}</span>`;
+}
+
+function formatDate(d) {
+  if (!d) return '—';
+  return new Date(d).toLocaleDateString('he-IL');
+}
+
+function formatDateTime(d) {
+  if (!d) return '—';
+  return new Date(d).toLocaleString('he-IL', {
+    year: 'numeric', month: '2-digit', day: '2-digit',
+    hour: '2-digit', minute: '2-digit'
+  });
+}
+
+function escapeHtml(s) {
+  if (s == null) return '';
+  return String(s).replace(/[&<>"']/g, m => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' })[m]);
+}
+
+function escapeAttr(s) {
+  if (s == null) return '';
+  return String(s).replace(/'/g, "\\'").replace(/"/g, '&quot;');
+}
+
+// ============ START ============
+init();
+</script>
+
+</body>
+</html>
