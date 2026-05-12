@@ -1244,6 +1244,7 @@ function renderUsers() {
            <button class="dropdown-item" onclick="closeDropdowns();downgradeUser('${u.id}')">↓ הורד ל-Free</button>
 <button class="dropdown-item" onclick="closeDropdowns();suspendUser('${u.id}')">⏸️ השהה משתמש</button>
 <div class="dropdown-divider"></div>
+<button class="dropdown-item" onclick="closeDropdowns();resetPassword('${escapeAttr(u.email)}')">🔑 איפוס סיסמה</button>
 <button class="dropdown-item danger" onclick="closeDropdowns();deleteUser('${u.id}')">🗑️ מחק משתמש</button>
             <div class="dropdown-divider"></div>
             ${!u.is_admin
