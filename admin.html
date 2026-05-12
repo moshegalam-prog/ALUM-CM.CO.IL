@@ -1241,7 +1241,10 @@ function renderUsers() {
             <button class="dropdown-item" onclick="closeDropdowns();editUser('${u.id}')">✏️ ערוך משתמש</button>
             <button class="dropdown-item" onclick="closeDropdowns();upgradeUser('${u.id}','pro_monthly')">⭐ שדרג ל-Pro חודשי</button>
             <button class="dropdown-item" onclick="closeDropdowns();upgradeUser('${u.id}','pro_annual')">⭐ שדרג ל-Pro שנתי</button>
-            <button class="dropdown-item" onclick="closeDropdowns();downgradeUser('${u.id}')">↓ הורד ל-Free</button>
+           <button class="dropdown-item" onclick="closeDropdowns();downgradeUser('${u.id}')">↓ הורד ל-Free</button>
+<button class="dropdown-item" onclick="closeDropdowns();suspendUser('${u.id}')">⏸️ השהה משתמש</button>
+<div class="dropdown-divider"></div>
+<button class="dropdown-item danger" onclick="closeDropdowns();deleteUser('${u.id}')">🗑️ מחק משתמש</button>
             <div class="dropdown-divider"></div>
             ${!u.is_admin
               ? `<button class="dropdown-item" onclick="closeDropdowns();makeAdmin('${u.id}','${escapeAttr(u.email)}','${escapeAttr(u.full_name||'')}')">🔑 הפוך למנהל</button>`
