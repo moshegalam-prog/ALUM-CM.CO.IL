@@ -1501,7 +1501,7 @@ if (!res.ok) { toast('שגיאה: ' + result.error, 'error'); return; }
       if (error) { toast('שגיאה: ' + error.message, 'error'); return; }
    allUsers = allUsers.filter(u => u.id !== userId);
 renderUsers();
-toast('המשתמש נמחק', 'success');
+toast('המשתמש נמחק', 'success'); setTimeout(() => location.reload(), 1500);
       await loadUsers(); await loadStats();
     }
   );
