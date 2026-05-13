@@ -633,6 +633,21 @@ async function doSignup() {
 }
 
 async function doLogin() {
+  async function showForgotPassword() {
+  const email = document.getElementById('login-email').value.trim();
+  if (!email) {
+    alert('נא להכניס אימייל תחילה');
+    return;
+  }
+  const { error } = await sb.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin
+  });
+  if (error) {
+    alert('שגיאה: ' + error.message);
+    return;
+  }
+  alert('קישור לאיפוס סיסמה נשלח לאימייל שלך');
+}
   const email = document.getElementById('login-email').value.trim();
   const password = document.getElementById('login-password') ? document.getElementById('login-password').value : '';
   
