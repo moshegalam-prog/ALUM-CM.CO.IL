@@ -1615,7 +1615,7 @@ input, textarea, select { font-family: inherit; }
   font-weight: 300;
   box-shadow: 0 8px 24px rgba(58,123,213,0.4);
   z-index: 40;
-  
+  display: none;
   transition: all 0.2s ease;
 }
 
@@ -3830,27 +3830,15 @@ body.printing-work-order #work-order-print-area {
       </div>
     </section>
 
-   <footer class="landing-footer">
-  <div class="landing-footer-text">
-    "המוצר הטוב ביותר הוא זה שגורם למקצוען לשכוח שהוא משתמש במערכת —
-    ולפתע לגלות שיש לו זמן לחזור הביתה לארוחת ערב."
+    <footer class="landing-footer">
+      <div class="landing-footer-text">"המוצר הטוב ביותר הוא זה שגורם למקצוען לשכוח שהוא משתמש במערכת — ולפתע לגלות שיש לו זמן לחזור הביתה לארוחת ערב."</div>
+      <div class="landing-footer-meta"><span style="direction:ltr;unicode-bidi:isolate">ALUM(cm)</span> · אבטיפוס לתיקוף · 2026</div>
+      <div class="landing-footer-credit">
+        מבית <a href="https://service-window.co.il" target="_blank" rel="noopener">שרות לחלון</a>
+      </div>
+    </footer>
   </div>
-  <div class="landing-footer-meta">
-    <span>ALUM(cm)</span>
-    <span class="footer-sep">·</span>
-    <span>גרסה 1.0</span>
-    <span class="footer-sep">·</span>
-    <span>© 2026</span>
-  </div>
-  <div class="landing-footer-links">
-    <a href="/terms.html">תנאי שימוש</a>
-    <span class="footer-sep">·</span>
-    <a href="/privacy.html">מדיניות פרטיות</a>
-    <span class="footer-sep">·</span>
-    <a href="mailto:info@alum-cm.co.il">📧 צור קשר</a>
-  </div>
-  <div class="landing-footer-credit">נבנה באהבה בישראל 🇮🇱</div>
-</footer>
+</div>
 
 <!-- ============ AUTH ============ -->
 <div class="view" id="view-login">
@@ -3874,9 +3862,6 @@ body.printing-work-order #work-order-print-area {
       <div class="auth-divider"><span>או</span></div>
       <button class="btn auth-btn" onclick="loginAsDemo()">היכנס למצב הדגמה</button>
       <div class="auth-link">
-        <div style="text-align:center;margin-top:8px">
-  <button class="btn btn-link" onclick="showForgotPassword()" style="background:none;border:none;color:var(--primary);font-size:13px;cursor:pointer;text-decoration:underline">שכחתי סיסמה</button>
-</div>
         אין לך חשבון? <a onclick="goTo('signup')">הירשם</a>
       </div>
     </div>
