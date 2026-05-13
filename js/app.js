@@ -1920,7 +1920,8 @@ async function deleteQuote() {
  */
 async function duplicateQuote() {
   // בדיקת מגבלת חבילה חינמית
-  if (user.plan === 'free') {
+ const { data: freshProfile } = await sb.from('profiles').select('plan').eq('id', currentUserId).maybeSingle();
+if (freshProfile?.plan === 'free') {
     const quotes = await dbAll('quotes');
     const monthStart = new Date();
     monthStart.setDate(1);
