@@ -906,7 +906,12 @@ function enterApp() {
   goTo('app');
   document.getElementById('user-name').innerText = user.name;
   document.getElementById('user-avatar').innerText = user.name[0];
-  
+  const planEl = document.getElementById('user-plan');
+if (planEl) {
+  if (user.plan === 'pro_annual') planEl.innerHTML = '⭐ Pro שנתי';
+  else if (user.plan === 'pro_monthly') planEl.innerHTML = '⭐ Pro חודשי';
+  else planEl.innerHTML = 'חינם <span class="upgrade-pill">שדרג</span>';
+}
   // ברכה דינמית לפי שעה ביום
   const hour = new Date().getHours();
   let greeting = 'שלום';
