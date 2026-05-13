@@ -2923,6 +2923,30 @@ async function getCurrentSubscription() {
       .eq('user_id', currentUserId)
       .in('status', ['active', 'canceling'])
       .maybeSingle();
+    
+    if (data) return data;
+    
+    // fallback לפרופיל
+    const { data: profile } = await sb
+      .from('profiles')
+      .select('plan')
+      .eq('id', currentUserId)
+      .maybeSingle();
+    
+    if (profile?.plan && profile.plan !== 'free') {
+      return { plan: profile.plan, status: 'active' };
+    }
+    
+    return null;
+  } catch (e) {
+    console.error('getCurrentSubscription error:', e);
+    return null;
+  }
+}
+      .select('*')
+      .eq('user_id', currentUserId)
+      .in('status', ['active', 'canceling'])
+      .maybeSingle();
     return data;
   } catch (e) {
     console.error('getCurrentSubscription error:', e);
