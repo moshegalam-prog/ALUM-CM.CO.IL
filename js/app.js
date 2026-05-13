@@ -631,8 +631,6 @@ async function doSignup() {
     showToast('שגיאה: ' + e.message);
   }
 }
-
-async function doLogin() {
   async function showForgotPassword() {
   const email = document.getElementById('login-email').value.trim();
   if (!email) {
@@ -648,6 +646,8 @@ async function doLogin() {
   }
   alert('קישור לאיפוס סיסמה נשלח לאימייל שלך');
 }
+async function doLogin() {
+
   const email = document.getElementById('login-email').value.trim();
   const password = document.getElementById('login-password') ? document.getElementById('login-password').value : '';
   
