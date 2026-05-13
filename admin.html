@@ -1346,7 +1346,8 @@ async function saveUserEdit() {
   const newPlan = document.getElementById('edit-user-plan').value;
   const trialDate = document.getElementById('edit-user-trial').value;
 
-  const updates = { plan: newPlan };
+  const newName = document.getElementById('edit-user-name').value;
+const updates = { plan: newPlan, full_name: newName };
   if (trialDate) updates.trial_ends_at = new Date(trialDate).toISOString();
 
   const { error } = await sb.from('profiles').update(updates).eq('id', editingUserId);
