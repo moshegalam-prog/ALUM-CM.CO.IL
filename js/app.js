@@ -2669,17 +2669,28 @@ async function doSendQuoteEmail() {
     const fromName = business.name || user.name || 'ALUM(cm)';
     const fromEmail = business.email || user.email || '';
     
-    // שליחה דרך Supabase Edge Function (נבנה עם Resend)
-    const { data, error } = await sb.functions.invoke('send-quote-email', {
-      body: {
-        to,
-        subject,
-        body,
-        fromName,
-        pdfBase64,
-        quoteNumber: currentQuote.number
-      }
-    });
+    // יצירת public token אם אין
+if (!currentQuote.publicToken) {
+  currentQuote.publicToken = uid();
+  await dbPut('quotes', currentQuote);
+}
+
+const quoteUrl = `${window.location.origin}?quote=${currentQuote.publicToken}`;
+const { total } = calcQuoteTotals(currentQuote);
+
+// שליחה דרך Supabase Edge Function (Resend)
+const { data, error } = await sb.functions.invoke('send-quote-email', {
+  body: {
+    to,
+    clientName: client?.name || 'לקוח יקר',
+    businessName: business.name || user.name || 'ALUM(cm)',
+    businessEmail: business.email || user.email || '',
+    quoteNumber: currentQuote.number,
+    quoteTotal: Math.round(total).toLocaleString('he-IL'),
+    quoteUrl,
+    senderName: user.name
+  }
+});
     
     if (error) throw error;
     
