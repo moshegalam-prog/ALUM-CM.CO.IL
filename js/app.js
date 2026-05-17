@@ -1313,7 +1313,10 @@ async function createQuote(clientId) {
   const quotes = await dbAll('quotes');
   const year = new Date().getFullYear();
   const yearQuotes = quotes.filter(q => q.number.startsWith(year + '-'));
-  const nextNum = yearQuotes.length + 1;
+  const nextNum = Math.max(
+  0,
+  ...yearQuotes.map(q => parseInt(q.number.split('-')[1]) || 0)
+) + 1;
   
   const quote = {
     id: uid(),
