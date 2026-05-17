@@ -2639,7 +2639,8 @@ ${business.phone || ''}</textarea>
       </div>
       <div class="modal-footer">
         <button class="btn" onclick="document.getElementById('modal-email-quote').remove()">ביטול</button>
-        <button class="btn btn-primary" onclick="doSendQuoteEmail()">📧 שלח מייל</button>
+       <button class="btn btn-primary" id="send-email-btn">📧 שלח מייל</button>
+       document.getElementById('send-email-btn').addEventListener('click', doSendQuoteEmail);
       </div>
     </div>
   `;
