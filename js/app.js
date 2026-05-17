@@ -2611,7 +2611,7 @@ function showEmailModal(client, business, total) {
     <div class="modal" style="max-width:480px">
       <div class="modal-header">
         <div class="modal-title">📧 שליחת הצעה במייל</div>
-        <button class="icon-btn" onclick="document.getElementById('modal-email-quote').remove()">✕</button>
+        <button class="icon-btn" id="email-modal-close">✕</button>
       </div>
       <div class="modal-body">
         <div class="input-group">
@@ -2638,15 +2638,18 @@ ${business.phone || ''}</textarea>
         </div>
       </div>
       <div class="modal-footer">
-        <button class="btn" onclick="document.getElementById('modal-email-quote').remove()">ביטול</button>
-       <button class="btn btn-primary" id="send-email-btn">📧 שלח מייל</button>
-       document.getElementById('send-email-btn').addEventListener('click', doSendQuoteEmail);
+        <button class="btn" id="email-modal-cancel">ביטול</button>
+        <button class="btn btn-primary" id="send-email-btn">📧 שלח מייל</button>
       </div>
     </div>
   `;
   document.body.appendChild(modal);
+  
+  // 🛠️ FIX: חיבור event listeners אחרי appendChild (לא בתוך ה-innerHTML!)
+  document.getElementById('send-email-btn').addEventListener('click', doSendQuoteEmail);
+  document.getElementById('email-modal-close').addEventListener('click', () => modal.remove());
+  document.getElementById('email-modal-cancel').addEventListener('click', () => modal.remove());
 }
-
 async function doSendQuoteEmail() {
   const to = (document.getElementById('email-to').value || document.getElementById('email-to').textContent || '').trim();
   const subjectEl = document.getElementById('email-subject');
