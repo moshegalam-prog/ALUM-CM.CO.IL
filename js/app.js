@@ -1342,7 +1342,8 @@ async function renderQuoteDetail() {
   if (!currentQuote) return;
   const client = await dbGet('clients', currentQuote.clientId);
   const business = (await dbGet('settings', 'business'))?.value || {};
-  
+  const { data: clientData } = await sb.from('clients').select('*').eq('id', currentQuote.client_id).maybeSingle();
+const client = clientData || {};
   // Restore media for items
   for (const item of currentQuote.items) {
     if (!item.media) item.media = [];
