@@ -1,3 +1,4 @@
+console.log("NEW VERSION");
 exports.handler = async (event) => {
   try {
     const { clientEmail, quoteNumber, total } = JSON.parse(event.body);
