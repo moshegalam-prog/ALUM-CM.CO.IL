@@ -2578,25 +2578,51 @@ async function shareWhatsAppPDF() {
 }
 
 async function sendQuoteEmail() {
+ try {
+
   const client = await dbGet('clients', currentQuote.clientId);
-  
-  if (!client?.email) {
-    // פתח מודאל לקבלת מייל
-    const email = prompt(`מה כתובת המייל של ${client?.name || 'הלקוח'}?`);
-    if (!email || !email.includes('@')) {
-      showToast('כתובת מייל לא תקינה');
-      return;
-    }
-    // שמור מייל ללקוח
-    client.email = email;
-    await dbPut('clients', client);
+
+  const targetEmail = client?.email;
+
+  if (!targetEmail) {
+    alert('אין אימייל ללקוח');
+    return;
   }
-  
-  // הצג מודאל אישור
-  const business = (await dbGet('settings', 'business'))?.value || {};
-  const { total } = calcQuoteTotals(currentQuote);
-  
-  showEmailModal(client, business, total);
+
+  const response = await fetch('/.netlify/functions/send-quote', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      to: targetEmail,
+      clientName: client?.name || 'לקוח',
+      quoteNumber: currentQuote.number || currentQuote.id,
+      total: currentQuote.total || 0,
+      quoteUrl: window.location.href
+    })
+  });
+
+  const data = await response.json();
+
+  console.log(data);
+
+  if (!response.ok) {
+    alert('שגיאה בשליחת המייל');
+    return;
+  }
+
+  currentQuote.status = 'sent';
+
+  alert('ההצעה נשלחה בהצלחה');
+
+} catch (error) {
+
+  console.error(error);
+
+  alert('שגיאה בשליחת ההצעה');
+
+}
 }
 
 function showEmailModal(client, business, total) {
