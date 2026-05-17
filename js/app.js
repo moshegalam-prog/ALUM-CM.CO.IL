@@ -2648,7 +2648,8 @@ ${business.phone || ''}</textarea>
 
 async function doSendQuoteEmail() {
   const to = (document.getElementById('email-to').value || document.getElementById('email-to').textContent || '').trim();
-  const subject = document.getElementById('email-subject').value.trim();
+  const subjectEl = document.getElementById('email-subject');
+const subject = subjectEl ? (subjectEl.value || subjectEl.textContent || '').trim() : '';
   const bodyEl = document.getElementById('email-body');
 const body = bodyEl ? (bodyEl.value || bodyEl.innerHTML || '').trim() : '';
   
