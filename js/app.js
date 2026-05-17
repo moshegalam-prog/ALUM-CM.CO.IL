@@ -283,7 +283,7 @@ function quoteFromDb(q, items) {
     productionAt: q.production_at,
     installedAt: q.installed_at,
     rejectedAt: q.rejected_at,
-    publicToken: q.public_token,
+    publicToken: q.public_token || crypto.randomUUID(),
     history: q.history || [],
     timeline: q.history || []  // 🛠️ FIX: גם timeline (תאימות לאחור)
   };
