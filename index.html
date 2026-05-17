@@ -3951,15 +3951,18 @@ body.printing-work-order #work-order-print-area {
       </div>
       
       <button class="sidebar-item active" data-screen="dashboard" onclick="showScreen('dashboard',this)">
-        <span class="sidebar-item-icon">📊</span> בית
-      </button>
-      <button class="sidebar-item" data-screen="quotes" onclick="showScreen('quotes',this)">
-        <span class="sidebar-item-icon">📋</span> הצעות
-        <span class="sidebar-item-badge" id="badge-quotes">0</span>
-      </button>
-      <button class="sidebar-item" data-screen="clients" onclick="showScreen('clients',this)">
-        <span class="sidebar-item-icon">👥</span> לקוחות
-      </button>
+  <span class="sidebar-item-icon">📊</span> בית
+</button>
+<button class="sidebar-item" onclick="newQuote()" style="background:var(--accent);color:white;margin-bottom:12px;border-radius:10px">
+  <span class="sidebar-item-icon">+</span> הצעה חדשה
+</button>
+<button class="sidebar-item" data-screen="quotes" onclick="showScreen('quotes',this)">
+  <span class="sidebar-item-icon">📋</span> הצעות
+  <span class="sidebar-item-badge" id="badge-quotes">0</span>
+</button>
+<button class="sidebar-item" data-screen="clients" onclick="showScreen('clients',this)">
+  <span class="sidebar-item-icon">👥</span> לקוחות
+</button>
       
       <div class="sidebar-section-label">ניהול</div>
       
