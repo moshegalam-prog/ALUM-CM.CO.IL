@@ -2684,7 +2684,7 @@ const { total } = calcQuoteTotals(currentQuote);
 const { data, error } = await sb.functions.invoke('send-quote-email', {
   body: {
     to,
-    clientName: client?.name || 'לקוח יקר',
+    clientName: currentQuote.clientName || 'לקוח יקר',
     businessName: business.name || user.name || 'ALUM(cm)',
     businessEmail: business.email || user.email || '',
     quoteNumber: currentQuote.number,
