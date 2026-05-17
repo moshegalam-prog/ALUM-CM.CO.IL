@@ -283,7 +283,7 @@ function quoteFromDb(q, items) {
     productionAt: q.production_at,
     installedAt: q.installed_at,
     rejectedAt: q.rejected_at,
-    public_token: q.publicToken ?? crypto.randomUUID(),
+    public_token: crypto.randomUUID(),
     history: q.history || [],
     timeline: q.history || []  // 🛠️ FIX: גם timeline (תאימות לאחור)
   };
@@ -304,7 +304,7 @@ function quoteToDb(q) {
     vat_percent: pricing.vat || 18,
     notes: pricing.notes || '',
     total: q.total || 0,
-    public_token: q.publicToken || crypto.randomUUID(),
+    publicToken: crypto.randomUUID(),
     history: q.history || q.timeline || [],  // 🛠️ FIX: timeline נשמר כ-history
     created_at: q.createdAt || new Date().toISOString(),
     sent_at: q.sentAt || null,
