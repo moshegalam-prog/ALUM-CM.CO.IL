@@ -14,12 +14,9 @@ const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
 let currentUserId = null;
 
 // ============ DB ABSTRACTION (Wraps Supabase) ============
-// שכבת תאימות לאחור - מאפשרת לקוד הקיים להמשיך לעבוד
-
-let db = null; // נשמר לתאימות אבל לא בשימוש
+let db = null;
 
 async function openDB() {
-  // בדיקת session קיים
   const { data: { session } } = await sb.auth.getSession();
   if (session) {
     currentUserId = session.user.id;
@@ -27,7 +24,6 @@ async function openDB() {
   return Promise.resolve();
 }
 
-// פונקציה גנרית - שואפת dbGet ל-Supabase select
 async function dbGet(store, key) {
   if (!currentUserId && store !== 'auth') {
     return null;
@@ -35,7 +31,6 @@ async function dbGet(store, key) {
   
   try {
     if (store === 'settings') {
-      // הגדרות מטופלות בנפרד
       if (key === 'user') {
         const { data: { session } } = await sb.auth.getSession();
         if (!session) return null;
@@ -66,7 +61,6 @@ async function dbGet(store, key) {
     if (store === 'quotes') {
       const { data: quote } = await sb.from('quotes').select('*').eq('id', key).maybeSingle();
       if (!quote) return null;
-      // 🛠️ FIX: order by 'position' (לא order_idx — לא קיים בטבלה)
       const { data: items } = await sb.from('quote_items').select('*').eq('quote_id', key).order('position');
       return quoteFromDb(quote, items || []);
     }
@@ -83,7 +77,6 @@ async function dbGet(store, key) {
   }
 }
 
-// dbPut - שואף לעדכון/יצירה
 async function dbPut(store, value) {
   if (!currentUserId && store !== 'auth') {
     console.warn('dbPut without user:', store);
@@ -93,7 +86,6 @@ async function dbPut(store, value) {
   try {
     if (store === 'settings') {
       if (value.key === 'user') {
-        // הגדרות משתמש מתעדכנות דרך profile
         if (value.value && value.value.name) {
           await sb.from('profiles').update({ full_name: value.value.name }).eq('id', currentUserId);
         }
@@ -130,11 +122,9 @@ async function dbPut(store, value) {
     if (store === 'quotes') {
       const { quoteData, items } = quoteToDb(value);
       
-      // upsert ההצעה
       const { error: qErr } = await sb.from('quotes').upsert(quoteData);
       if (qErr) { console.error('save quote error:', qErr); return value; }
       
-      // מחיקת פריטים ישנים והוספת חדשים
       const { error: dErr } = await sb.from('quote_items').delete().eq('quote_id', value.id);
       if (dErr) console.error('delete items error:', dErr);
       
@@ -190,9 +180,7 @@ async function dbAll(store) {
       const { data: quotes } = await sb.from('quotes').select('*').eq('user_id', currentUserId).order('created_at', { ascending: false });
       if (!quotes || quotes.length === 0) return [];
       
-      // טעינת items לכל ההצעות
       const ids = quotes.map(q => q.id);
-      // 🛠️ FIX: order by 'position' (לא order_idx — לא קיים בטבלה)
       const { data: allItems, error: itemsErr } = await sb.from('quote_items').select('*').in('quote_id', ids).order('position');
       if (itemsErr) console.error('load items error:', itemsErr);
       
@@ -206,7 +194,6 @@ async function dbAll(store) {
     }
     
     if (store === 'media') {
-      // 🛠️ FIX: היה 'supabase' (לא קיים) — צריך 'sb'
       const { data } = await sb
         .from('item_media')
         .select('*, quote_items!inner(quote_id, quotes!inner(user_id))')
@@ -283,9 +270,9 @@ function quoteFromDb(q, items) {
     productionAt: q.production_at,
     installedAt: q.installed_at,
     rejectedAt: q.rejected_at,
-    public_token: crypto.randomUUID(),
+    publicToken: q.public_token,
     history: q.history || [],
-    timeline: q.history || []  // 🛠️ FIX: גם timeline (תאימות לאחור)
+    timeline: q.history || []
   };
 }
 
@@ -304,8 +291,8 @@ function quoteToDb(q) {
     vat_percent: pricing.vat || 18,
     notes: pricing.notes || '',
     total: q.total || 0,
-    
-    history: q.history || q.timeline || [],  // 🛠️ FIX: timeline נשמר כ-history
+    public_token: q.publicToken || null,
+    history: q.history || q.timeline || [],
     created_at: q.createdAt || new Date().toISOString(),
     sent_at: q.sentAt || null,
     viewed_at: q.viewedAt || null,
@@ -337,7 +324,6 @@ function itemFromDb(i) {
 }
 
 function itemToDb(i, quoteId, position) {
-  // חישוב total_price בסיסי
   let totalPrice = 0;
   if (i.mode === 'area' && i.width && i.height && i.pricePerSqm) {
     const sqm = (i.width * i.height) / 10000;
@@ -371,7 +357,7 @@ function mediaFromDb(m) {
   return {
     id: m.id,
     type: m.type,
-    data: m.url, // ב-Supabase שומרים URL במקום base64
+    data: m.url,
     duration: m.duration_sec,
     itemId: m.item_id
   };
@@ -382,13 +368,13 @@ function mediaToDb(m) {
     id: m.id,
     item_id: m.itemId || null,
     type: m.type,
-    url: m.data, // יכול להיות URL או base64 (לתאימות)
+    url: m.data,
     duration_sec: m.duration ? Math.round(m.duration) : null,
     size_bytes: m.size || null
   };
 }
 
-// ============ STORAGE HELPERS (Supabase Storage) ============
+// ============ STORAGE HELPERS ============
 
 async function uploadFile(bucket, file, fileName) {
   if (!currentUserId) throw new Error('Not authenticated');
@@ -401,19 +387,16 @@ async function uploadFile(bucket, file, fileName) {
   
   if (error) throw error;
   
-  // קבלת URL ציבורי
   const { data: urlData } = sb.storage.from(bucket).getPublicUrl(path);
   return { url: urlData.publicUrl, path: data.path };
 }
 
 async function uploadDataUrl(bucket, dataUrl, fileName) {
-  // המרה מ-base64 dataURL ל-Blob
   const res = await fetch(dataUrl);
   const blob = await res.blob();
   return uploadFile(bucket, blob, fileName);
 }
 
-// dbClear - מחיקת כל הנתונים של משתמש (לצורך ה-demo)
 async function dbClear(store) {
   if (!currentUserId) return;
   try {
@@ -421,11 +404,6 @@ async function dbClear(store) {
       await sb.from('clients').delete().eq('user_id', currentUserId);
     } else if (store === 'quotes') {
       await sb.from('quotes').delete().eq('user_id', currentUserId);
-    } else if (store === 'media') {
-      // נמחק רק media של המשתמש דרך quotes
-      // הם יימחקו אוטומטית עם CASCADE כשנמחק quote
-    } else if (store === 'settings') {
-      // לא נמחק profile/business
     }
   } catch (e) { console.error('dbClear error:', store, e); }
 }
@@ -445,10 +423,8 @@ let recordingTimer = null;
 let quotesFilter = 'all';
 
 // ============ UTIL ============
-// מייצר UUID v4 (תואם Supabase)
 function uid() { 
   if (crypto.randomUUID) return crypto.randomUUID();
-  // fallback ל-uuid v4 ידני
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
     const r = Math.random() * 16 | 0;
     const v = c === 'x' ? r : (r & 0x3 | 0x8);
@@ -532,7 +508,6 @@ function showScreen(name, btn) {
   document.querySelectorAll(`[data-screen="${name}"]`).forEach(b => b.classList.add('active'));
   currentScreen = name;
   
-  // החבאת sticky total bar בכל מעבר מסך
   const stickyEl = document.getElementById('quote-sticky-total');
   if (stickyEl && name !== 'quote-detail') {
     stickyEl.style.display = 'none';
@@ -552,7 +527,7 @@ function toggleMobileMenu() {
   d.classList.toggle('show');
 }
 
-// ============ AUTH (Supabase) ============
+// ============ AUTH ============
 async function doSignup() {
   const name = document.getElementById('signup-name').value.trim();
   const business = document.getElementById('signup-business').value.trim();
@@ -596,8 +571,6 @@ async function doSignup() {
     
     currentUserId = data.user.id;
     
-    // ה-trigger ב-Supabase יצר אוטומטית profile + business
-    // אבל ננסה upsert לוודא תאימות
     await sb.from('profiles').upsert({
       id: data.user.id,
       email: email,
@@ -606,7 +579,6 @@ async function doSignup() {
       trial_ends_at: new Date(Date.now() + 14*86400000).toISOString()
     }, { onConflict: 'id' });
     
-    // עדכון business עם תוכן מורחב
     await sb.from('business').upsert({
       user_id: data.user.id,
       name: business || name,
@@ -631,7 +603,8 @@ async function doSignup() {
     showToast('שגיאה: ' + e.message);
   }
 }
-  async function showForgotPassword() {
+
+async function showForgotPassword() {
   const email = document.getElementById('login-email').value.trim();
   if (!email) {
     alert('נא להכניס אימייל תחילה');
@@ -646,8 +619,8 @@ async function doSignup() {
   }
   alert('קישור לאיפוס סיסמה נשלח לאימייל שלך');
 }
-async function doLogin() {
 
+async function doLogin() {
   const email = document.getElementById('login-email').value.trim();
   const password = document.getElementById('login-password') ? document.getElementById('login-password').value : '';
   
@@ -670,7 +643,6 @@ async function doLogin() {
     
     currentUserId = data.user.id;
     
-    // טעינת profile
     const { data: profile } = await sb.from('profiles').select('*').eq('id', data.user.id).maybeSingle();
     
     if (profile) {
@@ -682,7 +654,6 @@ async function doLogin() {
         createdAt: profile.created_at
       };
     } else {
-      // במקרה שאין profile - יוצרים אחד
       user = { id: data.user.id, email: email, name: email.split('@')[0], plan: 'free' };
       await sb.from('profiles').upsert({
         id: data.user.id, email: email, full_name: user.name, plan: 'free',
@@ -700,7 +671,6 @@ async function doLogin() {
 }
 
 async function loginAsDemo() {
-  // מצב הדגמה - יוצר משתמש חדש כל פעם או נכנס לקיים
   const demoEmail = 'demo-' + Math.random().toString(36).substr(2, 8) + '@alumcm.demo';
   const demoPassword = 'demo123456';
   
@@ -760,7 +730,6 @@ async function loginAsDemo() {
 }
 
 async function seedDemoData() {
-  // Demo clients
   const clients = [
     { id: uid(), name: 'דנה כהן', phone: '052-1234567', email: 'dana@example.com', address: 'הרצל 47, ראשון לציון', notes: 'לקוחה ממליצה — מומלצת ע״י משפחת לוי', createdAt: new Date(Date.now() - 7*86400000).toISOString() },
     { id: uid(), name: 'יוסי פרץ', phone: '054-9876543', email: '', address: 'בן גוריון 12, חולון', notes: '', createdAt: new Date(Date.now() - 5*86400000).toISOString() },
@@ -770,7 +739,6 @@ async function seedDemoData() {
   
   for (const c of clients) await dbPut('clients', c);
   
-  // Demo quotes
   const business = (await dbGet('settings', 'business')).value;
   
   const quotes = [
@@ -877,7 +845,7 @@ async function logout() {
   goTo('landing');
 }
 
-// ============ THEME (Light / Dark Mode) ============
+// ============ THEME ============
 function toggleTheme() {
   const isDark = document.getElementById('theme-toggle').checked;
   if (isDark) {
@@ -885,7 +853,6 @@ function toggleTheme() {
   } else {
     document.documentElement.removeAttribute('data-theme');
   }
-  // שמירה ב-localStorage כדי שהבחירה תישמר
   try {
     localStorage.setItem('alumcm-theme', isDark ? 'dark' : 'light');
   } catch (e) {}
@@ -907,12 +874,12 @@ function enterApp() {
   document.getElementById('user-name').innerText = user.name;
   document.getElementById('user-avatar').innerText = user.name[0];
   const planEl = document.getElementById('user-plan');
-if (planEl) {
-  if (user.plan === 'pro_annual') planEl.innerHTML = '⭐ Pro שנתי';
-  else if (user.plan === 'pro_monthly') planEl.innerHTML = '⭐ Pro חודשי';
-  else planEl.innerHTML = 'חינם <span class="upgrade-pill">שדרג</span>';
-}
-  // ברכה דינמית לפי שעה ביום
+  if (planEl) {
+    if (user.plan === 'pro_annual') planEl.innerHTML = '⭐ Pro שנתי';
+    else if (user.plan === 'pro_monthly') planEl.innerHTML = '⭐ Pro חודשי';
+    else planEl.innerHTML = 'חינם <span class="upgrade-pill">שדרג</span>';
+  }
+  
   const hour = new Date().getHours();
   let greeting = 'שלום';
   if (hour >= 5 && hour < 12) greeting = 'בוקר טוב';
@@ -948,7 +915,6 @@ async function loadBusiness() {
     logoEl.innerHTML = '+';
   }
   
-  // סנכרון מצב הטוגל של ה-theme
   const themeToggle = document.getElementById('theme-toggle');
   if (themeToggle) {
     themeToggle.checked = document.documentElement.getAttribute('data-theme') === 'dark';
@@ -973,14 +939,12 @@ function handleLogoUpload(event) {
   const file = event.target.files[0];
   if (!file) return;
   
-  // הצגת preview מיידי
   const reader = new FileReader();
   reader.onload = (e) => {
     document.getElementById('logo-upload-content').innerHTML = `<img src="${e.target.result}" alt="logo">`;
   };
   reader.readAsDataURL(file);
   
-  // העלאה ל-Supabase Storage
   showToast('מעלה לוגו...');
   (async () => {
     try {
@@ -988,7 +952,6 @@ function handleLogoUpload(event) {
       const fileName = `logo-${Date.now()}.${ext}`;
       const { url } = await uploadFile('logos', file, fileName);
       
-      // שמירה ב-business
       const b = await dbGet('settings', 'business');
       const v = b ? b.value : {};
       v.logo = url;
@@ -1007,7 +970,6 @@ async function renderDashboard() {
   const quotes = await dbAll('quotes');
   const clients = await dbAll('clients');
   
-  // Stats
   const now = new Date();
   const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
   const lastMonthStart = new Date(now.getFullYear(), now.getMonth()-1, 1);
@@ -1037,7 +999,6 @@ async function renderDashboard() {
   const projected = active.reduce((sum, q) => sum + calcQuoteTotal(q), 0);
   document.getElementById('stat-revenue').innerText = formatMoney(projected);
   
-  // חישוב סטטוסים לדונאט
   const totalQuotes = quotes.length;
   document.getElementById('donut-total').innerText = totalQuotes;
   
@@ -1046,7 +1007,7 @@ async function renderDashboard() {
   const orangeCount = quotes.filter(q => ['approved','production'].includes(q.status)).length;
   const yellowCount = quotes.filter(q => q.status === 'draft').length;
   
-  const circumference = 238.76; // 2 * π * 38
+  const circumference = 238.76;
   
   function setSegment(elementId, count, total, offset) {
     const el = document.getElementById(elementId);
@@ -1069,7 +1030,6 @@ async function renderDashboard() {
   runningOffset += setSegment('donut-orange', orangeCount, totalQuotes, runningOffset);
   runningOffset += setSegment('donut-yellow', yellowCount, totalQuotes, runningOffset);
   
-  // Recent quotes
   const recent = quotes.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 5);
   const list = document.getElementById('dashboard-quotes-list');
   
@@ -1105,7 +1065,6 @@ async function renderDashboard() {
     }).join('');
   }
   
-  // Sidebar badge
   document.getElementById('badge-quotes').innerText = quotes.length;
 }
 
@@ -1274,7 +1233,6 @@ async function saveClient() {
 
 // ============ NEW QUOTE FLOW ============
 async function newQuote() {
-  // Check free plan limit
   if (user.plan === 'free') {
     const quotes = await dbAll('quotes');
     const monthStart = new Date();
@@ -1313,10 +1271,7 @@ async function createQuote(clientId) {
   const quotes = await dbAll('quotes');
   const year = new Date().getFullYear();
   const yearQuotes = quotes.filter(q => q.number.startsWith(year + '-'));
-  const nextNum = Math.max(
-  0,
-  ...yearQuotes.map(q => parseInt(q.number.split('-')[1]) || 0)
-) + 1;
+  const nextNum = yearQuotes.length + 1;
   
   const quote = {
     id: uid(),
@@ -1346,7 +1301,6 @@ async function renderQuoteDetail() {
   const client = await dbGet('clients', currentQuote.clientId);
   const business = (await dbGet('settings', 'business'))?.value || {};
   
-  // Restore media for items
   for (const item of currentQuote.items) {
     if (!item.media) item.media = [];
   }
@@ -1522,7 +1476,6 @@ async function renderQuoteDetail() {
     </style>
   `;
   
-  // עדכון Sticky Total Bar
   const stickyEl = document.getElementById('quote-sticky-total');
   const stickyAmount = document.getElementById('sticky-total-amount');
   const stickyMeta = document.getElementById('sticky-total-meta');
@@ -1546,10 +1499,6 @@ async function renderQuoteDetail() {
   }
 }
 
-/**
- * יצירת SVG ויזואלי של פתח אלומיניום
- * סגנון שרטוט הנדסי מקצועי
- */
 function renderWindowSVG(width, height, name = '') {
   if (!width || !height) {
     return `<svg viewBox="0 0 80 80" class="window-svg-empty" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -1601,10 +1550,7 @@ function renderWindowSVG(width, height, name = '') {
   
   let panels = '';
   
-  // מסגרת חיצונית - דקה
   panels += `<rect x="${startX}" y="${startY}" width="${svgW}" height="${svgH}" stroke="${stroke}" stroke-width="0.9" fill="rgba(74,107,138,0.03)" rx="0.3"/>`;
-  
-  // מסגרת פנימית עדינה (פאנל זכוכית)
   panels += `<rect x="${startX + 1.2}" y="${startY + 1.2}" width="${svgW - 2.4}" height="${svgH - 2.4}" stroke="${stroke}" stroke-width="0.3" fill="none" opacity="0.4"/>`;
   
   if (hasTopPanel) {
@@ -1614,14 +1560,11 @@ function renderWindowSVG(width, height, name = '') {
   
   if (hasTwoWings) {
     panels += `<line x1="${middleX}" y1="${middleStartY}" x2="${middleX}" y2="${middleEndY}" stroke="${stroke}" stroke-width="0.7"/>`;
-    
-    // אלכסונים דקיקים מקווקווים
     panels += `<line x1="${startX + 1.5}" y1="${middleStartY + 1.5}" x2="${middleX - 1.5}" y2="${middleEndY - 1.5}" stroke="${stroke}" stroke-width="0.35" stroke-dasharray="1.5,1" opacity="0.5"/>`;
     panels += `<line x1="${middleX - 1.5}" y1="${middleStartY + 1.5}" x2="${startX + 1.5}" y2="${middleEndY - 1.5}" stroke="${stroke}" stroke-width="0.35" stroke-dasharray="1.5,1" opacity="0.5"/>`;
     panels += `<line x1="${middleX + 1.5}" y1="${middleStartY + 1.5}" x2="${endX - 1.5}" y2="${middleEndY - 1.5}" stroke="${stroke}" stroke-width="0.35" stroke-dasharray="1.5,1" opacity="0.5"/>`;
     panels += `<line x1="${endX - 1.5}" y1="${middleStartY + 1.5}" x2="${middleX + 1.5}" y2="${middleEndY - 1.5}" stroke="${stroke}" stroke-width="0.35" stroke-dasharray="1.5,1" opacity="0.5"/>`;
     
-    // ידית אנכית במרכז (קו עבה קצר)
     const handleY = (middleStartY + middleEndY) / 2;
     panels += `<line x1="${middleX}" y1="${handleY - 1.5}" x2="${middleX}" y2="${handleY + 1.5}" stroke="${stroke}" stroke-width="1.4" stroke-linecap="round"/>`;
   } else {
@@ -1629,7 +1572,6 @@ function renderWindowSVG(width, height, name = '') {
     panels += `<line x1="${endX - 1.5}" y1="${middleStartY + 1.5}" x2="${startX + 1.5}" y2="${middleEndY - 1.5}" stroke="${stroke}" stroke-width="0.35" stroke-dasharray="1.5,1" opacity="0.5"/>`;
   }
   
-  // קווי מידה - רוחב (למטה)
   const dimY = endY + 6;
   const dimColor = "#7a96b8";
   panels += `<line x1="${startX}" y1="${dimY}" x2="${endX}" y2="${dimY}" stroke="${dimColor}" stroke-width="0.3"/>`;
@@ -1637,7 +1579,6 @@ function renderWindowSVG(width, height, name = '') {
   panels += `<line x1="${endX}" y1="${dimY - 1.8}" x2="${endX}" y2="${dimY + 1.8}" stroke="${dimColor}" stroke-width="0.4"/>`;
   panels += `<text x="${(startX + endX) / 2}" y="${dimY + 5.5}" text-anchor="middle" font-size="5.5" font-family="Arial" fill="#4a6b8a" font-weight="600">${width}</text>`;
   
-  // קווי מידה - גובה (משמאל)
   const dimX = startX - 6;
   panels += `<line x1="${dimX}" y1="${startY}" x2="${dimX}" y2="${endY}" stroke="${dimColor}" stroke-width="0.3"/>`;
   panels += `<line x1="${dimX - 1.8}" y1="${startY}" x2="${dimX + 1.8}" y2="${startY}" stroke="${dimColor}" stroke-width="0.4"/>`;
@@ -1661,7 +1602,6 @@ function renderItemCard(item, idx) {
   const photoCount = (item.media || []).filter(m => m.type === 'photo').length;
   const audioCount = (item.media || []).filter(m => m.type === 'audio').length;
   
-  // SVG ויזואלי של החלון - רק במצב area עם מידות
   const hasMeasurements = item.mode === 'area' && item.width && item.height;
   const windowSvg = hasMeasurements ? renderWindowSVG(item.width, item.height, item.name) : '';
   
@@ -1819,7 +1759,6 @@ function calcQuoteTotal(quote) {
 }
 
 // ============ QUOTE STATUS ============
-// 🛠️ FIX: וידוא ש-timeline הוא array לפני push (קריטי!)
 function ensureTimeline() {
   if (!Array.isArray(currentQuote.timeline)) currentQuote.timeline = [];
   if (!Array.isArray(currentQuote.history)) currentQuote.history = [];
@@ -1864,7 +1803,6 @@ async function markAsInstalled() {
   showToast('פרויקט הושלם! 🎉');
 }
 
-// ============ STATUS FIX (תיקון סטטוס ידני) ============
 function openStatusEditor() {
   if (!currentQuote) return;
   
@@ -1886,11 +1824,8 @@ async function applyStatusFix() {
   }
   
   const oldStatus = currentQuote.status;
-  
-  // עדכון הסטטוס
   currentQuote.status = newStatus;
   
-  // נקה תאריכים של סטטוסים שאנחנו לא בהם יותר
   if (newStatus === 'draft') {
     currentQuote.sentAt = null;
     currentQuote.viewedAt = null;
@@ -1913,7 +1848,6 @@ async function applyStatusFix() {
     if (!currentQuote.installedAt) currentQuote.installedAt = new Date().toISOString();
   }
   
-  // הוסף רשומה ל-timeline
   currentQuote.timeline.push({
     status: newStatus,
     at: new Date().toISOString(),
@@ -1936,15 +1870,9 @@ async function deleteQuote() {
   });
 }
 
-// ============ DUPLICATE QUOTE ============
-/**
- * שכפול הצעת מחיר קיימת
- * יוצר הצעה חדשה במצב טיוטה עם כל הפריטים, התמחור והמדיה
- */
 async function duplicateQuote() {
-  // בדיקת מגבלת חבילה חינמית
- const { data: freshProfile } = await sb.from('profiles').select('plan').eq('id', currentUserId).maybeSingle();
-if (freshProfile?.plan === 'free') {
+  const { data: freshProfile } = await sb.from('profiles').select('plan').eq('id', currentUserId).maybeSingle();
+  if (freshProfile?.plan === 'free') {
     const quotes = await dbAll('quotes');
     const monthStart = new Date();
     monthStart.setDate(1);
@@ -1959,16 +1887,13 @@ if (freshProfile?.plan === 'free') {
   }
   
   confirmAction('שכפול הצעה', `ההצעה הנוכחית (#${currentQuote.number}) תשוכפל להצעה חדשה במצב טיוטה. תוכל לערוך את העותק החדש בלי להשפיע על המקורי.`, async () => {
-    // יצירת מספר הצעה חדש
     const allQuotes = await dbAll('quotes');
     const year = new Date().getFullYear();
     const yearQuotes = allQuotes.filter(q => q.number && q.number.startsWith(year + '-'));
     const newNum = `${year}-${String(yearQuotes.length + 1).padStart(3, '0')}`;
     
-    // העתק עמוק של ההצעה
     const newQuote = JSON.parse(JSON.stringify(currentQuote));
     
-    // שינויים נדרשים
     newQuote.id = uid();
     newQuote.number = newNum;
     newQuote.status = 'draft';
@@ -1983,26 +1908,20 @@ if (freshProfile?.plan === 'free') {
       duplicatedFrom: currentQuote.number
     }];
     
-    // החלפת ID של פריטים (לא לחלוק עם המקור)
     if (newQuote.items) {
       newQuote.items.forEach(item => {
         item.id = uid();
-        // המדיה נשארת — היא זהה כי זה אותו פתח
       });
     }
     
     await dbPut('quotes', newQuote);
     
-    // מעבר להצעה החדשה
     currentQuote = newQuote;
     showToast(`שוכפלה כהצעה #${newNum}`);
     renderQuoteDetail();
   });
 }
 
-/**
- * שכפול הצעה לפי ID (מהרשימה, כשהיא לא פתוחה)
- */
 async function duplicateQuoteById(id) {
   const quote = await dbGet('quotes', id);
   if (!quote) return;
@@ -2010,10 +1929,6 @@ async function duplicateQuoteById(id) {
   await duplicateQuote();
 }
 
-/**
- * פתיחה מחדש לעריכה - מחזיר הצעה שנשלחה למצב טיוטה
- * שימוש: כשצריך לתקן הצעה שנשלחה ללקוח (טעות במחיר, טעות בפריט וכו')
- */
 async function reopenForEdit() {
   const statusLabel = STATUS_LABELS[currentQuote.status];
   
@@ -2025,7 +1940,6 @@ async function reopenForEdit() {
       const oldStatus = currentQuote.status;
       currentQuote.status = 'draft';
       
-      // שמירה של ההיסטוריה
       currentQuote.timeline.push({
         status: 'draft',
         at: new Date().toISOString(),
@@ -2077,7 +1991,6 @@ function newItemTemplate(name, mode, dims) {
     updateAreaPreview();
   }
   
-  // פוקוס לשדה המחיר אחרי המידות
   setTimeout(() => {
     if (mode === 'area') {
       document.getElementById('item-price-sqm').focus();
@@ -2209,12 +2122,10 @@ async function handleItemPhoto(event) {
   
   showToast('מעלה תמונה...');
   
-  // קידוד base64 לתצוגה מיידית
   const reader = new FileReader();
   reader.onload = async (e) => {
     const img = new Image();
     img.onload = async () => {
-      // כיווץ התמונה
       const canvas = document.createElement('canvas');
       const maxDim = 1200;
       let w = img.width, h = img.height;
@@ -2226,7 +2137,6 @@ async function handleItemPhoto(event) {
       canvas.getContext('2d').drawImage(img, 0, 0, w, h);
       const compressed = canvas.toDataURL('image/jpeg', 0.8);
       
-      // מבנה מדיה עם base64 לתצוגה מקומית
       const mediaObj = {
         id: uid(),
         type: 'photo',
@@ -2234,12 +2144,11 @@ async function handleItemPhoto(event) {
         at: new Date().toISOString()
       };
       
-      // ניסיון העלאה ל-Supabase Storage
       try {
         const blob = await (await fetch(compressed)).blob();
         const fileName = `photo-${Date.now()}.jpg`;
         const { url, path } = await uploadFile('photos', blob, fileName);
-        mediaObj.data = url;  // מחליפים base64 ב-URL
+        mediaObj.data = url;
         mediaObj.path = path;
         showToast('תמונה נוספה ✓');
       } catch (err) {
@@ -2280,7 +2189,6 @@ async function startRecording() {
         at: new Date().toISOString()
       };
       
-      // ניסיון העלאה ל-Supabase Storage
       try {
         const fileName = `audio-${Date.now()}.webm`;
         const { url, path } = await uploadFile('audio', blob, fileName);
@@ -2289,7 +2197,6 @@ async function startRecording() {
         showToast(`הקלטה נוספה (${duration}ש׳) ✓`);
       } catch (err) {
         console.warn('Audio upload failed, using local base64:', err);
-        // fallback ל-base64
         const reader = new FileReader();
         reader.onload = (e) => { mediaObj.data = e.target.result; };
         reader.readAsDataURL(blob);
@@ -2351,7 +2258,6 @@ async function saveItem() {
     item.pricePerSqm = psqm;
     item.qty = parseInt(document.getElementById('item-qty-area').value) || 1;
     
-    // חישוב מחיר עם מינימום
     const calculatedPrice = (w * h / 10000) * psqm;
     const minPrice = parseFloat(document.getElementById('item-min-price').value) || 0;
     item.minPrice = minPrice;
@@ -2379,10 +2285,8 @@ async function saveItem() {
 
 async function duplicateItem(idx) {
   const original = currentQuote.items[idx];
-  // Deep clone כולל מדיה
   const item = JSON.parse(JSON.stringify(original));
   item.id = uid();
-  // הוסף ליד הפריט המקורי, לא בסוף
   currentQuote.items.splice(idx + 1, 0, item);
   await dbPut('quotes', currentQuote);
   renderQuoteDetail();
@@ -2420,9 +2324,6 @@ async function savePricing() {
   showToast('החישובים נשמרו');
 }
 
-/**
- * עדכון מהיר של שדה תמחור (הנחה / התקנה) ישירות מסיכום ההצעה
- */
 async function updatePricingField(field, value) {
   const numValue = parseFloat(value) || 0;
   if (!currentQuote.pricing) currentQuote.pricing = {};
@@ -2431,13 +2332,11 @@ async function updatePricingField(field, value) {
   renderQuoteDetail();
 }
 
-// ============ SHARING ============
 // ============ PDF GENERATION ============
 
 async function generateQuotePDF() {
   showToast('מכין PDF...');
   
-  // יצירת div זמני עם תוכן ה-quote-doc
   const client = await dbGet('clients', currentQuote.clientId);
   const business = (await dbGet('settings', 'business'))?.value || {};
   const { subtotal, discountAmt, beforeVat, vatAmt, total } = calcQuoteTotals(currentQuote);
@@ -2462,7 +2361,6 @@ async function generateQuotePDF() {
       logging: false,
       windowWidth: 794,
       onclone: (doc) => {
-        // וידוא Light Mode לייצוא
         doc.documentElement.removeAttribute('data-theme');
       }
     });
@@ -2541,14 +2439,12 @@ async function shareWhatsAppPDF() {
     
     const { pdf } = await generateQuotePDF();
     
-    // המרה ל-Blob
     const pdfBlob = pdf.output('blob');
     const fileName = `הצעה-${currentQuote.number}-${business.name || 'ALUM'}.pdf`;
     const pdfFile = new File([pdfBlob], fileName, { type: 'application/pdf' });
     
     const text = `שלום ${client?.name || ''},\nמצורפת הצעת מחיר #${currentQuote.number}.\nסה״כ: ${formatMoney(total)}\n\nמ-${business.name || 'העסק'}`;
     
-    // ניסיון שיתוף עם Web Share API (מובייל)
     if (navigator.share && navigator.canShare && navigator.canShare({ files: [pdfFile] })) {
       await navigator.share({
         title: `הצעת מחיר #${currentQuote.number}`,
@@ -2560,7 +2456,6 @@ async function shareWhatsAppPDF() {
         setTimeout(() => confirmAction('סמן כנשלח?', 'האם לסמן את ההצעה כנשלחה?', () => markAsSent()), 500);
       }
     } else {
-      // Fallback: הורד PDF ואז פתח WhatsApp עם טקסט
       pdf.save(fileName);
       showToast('PDF הורד — עכשיו שלח אותו ידנית ב-WhatsApp');
       
@@ -2580,53 +2475,24 @@ async function shareWhatsAppPDF() {
   }
 }
 
+// ============ EMAIL SENDING ============
 async function sendQuoteEmail() {
- console.log("FUNCTION START"); 
- try {
-
   const client = await dbGet('clients', currentQuote.clientId);
-
-  const targetEmail = client?.email;
-
-  if (!targetEmail) {
-    alert('אין אימייל ללקוח');
-    return;
+  
+  if (!client?.email) {
+    const email = prompt(`מה כתובת המייל של ${client?.name || 'הלקוח'}?`);
+    if (!email || !email.includes('@')) {
+      showToast('כתובת מייל לא תקינה');
+      return;
+    }
+    client.email = email;
+    await dbPut('clients', client);
   }
-
-  const response = await fetch('/.netlify/functions/send-quote', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      to: targetEmail,
-      clientName: client?.name || 'לקוח',
-      quoteNumber: currentQuote.number || currentQuote.id,
-      total: currentQuote.total || 0,
-      quoteUrl: window.location.href
-    })
-  });
-
-  const data = await response.json();
-
-  console.log(data);
-
-  if (!response.ok) {
-    alert('שגיאה בשליחת המייל');
-    return;
-  }
-
-  currentQuote.status = 'sent';
-
-  alert('ההצעה נשלחה בהצלחה');
-
-} catch (error) {
-
-  console.error(error);
-
-  alert('שגיאה בשליחת ההצעה');
-
-}
+  
+  const business = (await dbGet('settings', 'business'))?.value || {};
+  const { total } = calcQuoteTotals(currentQuote);
+  
+  showEmailModal(client, business, total);
 }
 
 function showEmailModal(client, business, total) {
@@ -2680,66 +2546,80 @@ ${business.phone || ''}</textarea>
   document.getElementById('email-modal-close').addEventListener('click', () => modal.remove());
   document.getElementById('email-modal-cancel').addEventListener('click', () => modal.remove());
 }
+
 async function doSendQuoteEmail() {
-  const to = (document.getElementById('email-to').value || document.getElementById('email-to').textContent || '').trim();
+  console.log('🎯 doSendQuoteEmail התחיל'); // לוג לאיתור בעיות
+  
+  const toEl = document.getElementById('email-to');
   const subjectEl = document.getElementById('email-subject');
-const subject = subjectEl ? (subjectEl.value || subjectEl.textContent || '').trim() : '';
   const bodyEl = document.getElementById('email-body');
-const body = bodyEl ? (bodyEl.value || bodyEl.innerHTML || '').trim() : '';
+  
+  const to = toEl ? toEl.value.trim() : '';
+  const subject = subjectEl ? subjectEl.value.trim() : '';
+  const body = bodyEl ? bodyEl.value.trim() : '';
   
   if (!to || !to.includes('@')) {
     showToast('כתובת מייל לא תקינה');
     return;
   }
   
-  const btn = document.querySelector('#modal-email-quote .btn-primary');
-  btn.disabled = true;
-  btn.textContent = 'שולח...';
+  const btn = document.getElementById('send-email-btn');
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = 'שולח...';
+  }
   showToast('מכין PDF ושולח...');
   
   try {
-    const { pdf } = await generateQuotePDF();
-    const pdfBase64 = pdf.output('datauristring').split(',')[1];
-    
+    const client = await dbGet('clients', currentQuote.clientId);
     const business = (await dbGet('settings', 'business'))?.value || {};
-    const fromName = business.name || user.name || 'ALUM(cm)';
-    const fromEmail = business.email || user.email || '';
+    const { total } = calcQuoteTotals(currentQuote);
     
     // יצירת public token אם אין
-if (!currentQuote.publicToken) {
-  currentQuote.publicToken = uid();
-  await dbPut('quotes', currentQuote);
-}
-
-const quoteUrl = `${window.location.origin}?quote=${currentQuote.publicToken}`;
-const { total } = calcQuoteTotals(currentQuote);
-
-// שליחה דרך Supabase Edge Function (Resend)
-const { data, error } = await sb.functions.invoke('send-quote-email', {
-  body: {
-    to,
-    clientName: currentQuote.clientName || 'לקוח יקר',
-    businessName: business.name || user.name || 'ALUM(cm)',
-    businessEmail: business.email || user.email || '',
-    quoteNumber: currentQuote.number,
-    quoteTotal: Math.round(total).toLocaleString('he-IL'),
-    quoteUrl,
-    senderName: user.name
-  }
-});
+    if (!currentQuote.publicToken) {
+      currentQuote.publicToken = uid();
+      await dbPut('quotes', currentQuote);
+    }
+    
+    const quoteUrl = `${window.location.origin}?quote=${currentQuote.publicToken}`;
+    
+    console.log('📧 שולח ל-Edge Function:', {
+      to,
+      quoteNumber: currentQuote.number,
+      total: Math.round(total)
+    });
+    
+    // שליחה דרך Supabase Edge Function (Resend)
+    const { data, error } = await sb.functions.invoke('send-quote-email', {
+      body: {
+        to,
+        clientName: client?.name || 'לקוח יקר',
+        businessName: business.name || user.name || 'ALUM(cm)',
+        businessEmail: business.email || user.email || '',
+        quoteNumber: currentQuote.number,
+        quoteTotal: Math.round(total).toLocaleString('he-IL'),
+        quoteUrl,
+        senderName: user.name
+      }
+    });
+    
+    console.log('📬 תגובת Edge Function:', { data, error });
     
     if (error) throw error;
     
-    document.getElementById('modal-email-quote').remove();
+    const modalEl = document.getElementById('modal-email-quote');
+    if (modalEl) modalEl.remove();
     showToast('המייל נשלח בהצלחה! ✓');
     
     if (currentQuote.status === 'draft') {
       setTimeout(() => confirmAction('סמן כנשלח?', 'האם לסמן את ההצעה כנשלחה?', () => markAsSent()), 500);
     }
   } catch (e) {
-    console.error('Email error:', e);
-    btn.disabled = false;
-    btn.textContent = '📧 שלח מייל';
+    console.error('❌ Email error:', e);
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = '📧 שלח מייל';
+    }
     
     // Fallback — פתח client email עם הוראות
     showToast('שגיאה בשליחה. פותח מייל ידני...');
@@ -2754,13 +2634,11 @@ async function shareWhatsApp() {
   const total = calcQuoteTotal(currentQuote);
   const business = (await dbGet('settings', 'business'))?.value || {};
   
-  // יצירת public token אם אין
   if (!currentQuote.publicToken) {
     currentQuote.publicToken = uid();
     await dbPut('quotes', currentQuote);
   }
   
-  // URL ציבורי לצפייה בהצעה
   const appUrl = window.location.origin + window.location.pathname;
   const publicUrl = `${appUrl}?quote=${currentQuote.publicToken}`;
   
@@ -2782,13 +2660,9 @@ async function shareWhatsApp() {
 
 // ============ SUBSCRIPTION SYSTEM ============
 
-/**
- * רנדור מסך המנוי - מציג מצב דינמי לפי החבילה הנוכחית
- */
 async function renderSubscriptionScreen() {
   const sub = await getCurrentSubscription();
   
-  // טעינת תשלומים מ-Supabase
   let payments = [];
   if (currentUserId) {
     const { data } = await sb
@@ -2800,14 +2674,12 @@ async function renderSubscriptionScreen() {
     payments = data || [];
   }
   
-  // טעינת הצעות החודש
   const quotes = await dbAll('quotes');
   const monthStart = new Date();
   monthStart.setDate(1);
   monthStart.setHours(0,0,0,0);
   const thisMonthQuotes = quotes.filter(q => new Date(q.createdAt) >= monthStart).length;
   
-  // קריאת plan מ-Supabase profile (הכי עדכני)
   let currentPlan = user.plan || 'free';
   if (currentUserId) {
     const { data: profile } = await sb.from('profiles').select('plan').eq('id', currentUserId).maybeSingle();
@@ -2872,7 +2744,6 @@ async function renderSubscriptionScreen() {
       </div>
     </div>` : '';
   
-  // היסטוריית חיובים מ-Supabase
   const paymentsHtml = payments.length > 0 ? `
     <div class="card-section" style="margin-top:24px">
       <div class="card-section-header">
@@ -2896,7 +2767,6 @@ async function renderSubscriptionScreen() {
       </div>
     </div>` : '';
   
-  // הצעת שדרוג (רק ל-Free)
   const upgradePricingHtml = isFree ? `
     <div style="margin-top:32px">
       <h2 style="font-size:24px;font-weight:800;margin-bottom:20px">שדרג ל-Pro</h2>
@@ -2958,9 +2828,6 @@ async function renderSubscriptionScreen() {
   `;
 }
 
-/**
- * קבלת המנוי הנוכחי
- */
 async function getCurrentSubscription() {
   if (!currentUserId) return null;
   try {
@@ -2978,14 +2845,11 @@ async function getCurrentSubscription() {
 }
 
 async function saveSubscription(sub) {
-  // לא שומרים ידנית — Webhook מ-Grow יעדכן אוטומטית
   console.log('saveSubscription called (handled by webhook)', sub);
 }
 
-// ============ UPGRADE FLOW (Grow / משולם) ============
-
-const GROW_PAGE_MONTHLY = ''; // ← הכנס כאן את ה-Page Code החודשי מ-Grow
-const GROW_PAGE_ANNUAL  = ''; // ← הכנס כאן את ה-Page Code השנתי מ-Grow
+const GROW_PAGE_MONTHLY = '';
+const GROW_PAGE_ANNUAL  = '';
 
 let upgradePlan = null;
 
@@ -2995,13 +2859,11 @@ function startUpgrade(plan) {
   const label    = plan === 'pro_annual' ? 'Pro שנתי' : 'Pro חודשי';
   const pageCode = plan === 'pro_annual' ? GROW_PAGE_ANNUAL : GROW_PAGE_MONTHLY;
   
-  // אם Grow עדיין לא מוגדר — הראה מודאל הסבר
   if (!pageCode) {
     showUpgradeModal(plan, amount, label);
     return;
   }
   
-  // Grow redirect — עם פרמטרים לזיהוי המשתמש
   const returnUrl = encodeURIComponent(window.location.origin + '/?upgrade=success&plan=' + plan);
   const cancelUrl = encodeURIComponent(window.location.origin + '/?upgrade=cancel');
   
@@ -3015,7 +2877,6 @@ function startUpgrade(plan) {
   window.location.href = growUrl;
 }
 
-// מודאל זמני כשGrow עדיין לא מוגדר
 function showUpgradeModal(plan, amount, label) {
   const overlay = document.getElementById('payment-overlay');
   document.getElementById('payment-body').innerHTML = `
@@ -3043,7 +2904,6 @@ function showUpgradeModal(plan, amount, label) {
   overlay.classList.add('show');
 }
 
-// טיפול בחזרה מ-Grow אחרי תשלום
 async function handleGrowReturn() {
   const params = new URLSearchParams(window.location.search);
   const upgradeStatus = params.get('upgrade');
@@ -3051,16 +2911,13 @@ async function handleGrowReturn() {
   
   if (!upgradeStatus) return;
   
-  // נקה את ה-URL
   window.history.replaceState({}, '', window.location.pathname);
   
   if (upgradeStatus === 'success') {
     showToast('🎉 התשלום אושר! מעדכן חשבון...');
     
-    // חכה שה-Webhook יעבד ואז רענן
     await sleep(3000);
     
-    // טען מחדש את ה-profile
     const { data: profile } = await sb.from('profiles').select('plan').eq('id', currentUserId).maybeSingle();
     if (profile && profile.plan !== 'free') {
       user.plan = profile.plan;
@@ -3084,16 +2941,12 @@ async function cancelSubscription() {
       const sub = await getCurrentSubscription();
       if (!sub) { showToast('לא נמצא מנוי פעיל'); return; }
       
-      // עדכון ב-Supabase
       await sb.from('subscriptions').update({
         status: 'canceling',
         canceled_at: new Date().toISOString()
       }).eq('user_id', currentUserId);
       
       showToast('המנוי בוטל — פעיל עד ' + (sub.next_charge_at ? formatDate(sub.next_charge_at) : 'סוף התקופה'));
-      
-      // TODO: קריאה ל-Grow API לביטול הוראת קבע
-      // בינתיים — יצירת קשר ידני
       
       renderSubscriptionScreen();
     } catch (e) {
@@ -3138,9 +2991,8 @@ function showInvoice(invoiceUrl) {
   }
 }
 
-// ============ WORK ORDER (דף ביצוע למפעל) ============
+// ============ WORK ORDER ============
 async function openWorkOrder() {
-  // בדיקת Pro
   if (user.plan === 'free') {
     confirmAction('פיצ\'ר Pro', 'דף ביצוע למפעל זמין רק במנוי Pro. הדף מציג רשימת פריטים מסודרת לייצור עם מידות והערות, ללא מחירים. שדרג עכשיו?', () => {
       closeModal('modal-confirm');
@@ -3157,7 +3009,6 @@ async function openWorkOrder() {
 }
 
 function renderWorkOrder(quote, client, business) {
-  // חישוב סטטיסטיקות מצרפיות
   const totalItems = quote.items.length;
   const totalUnits = quote.items.reduce((s, i) => s + (i.qty || 1), 0);
   const totalArea = quote.items.reduce((s, i) => {
@@ -3168,7 +3019,6 @@ function renderWorkOrder(quote, client, business) {
   }, 0);
   const itemsWithMedia = quote.items.filter(i => (i.media || []).length > 0).length;
   
-  // חישוב חתכי פרופיל אוטומטיים (אורכי חיתוך)
   const cuts = calculateCuts(quote.items);
   
   return `
@@ -3339,18 +3189,15 @@ function renderWorkOrder(quote, client, business) {
   `;
 }
 
-// חישוב אורכי חיתוך פרופיל לפי מידות (פריימטרי)
 function calculateCuts(items) {
   const cuts = [];
   items.forEach((item, idx) => {
     if (!item.width || !item.height) return;
     const qty = item.qty || 1;
     
-    // חלון/דלת סטנדרטי: 2 אורכים אופקיים (רוחב) + 2 אורכים אנכיים (גובה)
-    // יחידה אחת = 2×רוחב + 2×גובה
     const horizontalLength = item.width * 2 * qty;
     const verticalLength = item.height * 2 * qty;
-    const totalLength = (horizontalLength + verticalLength) / 100; // ס״מ → מטר
+    const totalLength = (horizontalLength + verticalLength) / 100;
     
     cuts.push({
       itemIdx: idx,
@@ -3363,7 +3210,6 @@ function calculateCuts(items) {
 
 function printWorkOrder() {
   document.body.classList.add('printing-work-order');
-  // הזז את ה-print area ל-body root
   const printArea = document.getElementById('work-order-print-area');
   const originalParent = printArea.parentElement;
   document.body.appendChild(printArea);
@@ -3372,7 +3218,6 @@ function printWorkOrder() {
     window.print();
     
     setTimeout(() => {
-      // החזר את ה-print area למקומו
       originalParent.appendChild(printArea);
       document.body.classList.remove('printing-work-order');
     }, 100);
@@ -3380,9 +3225,7 @@ function printWorkOrder() {
 }
 
 // ============ KEYBOARD HANDLING ============
-// כשמתמקדים בשדה, ודא שהוא נראה גם כשהמקלדת פתוחה
 function setupKeyboardHandling() {
-  // עובד עם Visual Viewport API — תומך בכל הדפדפנים המודרניים
   if (window.visualViewport) {
     window.visualViewport.addEventListener('resize', () => {
       const focused = document.activeElement;
@@ -3394,10 +3237,8 @@ function setupKeyboardHandling() {
     });
   }
 
-  // גלילה אוטומטית כשמתמקדים בשדה במובייל
   document.addEventListener('focusin', (e) => {
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') {
-      // חכה שהמקלדת תיפתח
       setTimeout(() => {
         e.target.scrollIntoView({ block: 'center', behavior: 'smooth' });
       }, 300);
@@ -3410,11 +3251,9 @@ async function init() {
   loadTheme();
   setupKeyboardHandling();
   
-  // בדיקה שה-Supabase SDK נטען
   if (!window.supabase) {
     console.error('Supabase SDK not loaded');
     showToast('שגיאת טעינה — פתח את הקובץ דרך שרת (לא file://)');
-    // הצג הודעה בולטת
     document.body.insertAdjacentHTML('afterbegin', `
       <div style="position:fixed;top:0;left:0;right:0;z-index:9999;background:#c44a4a;color:white;padding:16px;text-align:center;font-family:Heebo,sans-serif;direction:rtl;font-size:15px">
         ⚠️ לא ניתן להתחבר לשרת. וודא שהאתר נפתח מ-HTTPS (למשל alum-cm.co.il) ולא מקובץ מקומי.
@@ -3423,31 +3262,28 @@ async function init() {
     return;
   }
   
-  // בדיקת חזרה מ-Grow אחרי תשלום
   const params = new URLSearchParams(window.location.search);
   if (params.get('upgrade')) {
     setTimeout(handleGrowReturn, 1000);
   }
   
-  // בדיקת URL ציבורי - הצעת מחיר לצפייה
   const publicQuoteToken = params.get('quote');
   if (publicQuoteToken) {
     await showPublicQuote(publicQuoteToken);
     return;
   }
   
-  // בדיקת session קיים ב-Supabase
   try {
     const { data: { session } } = await sb.auth.getSession();
     
     if (session) {
       currentUserId = session.user.id;
-const { data: profile } = await sb.from('profiles').select('*').eq('id', session.user.id).maybeSingle();
-if (profile?.plan === 'suspended') {
-  await sb.auth.signOut();
-  document.body.innerHTML = '<div style="text-align:center;padding:60px;font-family:sans-serif;direction:rtl"><h2>החשבון שלך הושהה</h2><p>לפרטים נוספים צור קשר עם התמיכה.</p></div>';
-  return null;
-}      
+      const { data: profile } = await sb.from('profiles').select('*').eq('id', session.user.id).maybeSingle();
+      if (profile?.plan === 'suspended') {
+        await sb.auth.signOut();
+        document.body.innerHTML = '<div style="text-align:center;padding:60px;font-family:sans-serif;direction:rtl"><h2>החשבון שלך הושהה</h2><p>לפרטים נוספים צור קשר עם התמיכה.</p></div>';
+        return null;
+      }      
       if (profile) {
         user = {
           id: profile.id,
@@ -3464,7 +3300,6 @@ if (profile?.plan === 'suspended') {
     showToast('בעיית חיבור — בדוק את החיבור לאינטרנט');
   }
   
-  // האזנה לשינויי auth
   sb.auth.onAuthStateChange((event, session) => {
     if (event === 'SIGNED_OUT') {
       currentUserId = null;
@@ -3474,7 +3309,6 @@ if (profile?.plan === 'suspended') {
   });
 }
 
-// הצגת הצעה ציבורית (ללא התחברות)
 async function showPublicQuote(token) {
   try {
     const { data: quote } = await sb
@@ -3492,14 +3326,12 @@ async function showPublicQuote(token) {
       return;
     }
     
-    // טעינת פרטי העסק
     const { data: business } = await sb
       .from('business')
       .select('*')
       .eq('user_id', quote.user_id)
       .maybeSingle();
     
-    // עדכון viewed_at
     if (!quote.viewed_at) {
       await sb.from('quotes').update({ 
         viewed_at: new Date().toISOString(),
@@ -3507,7 +3339,6 @@ async function showPublicQuote(token) {
       }).eq('id', quote.id);
     }
     
-    // הצגת ההצעה
     const items = quote.quote_items || [];
     const total = quote.total || items.reduce((s, it) => s + (parseFloat(it.total_price) || 0), 0);
     
