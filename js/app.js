@@ -2676,8 +2676,7 @@ if (!currentQuote.publicToken) {
   currentQuote.publicToken = uid();
   await dbPut('quotes', currentQuote);
 }
-const client = await dbGet('clients', currentQuote.client_id);
-const business = await dbGet('business', currentUserId) || {};
+
 const quoteUrl = `${window.location.origin}?quote=${currentQuote.publicToken}`;
 const { total } = calcQuoteTotals(currentQuote);
 
