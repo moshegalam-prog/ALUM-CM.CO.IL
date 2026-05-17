@@ -26,7 +26,7 @@ exports.handler = async (event) => {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        from: "ALUM(cm) <onboarding@resend.dev>",
+        from: "ALUM(cm) <noreply@alum-cm.co.il>",
         to,
         subject: `הצעת מחיר מספר ${quoteNumber}`,
         html: `
