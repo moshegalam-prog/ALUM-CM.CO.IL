@@ -1342,7 +1342,7 @@ async function renderQuoteDetail() {
   if (!currentQuote) return;
   const client = await dbGet('clients', currentQuote.clientId);
   const business = (await dbGet('settings', 'business'))?.value || {};
-  const client = (await dbGet('clients', currentQuote.client_id))?.value || {};
+  
   // Restore media for items
   for (const item of currentQuote.items) {
     if (!item.media) item.media = [];
