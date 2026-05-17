@@ -2578,6 +2578,7 @@ async function shareWhatsAppPDF() {
 }
 
 async function sendQuoteEmail() {
+ console.log("FUNCTION START"); 
  try {
 
   const client = await dbGet('clients', currentQuote.clientId);
