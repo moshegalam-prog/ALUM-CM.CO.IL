@@ -2649,7 +2649,8 @@ ${business.phone || ''}</textarea>
 async function doSendQuoteEmail() {
   const to = document.getElementById('email-to').value.trim();
   const subject = document.getElementById('email-subject').value.trim();
-  const body = document.getElementById('email-body').value.trim();
+  const bodyEl = document.getElementById('email-body');
+const body = bodyEl ? (bodyEl.value || bodyEl.innerHTML || '').trim() : '';
   
   if (!to || !to.includes('@')) {
     showToast('כתובת מייל לא תקינה');
