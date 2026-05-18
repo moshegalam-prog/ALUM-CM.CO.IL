@@ -122,7 +122,7 @@ async function dbPut(store, value) {
     
     if (store === 'clients') {
       const clientData = clientToDb(value);
-      const { error } = await sb.from('clients').upsert(clientData, { onConflict: 'id' });
+      const { error } = await sb.from('clients').upsert(clientData);
       if (error) console.error('save client error:', error);
       return value;
     }
@@ -130,8 +130,8 @@ async function dbPut(store, value) {
     if (store === 'quotes') {
       const { quoteData, items } = quoteToDb(value);
       
-      // 🛠️ FIX: ציון onConflict מפורש על PK - מונע התנגשות עם UNIQUE (user_id, quote_number)
-      const { error: qErr } = await sb.from('quotes').upsert(quoteData, { onConflict: 'id' });
+      // upsert ההצעה
+      const { error: qErr } = await sb.from('quotes').upsert(quoteData);
       if (qErr) { console.error('save quote error:', qErr); return value; }
       
       // מחיקת פריטים ישנים והוספת חדשים
@@ -148,7 +148,7 @@ async function dbPut(store, value) {
     
     if (store === 'media') {
       const mediaData = mediaToDb(value);
-      const { error } = await sb.from('item_media').upsert(mediaData, { onConflict: 'id' });
+      const { error } = await sb.from('item_media').upsert(mediaData);
       if (error) console.error('save media error:', error);
       return value;
     }
@@ -283,7 +283,7 @@ function quoteFromDb(q, items) {
     productionAt: q.production_at,
     installedAt: q.installed_at,
     rejectedAt: q.rejected_at,
-    publicToken: q.public_token || null,  // 🛠️ FIX: שמירת ה-token האמיתי, לא יצירת חדש
+    public_token: crypto.randomUUID(),
     history: q.history || [],
     timeline: q.history || []  // 🛠️ FIX: גם timeline (תאימות לאחור)
   };
@@ -304,8 +304,8 @@ function quoteToDb(q) {
     vat_percent: pricing.vat || 18,
     notes: pricing.notes || '',
     total: q.total || 0,
-    public_token: q.publicToken || null,  // 🛠️ FIX: שומר את ה-token הקיים (לא יוצר חדש כל שמירה!)
-    history: q.history || q.timeline || [],
+    publicToken: crypto.randomUUID(),
+    history: q.history || q.timeline || [],  // 🛠️ FIX: timeline נשמר כ-history
     created_at: q.createdAt || new Date().toISOString(),
     sent_at: q.sentAt || null,
     viewed_at: q.viewedAt || null,
@@ -1326,7 +1326,6 @@ async function createQuote(clientId) {
     createdAt: new Date().toISOString(),
     items: [],
     pricing: { discount: 0, install: 0, vat: 18, notes: '' },
-    publicToken: uid(),  // 🛠️ FIX: token יציב מההתחלה
     timeline: [{ status: 'draft', at: new Date().toISOString() }],
     history: [{ status: 'draft', at: new Date().toISOString() }]
   };
@@ -1973,7 +1972,6 @@ if (freshProfile?.plan === 'free') {
     newQuote.id = uid();
     newQuote.number = newNum;
     newQuote.status = 'draft';
-    newQuote.publicToken = uid();  // 🛠️ FIX: token חדש להצעה החדשה
     newQuote.createdAt = new Date().toISOString();
     newQuote.sentAt = null;
     newQuote.viewedAt = null;
@@ -2582,27 +2580,53 @@ async function shareWhatsAppPDF() {
   }
 }
 
-// 🛠️ FIX: הפונקציה הישנה (שניסתה לקרוא ל-/.netlify/functions/send-quote שלא קיים) הוסרה.
-// במקומה: הכפתור "שלח מייל" עכשיו פותח את המודאל, וה-doSendQuoteEmail (למטה) קורא ל-Supabase Edge Function.
 async function sendQuoteEmail() {
-  console.log('sendQuoteEmail called - opening modal');
-  
-  try {
-    const client = await dbGet('clients', currentQuote.clientId);
-    const business = (await dbGet('settings', 'business'))?.value || {};
-    const { total } = calcQuoteTotals(currentQuote);
-    
-    if (!client) {
-      showToast('לא נמצא לקוח להצעה');
-      return;
-    }
-    
-    // פתיחת המודאל - מ-doSendQuoteEmail יישלח המייל
-    showEmailModal(client, business, total);
-  } catch (e) {
-    console.error('sendQuoteEmail error:', e);
-    showToast('שגיאה: ' + e.message);
+ console.log("FUNCTION START"); 
+ try {
+
+  const client = await dbGet('clients', currentQuote.clientId);
+
+  const targetEmail = client?.email;
+
+  if (!targetEmail) {
+    alert('אין אימייל ללקוח');
+    return;
   }
+
+  const response = await fetch('/.netlify/functions/send-quote', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      to: targetEmail,
+      clientName: client?.name || 'לקוח',
+      quoteNumber: currentQuote.number || currentQuote.id,
+      total: currentQuote.total || 0,
+      quoteUrl: window.location.href
+    })
+  });
+
+  const data = await response.json();
+
+  console.log(data);
+
+  if (!response.ok) {
+    alert('שגיאה בשליחת המייל');
+    return;
+  }
+
+  currentQuote.status = 'sent';
+
+  alert('ההצעה נשלחה בהצלחה');
+
+} catch (error) {
+
+  console.error(error);
+
+  alert('שגיאה בשליחת ההצעה');
+
+}
 }
 
 function showEmailModal(client, business, total) {
@@ -2656,71 +2680,57 @@ ${business.phone || ''}</textarea>
   document.getElementById('email-modal-close').addEventListener('click', () => modal.remove());
   document.getElementById('email-modal-cancel').addEventListener('click', () => modal.remove());
 }
-
 async function doSendQuoteEmail() {
-  console.log('doSendQuoteEmail called');
-  
-  const toEl = document.getElementById('email-to');
-  const to = toEl ? (toEl.value || '').trim() : '';
+  const to = (document.getElementById('email-to').value || document.getElementById('email-to').textContent || '').trim();
   const subjectEl = document.getElementById('email-subject');
-  const subject = subjectEl ? (subjectEl.value || '').trim() : '';
+const subject = subjectEl ? (subjectEl.value || subjectEl.textContent || '').trim() : '';
   const bodyEl = document.getElementById('email-body');
-  const body = bodyEl ? (bodyEl.value || '').trim() : '';
+const body = bodyEl ? (bodyEl.value || bodyEl.innerHTML || '').trim() : '';
   
   if (!to || !to.includes('@')) {
     showToast('כתובת מייל לא תקינה');
     return;
   }
   
-  const btn = document.getElementById('send-email-btn');
-  if (btn) {
-    btn.disabled = true;
-    btn.textContent = 'שולח...';
-  }
+  const btn = document.querySelector('#modal-email-quote .btn-primary');
+  btn.disabled = true;
+  btn.textContent = 'שולח...';
   showToast('מכין PDF ושולח...');
   
   try {
-    // יצירת public token אם אין
-    if (!currentQuote.publicToken) {
-      currentQuote.publicToken = uid();
-      await dbPut('quotes', currentQuote);
-    }
+    const { pdf } = await generateQuotePDF();
+    const pdfBase64 = pdf.output('datauristring').split(',')[1];
     
-    const client = await dbGet('clients', currentQuote.clientId);
     const business = (await dbGet('settings', 'business'))?.value || {};
-    const { total } = calcQuoteTotals(currentQuote);
+    const fromName = business.name || user.name || 'ALUM(cm)';
+    const fromEmail = business.email || user.email || '';
     
-    const quoteUrl = `${window.location.origin}?quote=${currentQuote.publicToken}`;
-    
-    console.log('Invoking send-quote-email with:', {
-      to,
-      clientName: client?.name || 'לקוח יקר',
-      businessName: business.name || user.name || 'ALUM(cm)',
-      quoteNumber: currentQuote.number,
-      quoteTotal: Math.round(total).toLocaleString('he-IL'),
-      quoteUrl
-    });
-    
-    // שליחה דרך Supabase Edge Function (Resend)
-    const { data, error } = await sb.functions.invoke('send-quote-email', {
-      body: {
-        to,
-        clientName: client?.name || 'לקוח יקר',
-        businessName: business.name || user.name || 'ALUM(cm)',
-        businessEmail: business.email || user.email || '',
-        quoteNumber: currentQuote.number,
-        quoteTotal: Math.round(total).toLocaleString('he-IL'),
-        quoteUrl,
-        senderName: user.name
-      }
-    });
-    
-    console.log('Edge function response:', { data, error });
+    // יצירת public token אם אין
+if (!currentQuote.publicToken) {
+  currentQuote.publicToken = uid();
+  await dbPut('quotes', currentQuote);
+}
+
+const quoteUrl = `${window.location.origin}?quote=${currentQuote.publicToken}`;
+const { total } = calcQuoteTotals(currentQuote);
+
+// שליחה דרך Supabase Edge Function (Resend)
+const { data, error } = await sb.functions.invoke('send-quote-email', {
+  body: {
+    to,
+    clientName: currentQuote.clientName || 'לקוח יקר',
+    businessName: business.name || user.name || 'ALUM(cm)',
+    businessEmail: business.email || user.email || '',
+    quoteNumber: currentQuote.number,
+    quoteTotal: Math.round(total).toLocaleString('he-IL'),
+    quoteUrl,
+    senderName: user.name
+  }
+});
     
     if (error) throw error;
     
-    const modalEl = document.getElementById('modal-email-quote');
-    if (modalEl) modalEl.remove();
+    document.getElementById('modal-email-quote').remove();
     showToast('המייל נשלח בהצלחה! ✓');
     
     if (currentQuote.status === 'draft') {
@@ -2728,19 +2738,13 @@ async function doSendQuoteEmail() {
     }
   } catch (e) {
     console.error('Email error:', e);
-    if (btn) {
-      btn.disabled = false;
-      btn.textContent = '📧 שלח מייל';
-    }
+    btn.disabled = false;
+    btn.textContent = '📧 שלח מייל';
     
     // Fallback — פתח client email עם הוראות
     showToast('שגיאה בשליחה. פותח מייל ידני...');
     const mailtoUrl = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body + '\n\n[צרף את ה-PDF שהורד]')}`;
-    try {
-      await downloadQuotePDF();
-    } catch (pdfErr) {
-      console.error('PDF fallback error:', pdfErr);
-    }
+    await downloadQuotePDF();
     setTimeout(() => window.open(mailtoUrl), 1000);
   }
 }
