@@ -3566,3 +3566,11 @@ async function showPublicQuote(token) {
 }
 
 init();
+function gTo(selector) {
+  const el = document.querySelector(selector);
+  if (el) {
+    el.scrollIntoView({
+      behavior: "smooth"
+    });
+  }
+}
