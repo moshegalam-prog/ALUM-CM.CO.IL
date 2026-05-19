@@ -3943,7 +3943,61 @@ body.printing-work-order #work-order-print-area {
     </div>
   </div>
 </div>
+// ============ PASSWORD RESET ============
 
+function openForgotPassword() {
+  goTo('forgot');
+  const emailInLogin = document.getElementById('login-email')?.value?.trim();
+  if (emailInLogin) {
+    document.getElementById('forgot-email').value = emailInLogin;
+  }
+  setTimeout(() => document.getElementById('forgot-email').focus(), 100);
+}
+
+async function sendResetEmail() {
+  const email = document.getElementById('forgot-email').value.trim();
+  if (!email) { showToast('נא למלא אימייל'); return; }
+
+  showToast('שולח...');
+  try {
+    const { error } = await sb.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin + '/?reset=1'
+    });
+    if (error) {
+      showToast('שגיאה: ' + error.message);
+      return;
+    }
+    showToast('אם המייל קיים במערכת — שלחנו קישור 📧');
+    setTimeout(() => goTo('login'), 2500);
+  } catch (e) {
+    console.error('reset email error:', e);
+    showToast('שגיאה: ' + e.message);
+  }
+}
+
+async function doResetPassword() {
+  const p1 = document.getElementById('reset-password-1').value;
+  const p2 = document.getElementById('reset-password-2').value;
+
+  if (!p1 || p1.length < 6) { showToast('סיסמה חייבת להכיל לפחות 6 תווים'); return; }
+  if (p1 !== p2) { showToast('הסיסמאות אינן תואמות'); return; }
+
+  showToast('מעדכן...');
+  try {
+    const { error } = await sb.auth.updateUser({ password: p1 });
+    if (error) {
+      showToast('שגיאה: ' + error.message);
+      return;
+    }
+    showToast('הסיסמה עודכנה ✓');
+    await sb.auth.signOut();
+    history.replaceState({}, '', window.location.pathname);
+    setTimeout(() => goTo('login'), 1500);
+  } catch (e) {
+    console.error('reset password error:', e);
+    showToast('שגיאה: ' + e.message);
+  }
+}
 <!-- ============ APP (Authenticated) ============ -->
 <div class="view" id="view-app">
   <div class="app-layout">
