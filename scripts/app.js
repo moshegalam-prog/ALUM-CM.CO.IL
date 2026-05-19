@@ -2763,8 +2763,8 @@ const { data, error } = await sb.functions.invoke('send-quote-email', {
     document.getElementById('modal-email-quote').remove();
     showToast('המייל נשלח בהצלחה! ✓');
     
-    if (currentQuote.status === 'draft') {
-      setTimeout(() => confirmAction('סמן כנשלח?', 'האם לסמן את ההצעה כנשלחה?', () => markAsSent()), 500);
+   if (currentQuote.status === 'draft') {
+      await markAsSent();
     }
   } catch (e) {
     console.error('Email error:', e);
