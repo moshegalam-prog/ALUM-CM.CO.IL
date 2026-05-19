@@ -1373,7 +1373,7 @@ async function renderQuoteDetail() {
         </div>
       </div>
       <div style="display:flex;gap:8px;flex-wrap:wrap" class="quote-actions">
-        ${currentQuote.status === 'draft' ? `<button class="btn btn-accent" onclick="markAsSent()">📤 שלח ללקוח</button>` : ''}
+       ${currentQuote.status === 'draft' ? `<button class="btn btn-accent" onclick="sendQuoteEmail()">📤 שלח ללקוח</button>` : ''}
         ${currentQuote.status === 'sent' || currentQuote.status === 'viewed' ? `<button class="btn btn-accent" onclick="markAsApproved()">✓ סמן כאושר</button>` : ''}
         ${currentQuote.status === 'approved' ? `<button class="btn btn-accent" onclick="markAsProduction()">→ העבר לייצור</button>` : ''}
         ${currentQuote.status === 'production' ? `<button class="btn btn-accent" onclick="markAsInstalled()">✓ סמן כהותקן</button>` : ''}
