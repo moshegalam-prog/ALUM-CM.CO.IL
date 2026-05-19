@@ -1,40 +1,18 @@
-const CACHE_NAME = "alum-cache-v6";
+const CACHE_NAME = 'alum-cache-v7';
 
-const urlsToCache = [
-  "/",
-  "/index.html",
-  "/manifest.json",
-  "/js/app.js",
-  "/css/style.css"
-];
-
-self.addEventListener("install", event => {
+self.addEventListener('install', event => {
   self.skipWaiting();
-
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(urlsToCache))
-  );
 });
 
-self.addEventListener("activate", event => {
+self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return Promise.all(
-        cacheNames.map(cache => {
-          if (cache !== CACHE_NAME) {
-            return caches.delete(cache);
-          }
-        })
-      );
-    })
+    caches.keys().then(names => 
+      Promise.all(names.map(name => caches.delete(name)))
+    )
   );
-
   self.clients.claim();
 });
 
-self.addEventListener("fetch", event => {
-  event.respondWith(
-    fetch(event.request).catch(() => caches.match(event.request))
-  );
+self.addEventListener('fetch', event => {
+  event.respondWith(fetch(event.request));
 });
