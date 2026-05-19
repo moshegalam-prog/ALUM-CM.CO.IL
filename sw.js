@@ -3,7 +3,9 @@ const CACHE_NAME = "alum-cache-v6";
 const urlsToCache = [
   "/",
   "/index.html",
-  "/manifest.json"
+  "/manifest.json",
+  "/js/app.js",
+  "/css/style.css"
 ];
 
 self.addEventListener("install", event => {
