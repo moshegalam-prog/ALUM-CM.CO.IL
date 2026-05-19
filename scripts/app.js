@@ -1673,6 +1673,7 @@ function renderItemCard(item, idx) {
         <div class="item-card-info">
           <div class="item-card-name">${escapeHTML(item.name)}</div>
           <div class="item-card-detail">${detail}${item.qty > 1 ? ` · כמות ${item.qty}` : ''}</div>
+          ${item.profileValue ? `<div class="item-card-detail" style="margin-top:6px">🔩 פרופיל ${escapeHTML(item.profileValue)}</div>` : ''}
           ${item.note ? `<div class="item-card-detail" style="margin-top:6px">📎 ${escapeHTML(item.note)}</div>` : ''}
           ${mediaCount > 0 ? `<div class="item-card-detail" style="margin-top:6px">${photoCount > 0 ? `📷 ${photoCount}` : ''} ${audioCount > 0 ? `🎙 ${audioCount}` : ''}</div>` : ''}
         </div>
@@ -1741,6 +1742,7 @@ function renderQuoteDoc(quote, client, business, subtotal, discountAmt, beforeVa
                       ${hasMeasurements ? `<div class="quote-doc-item-thumb">${itemSvg}</div>` : ''}
                       <div>
                         <div class="item-name">${escapeHTML(item.name)}</div>
+                       ${item.profileValue ? `<div class="item-detail">פרופיל ${escapeHTML(item.profileValue)}</div>` : ''}
                         ${item.note ? `<div class="item-detail">${escapeHTML(item.note)}</div>` : ''}
                       </div>
                     </div>
