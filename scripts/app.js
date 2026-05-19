@@ -2371,7 +2371,14 @@ async function saveItem() {
   if (!name) { showToast('חובה להזין שם'); return; }
   
   let item = { id: currentItem !== null ? currentQuote.items[currentItem].id : uid(), name, mode: itemMode, media: currentItemMedia, note: document.getElementById('item-note').value.trim() };
-  
+  // שמירת פרופיל אלומיניום (אם נבחר)
+  const profileSelect = document.getElementById('item-profile');
+  const profileField = document.getElementById('profile-field');
+  if (profileField && profileField.style.display !== 'none' && profileSelect.value && profileSelect.value !== '__add__') {
+    const selectedOption = profileSelect.options[profileSelect.selectedIndex];
+    item.profileId = profileSelect.value;
+    item.profileValue = selectedOption ? selectedOption.text : '';
+  }
   const w = parseFloat(document.getElementById('item-width').value);
   const h = parseFloat(document.getElementById('item-height').value);
   
