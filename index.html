@@ -4449,7 +4449,12 @@ body.printing-work-order #work-order-print-area {
         <label>שם הפתח</label>
         <input class="input" id="item-name">
       </div>
-      
+      <div class="input-group" id="profile-field" style="display:none">
+  <label>פרופיל אלומיניום</label>
+  <select class="input" id="item-profile">
+    <option value="">— בחר פרופיל —</option>
+  </select>
+</div>
       <div class="form-row">
         <div class="input-group">
           <label>רוחב (ס״מ)</label>
@@ -4515,12 +4520,7 @@ body.printing-work-order #work-order-print-area {
         </div>
         <input type="file" id="item-photo-input" accept="image/*" capture="environment" style="display:none" onchange="handleItemPhoto(event)">
       </div>
-      <div class="input-group" id="profile-field" style="display:none">
-  <label>פרופיל אלומיניום</label>
-  <select class="input" id="item-profile">
-    <option value="">— בחר פרופיל —</option>
-  </select>
-</div>
+      
       <div class="input-group">
         <label>הערה</label>
         <textarea class="input" id="item-note" rows="2" placeholder="צבע, פרופיל, זכוכית..."></textarea>
