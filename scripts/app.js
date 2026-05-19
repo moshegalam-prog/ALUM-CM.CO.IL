@@ -2060,6 +2060,26 @@ function newItem() {
   updateAreaPreview();
   showModal('modal-item');
   setTimeout(() => document.getElementById('item-name').focus(), 100);
+  // טיפול בבחירת "הוסף פרופיל חדש"
+  document.getElementById('item-profile').onchange = async function() {
+    if (this.value === '__add__') {
+      const val = prompt('הזן מספר פרופיל חדש:');
+      if (val && val.trim()) {
+        const ok = await addProfile('חלון הזזה', val.trim());
+        if (ok) {
+          showToast('פרופיל נוסף ✓');
+          const profiles = await getProfiles('חלון הזזה');
+          const newOpt = document.createElement('option');
+          newOpt.value = profiles[profiles.length-1].id;
+          newOpt.text = val.trim();
+          this.insertBefore(newOpt, this.lastChild);
+          this.value = profiles[profiles.length-1].id;
+        }
+      } else {
+        this.value = '';
+      }
+    }
+  };
 }
 
 function newItemTemplate(name, mode, dims) {
