@@ -2631,8 +2631,18 @@ async function sendQuoteEmail() {
     }
 
     const client = await dbGet('clients', currentQuote.clientId);
+
+    // אם ללקוח אין מייל — שאל אם לסמן ידנית כנשלחה (רק אם בטיוטה)
     if (!client?.email) {
-      showToast('אין אימייל ללקוח — הוסף אימייל בכרטיס הלקוח');
+      if (currentQuote.status === 'draft') {
+        confirmAction(
+          'אין מייל ללקוח',
+          'ללקוח זה אין כתובת מייל. האם לסמן את ההצעה כנשלחה ידנית (בלי לשלוח מייל)?',
+          () => markAsSent()
+        );
+      } else {
+        showToast('אין אימייל ללקוח — הוסף אימייל בכרטיס הלקוח');
+      }
       return;
     }
 
