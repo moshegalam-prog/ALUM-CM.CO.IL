@@ -3634,3 +3634,24 @@ function gTo(selector) {
     });
   }
 }
+// ============ FORGOT PASSWORD ============
+
+async function openForgotPassword() {
+  const emailInLogin = document.getElementById('login-email')?.value?.trim();
+  const email = prompt('הזן את כתובת המייל לאיפוס סיסמה:', emailInLogin || '');
+  
+  if (!email || !email.trim()) return;
+  
+  showToast('שולח...');
+  try {
+    const { error } = await sb.auth.resetPasswordForEmail(email.trim());
+    if (error) {
+      showToast('שגיאה: ' + error.message);
+      return;
+    }
+    showToast('אימייל איפוס נשלח ✓ בדוק את התיבה');
+  } catch (e) {
+    console.error('reset email error:', e);
+    showToast('שגיאה: ' + e.message);
+  }
+}
