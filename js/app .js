@@ -3378,7 +3378,33 @@ function printWorkOrder() {
     }, 100);
   }, 100);
 }
+// ============ PRODUCT PROFILES ============
 
+async function getProfiles(category) {
+  const { data } = await sb
+    .from('product_profiles')
+    .select('*')
+    .eq('user_id', currentUserId)
+    .eq('category', category)
+    .order('sort_order');
+  return data || [];
+}
+
+async function addProfile(category, value) {
+  const profiles = await getProfiles(category);
+  const { error } = await sb.from('product_profiles').insert({
+    id: uid(),
+    user_id: currentUserId,
+    category,
+    value: value.trim(),
+    sort_order: profiles.length
+  });
+  return !error;
+}
+
+async function deleteProfile(id) {
+  await sb.from('product_profiles').delete().eq('id', id);
+}
 // ============ KEYBOARD HANDLING ============
 // כשמתמקדים בשדה, ודא שהוא נראה גם כשהמקלדת פתוחה
 function setupKeyboardHandling() {
