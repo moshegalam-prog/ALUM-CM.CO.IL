@@ -4512,7 +4512,12 @@ body.printing-work-order #work-order-print-area {
         </div>
         <input type="file" id="item-photo-input" accept="image/*" capture="environment" style="display:none" onchange="handleItemPhoto(event)">
       </div>
-      
+      <div class="input-group" id="profile-field" style="display:none">
+  <label>פרופיל אלומיניום</label>
+  <select class="input" id="item-profile">
+    <option value="">— בחר פרופיל —</option>
+  </select>
+</div>
       <div class="input-group">
         <label>הערה</label>
         <textarea class="input" id="item-note" rows="2" placeholder="צבע, פרופיל, זכוכית..."></textarea>
