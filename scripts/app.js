@@ -2742,7 +2742,9 @@ const { data, error } = await sb.functions.invoke('send-quote-email', {
     quoteNumber: currentQuote.number,
     quoteTotal: Math.round(total).toLocaleString('he-IL'),
     quoteUrl,
-    senderName: user.name
+   senderName: user.name,
+    pdfBase64,
+    pdfFileName: `הצעה-${currentQuote.number || currentQuote.id}.pdf`
   }
 });
     
