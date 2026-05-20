@@ -3533,7 +3533,7 @@ if (profile?.plan === 'suspended') {
 // הצגת הצעה ציבורית (ללא התחברות)
 async function showPublicQuote(token) {
   try {
-    const { data: quote } = await sb
+   const { data: quote } = await sb
       .from('quotes')
       .select('*, quote_items(*)')
       .eq('public_token', token)
@@ -3546,6 +3546,20 @@ async function showPublicQuote(token) {
           <p style="color:#4a6b8a">הלינק שגוי או שההצעה הוסרה</p>
         </div>`;
       return;
+    }
+    
+    // טעינת פרטי הלקוח
+    if (quote.client_id) {
+      const { data: client } = await sb
+        .from('clients')
+        .select('name, phone, address')
+        .eq('id', quote.client_id)
+        .maybeSingle();
+      if (client) {
+        quote.client_name = client.name;
+        quote.client_phone = client.phone;
+        quote.client_address = client.address;
+      }
     }
     
     // טעינת פרטי העסק
