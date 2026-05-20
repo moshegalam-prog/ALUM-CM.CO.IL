@@ -332,8 +332,10 @@ function itemFromDb(i) {
     price: i.price_per_unit ? parseFloat(i.price_per_unit) : null,
     pricePerSqm: i.price_per_sqm ? parseFloat(i.price_per_sqm) : null,
     minPrice: i.min_price ? parseFloat(i.min_price) : null,
-    note: i.note || '',
-    media: Array.isArray(i.media_ids) ? i.media_ids : []
+  note: i.note || '',
+    media: Array.isArray(i.media_ids) ? i.media_ids : [],
+    profileId: i.profile_id || null,
+    profileValue: i.profile_value || null
   };
 }
 
