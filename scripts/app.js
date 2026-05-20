@@ -789,7 +789,7 @@ async function seedDemoData() {
       sentAt: new Date(Date.now() - 6*86400000).toISOString(),
       viewedAt: new Date(Date.now() - 5*3600000).toISOString(),
       items: [
-        { id: uid(), name: 'חלון סלון', mode: 'area', width: 180, height: 120, qty: 1, pricePerSqm: 2000, price: 4320, note: 'זכוכית טריפלקס, פרופיל אפור 7000', media: [] },
+        { id: uid(), name: 'חלון פתיחה', mode: 'area', width: 180, height: 120, qty: 1, pricePerSqm: 2000, price: 4320, note: 'זכוכית טריפלקס, פרופיל אפור 7000', media: [] },
         { id: uid(), name: 'חלון מטבח', mode: 'area', width: 90, height: 120, qty: 1, pricePerSqm: 2000, price: 2160, note: '', media: [] },
         { id: uid(), name: 'דלת מרפסת', mode: 'area', width: 200, height: 210, qty: 1, pricePerSqm: 1300, price: 5460, note: 'דלת הזזה דו-כיוונית', media: [] }
       ],
