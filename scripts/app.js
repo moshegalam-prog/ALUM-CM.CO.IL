@@ -3581,9 +3581,17 @@ async function showPublicQuote(token) {
       }).eq('id', quote.id);
     }
     
-    // הצגת ההצעה
+   // הצגת ההצעה — חישוב נכון של מע"מ
     const items = quote.quote_items || [];
-    const total = quote.total || items.reduce((s, it) => s + (parseFloat(it.total_price) || 0), 0);
+    const subtotal = items.reduce((s, it) => s + (parseFloat(it.total_price) || 0), 0);
+    const discountPct = parseFloat(quote.discount_percent) || 0;
+    const installFee = parseFloat(quote.install_fee) || 0;
+    const vatPct = parseFloat(quote.vat_percent) || 18;
+    
+    const discountAmt = subtotal * (discountPct / 100);
+    const beforeVat = subtotal - discountAmt + installFee;
+    const vatAmt = beforeVat * (vatPct / 100);
+    const total = beforeVat + vatAmt;
     
     document.body.innerHTML = `
       <div style="font-family:'Heebo',sans-serif;direction:rtl;max-width:700px;margin:0 auto;padding:20px;background:#fff;min-height:100vh">
