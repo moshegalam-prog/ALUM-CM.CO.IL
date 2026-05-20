@@ -832,7 +832,7 @@ async function seedDemoData() {
         { id: uid(), name: 'חלון חדר שינה', mode: 'area', width: 150, height: 120, qty: 2, pricePerSqm: 2200, price: 3960, note: '', media: [] },
         { id: uid(), name: 'חלון אמבטיה', mode: 'area', width: 60, height: 60, qty: 1, pricePerSqm: 2500, price: 900, note: 'זכוכית מט', media: [] },
         { id: uid(), name: 'דלת הזזה', mode: 'area', width: 200, height: 210, qty: 1, pricePerSqm: 1400, price: 5880, note: '', media: [] },
-        { id: uid(), name: 'תריס חיצוני', mode: 'fixed', qty: 4, price: 1800, note: 'חשמלי', media: [] }
+        { id: uid(), name: 'תריס גלילה', mode: 'fixed', qty: 4, price: 1800, note: 'חשמלי', media: [] }
       ],
       pricing: { discount: 5, install: 1500, vat: 18, notes: 'אחריות מלאה ל-5 שנים. תשלום: 30% מקדמה, 70% בהתקנה' },
       timeline: [
