@@ -1397,54 +1397,50 @@ async function renderQuoteDetail() {
     <div style="display:grid;grid-template-columns:1fr 380px;gap:20px;align-items:start" class="quote-grid">
       <div>
         ${isEditable ? `
-        <div class="card-section">
+       <div class="card-section">
           <div class="card-section-header">
             <div class="card-section-title">פריטים (${currentQuote.items.length})</div>
             <button class="card-section-action" onclick="newItem()">+ פתח חדש</button>
           </div>
           <div style="padding:16px">
-            ${currentQuote.items.length === 0 ? `
-              <div class="empty-state" style="padding:30px">
-                <div class="empty-text">עדיין לא נוספו פתחים</div>
-                <div class="template-grid" style="margin-top:16px;max-width:600px;margin-left:auto;margin-right:auto">
-                  <div class="template-btn" onclick="newItemTemplate('חלון הזזה', 'area', {width:120, height:100})">
-                    <div class="template-icon">🪟</div>
-                    <div class="template-name">חלון הזזה</div>
-                    <div class="template-meta">120×100 ס״מ</div>
-                  </div>
-                  <div class="template-btn" onclick="newItemTemplate('חלון סלון', 'area', {width:240, height:160})">
-                    <div class="template-icon">🪟</div>
-                    <div class="template-name">חלון סלון</div>
-                    <div class="template-meta">240×160 ס״מ</div>
-                  </div>
-                  <div class="template-btn" onclick="newItemTemplate('דלת מרפסת', 'area', {width:200, height:210})">
-                    <div class="template-icon">🚪</div>
-                    <div class="template-name">דלת מרפסת</div>
-                    <div class="template-meta">200×210 ס״מ</div>
-                  </div>
-                  <div class="template-btn" onclick="newItemTemplate('רשת נגד יתושים', 'area', {width:120, height:100})">
-                    <div class="template-icon">🦟</div>
-                    <div class="template-name">רשת</div>
-                    <div class="template-meta">לפי מ״ר</div>
-                  </div>
-                  <div class="template-btn" onclick="newItemTemplate('תריס גלילה', 'area', {width:120, height:140})">
-                    <div class="template-icon">🌅</div>
-                    <div class="template-name">תריס גלילה</div>
-                    <div class="template-meta">חשמלי / ידני</div>
-                  </div>
-                  <div class="template-btn" onclick="newItemTemplate('פתח אחר', 'fixed')">
-                    <div class="template-icon">＋</div>
-                    <div class="template-name">פתח אחר</div>
-                    <div class="template-meta">מותאם אישית</div>
-                  </div>
+            ${currentQuote.items.length === 0 ? '' : currentQuote.items.map((item, i) => renderItemCard(item, i)).join('')}
+            
+            <div class="${currentQuote.items.length === 0 ? 'empty-state' : ''}" style="padding:${currentQuote.items.length === 0 ? '30px' : '20px 0 0'}">
+              ${currentQuote.items.length === 0 ? '<div class="empty-text">עדיין לא נוספו פתחים</div>' : '<div style="font-size:13px;color:var(--steel);text-align:center;margin-bottom:12px;font-weight:600">+ הוסף פתח חדש</div>'}
+              <div class="template-grid" style="margin-top:${currentQuote.items.length === 0 ? '16px' : '0'};max-width:600px;margin-left:auto;margin-right:auto">
+                <div class="template-btn" onclick="newItemTemplate('חלון הזזה', 'area', {width:120, height:100})">
+                  <div class="template-icon">🪟</div>
+                  <div class="template-name">חלון הזזה</div>
+                  <div class="template-meta">120×100 ס״מ</div>
+                </div>
+                <div class="template-btn" onclick="newItemTemplate('חלון סלון', 'area', {width:240, height:160})">
+                  <div class="template-icon">🪟</div>
+                  <div class="template-name">חלון סלון</div>
+                  <div class="template-meta">240×160 ס״מ</div>
+                </div>
+                <div class="template-btn" onclick="newItemTemplate('דלת מרפסת', 'area', {width:200, height:210})">
+                  <div class="template-icon">🚪</div>
+                  <div class="template-name">דלת מרפסת</div>
+                  <div class="template-meta">200×210 ס״מ</div>
+                </div>
+                <div class="template-btn" onclick="newItemTemplate('רשת נגד יתושים', 'area', {width:120, height:100})">
+                  <div class="template-icon">🦟</div>
+                  <div class="template-name">רשת</div>
+                  <div class="template-meta">לפי מ״ר</div>
+                </div>
+                <div class="template-btn" onclick="newItemTemplate('תריס גלילה', 'area', {width:120, height:140})">
+                  <div class="template-icon">🌅</div>
+                  <div class="template-name">תריס גלילה</div>
+                  <div class="template-meta">חשמלי / ידני</div>
+                </div>
+                <div class="template-btn" onclick="newItemTemplate('פתח אחר', 'fixed')">
+                  <div class="template-icon">＋</div>
+                  <div class="template-name">פתח אחר</div>
+                  <div class="template-meta">מותאם אישית</div>
                 </div>
               </div>
-            ` : currentQuote.items.map((item, i) => renderItemCard(item, i)).join('')}
+            </div>
           </div>
-          ${currentQuote.items.length > 0 ? `
-          <div style="padding:0 16px 16px">
-           <button class="btn" style="width:100%" onclick="newItem()">+ הוסף פתח</button>
-          </div>` : ''}
         </div>
         
         <div class="card-section">
