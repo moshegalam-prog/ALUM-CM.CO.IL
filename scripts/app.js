@@ -13,7 +13,8 @@ const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
 });
 
 let currentUserId = null;
-
+// קטגוריות שתומכות בפרופיל אלומיניום (להרחבה בעתיד — פשוט הוסף שם פתח)
+const PROFILE_CATEGORIES = ['חלון הזזה', 'חלון סלון', 'דלת מרפסת', 'תריס גלילה', 'רשת נגד יתושים'];
 // ============ DB ABSTRACTION (Wraps Supabase) ============
 // שכבת תאימות לאחור - מאפשרת לקוד הקיים להמשיך לעבוד
 
