@@ -2088,18 +2088,21 @@ function newItem() {
 function newItemTemplate(name, mode, dims) {
   newItem();
   document.getElementById('item-name').value = name;
-  // הצגת שדה פרופיל לחלון הזזה
+ // הצגת שדה פרופיל לקטגוריות נתמכות
   const profileField = document.getElementById('profile-field');
   const profileSelect = document.getElementById('item-profile');
-  if (name === 'חלון הזזה') {
+  if (PROFILE_CATEGORIES.includes(name)) {
     profileField.style.display = 'block';
-    getProfiles('חלון הזזה').then(profiles => {
+    profileSelect.dataset.category = name; // נשמור את הקטגוריה על האלמנט
+    getProfiles(name).then(profiles => {
       profileSelect.innerHTML = '<option value="">— בחר פרופיל —</option>' +
         profiles.map(p => `<option value="${p.id}">${p.value}</option>`).join('') +
-        '<option value="__add__">+ הוסף פרופיל חדש</option>';
+        '<option value="__add__">+ הוסף פרופיל חדש</option>' +
+        (profiles.length > 0 ? '<option value="__delete__">🗑 מחק פרופיל...</option>' : '');
     });
   } else {
     profileField.style.display = 'none';
+    profileSelect.dataset.category = '';
     profileSelect.innerHTML = '<option value="">— בחר פרופיל —</option>';
   }
   if (mode === 'area') {
