@@ -1443,7 +1443,7 @@ async function renderQuoteDetail() {
           </div>
           ${currentQuote.items.length > 0 ? `
           <div style="padding:0 16px 16px">
-           <button class="btn" style="width:100%" onclick="showNewItemModal()">+ הוסף פתח</button>
+           <button class="btn" style="width:100%" onclick="newItem()">+ הוסף פתח</button>
           </div>` : ''}
         </div>
         
