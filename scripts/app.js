@@ -2063,25 +2063,70 @@ function newItem() {
   updateAreaPreview();
   showModal('modal-item');
   setTimeout(() => document.getElementById('item-name').focus(), 100);
-  // טיפול בבחירת "הוסף פרופיל חדש"
+ // טיפול בהוספה/מחיקה של פרופיל
   document.getElementById('item-profile').onchange = async function() {
-    if (this.value === '__add__') {
-      const val = prompt('הזן מספר פרופיל חדש:');
-      if (val && val.trim()) {
-        const ok = await addProfile('חלון הזזה', val.trim());
-        if (ok) {
-          showToast('פרופיל נוסף ✓');
-          const profiles = await getProfiles('חלון הזזה');
-          const newOpt = document.createElement('option');
-          newOpt.value = profiles[profiles.length-1].id;
-          newOpt.text = val.trim();
-          this.insertBefore(newOpt, this.lastChild);
-          this.value = profiles[profiles.length-1].id;
-        }
-      } else {
+    // ===== מחיקת פרופיל =====
+    if (this.value === '__delete__') {
+      const category = this.dataset.category;
+      if (!category) { this.value = ''; return; }
+
+      const profiles = await getProfiles(category);
+      if (profiles.length === 0) {
+        showToast('אין פרופילים למחיקה');
         this.value = '';
+        return;
       }
+
+      const list = profiles.map((p, i) => `${i + 1}) ${p.value}`).join('\n');
+      const choice = prompt(`בחר פרופיל למחיקה (הזן מספר):\n\n${list}`);
+      this.value = '';
+
+      if (!choice) return;
+      const idx = parseInt(choice) - 1;
+      if (isNaN(idx) || idx < 0 || idx >= profiles.length) {
+        showToast('בחירה לא תקינה');
+        return;
+      }
+
+      const target = profiles[idx];
+      if (!confirm(`למחוק את פרופיל "${target.value}"?\nפעולה זו לא הפיכה.`)) return;
+
+      await deleteProfile(target.id);
+      showToast('פרופיל נמחק ✓');
+
+      // רענון הרשימה ב-select
+      const fresh = await getProfiles(category);
+      this.innerHTML = '<option value="">— בחר פרופיל —</option>' +
+        fresh.map(p => `<option value="${p.id}">${p.value}</option>`).join('') +
+        '<option value="__add__">+ הוסף פרופיל חדש</option>' +
+        (fresh.length > 0 ? '<option value="__delete__">🗑 מחק פרופיל...</option>' : '');
+      return;
     }
+
+    // ===== הוספת פרופיל חדש =====
+    if (this.value !== '__add__') return;
+
+    const category = this.dataset.category;
+    if (!category) {
+      this.value = '';
+      showToast('לא ניתן להוסיף פרופיל לקטגוריה זו');
+      return;
+    }
+
+    const val = prompt(`הזן מספר פרופיל חדש עבור ${category}:`);
+    if (!val || !val.trim()) { this.value = ''; return; }
+
+    const ok = await addProfile(category, val.trim());
+    if (!ok) { showToast('שגיאה בהוספת פרופיל'); this.value = ''; return; }
+
+    showToast('פרופיל נוסף ✓');
+    const profiles = await getProfiles(category);
+    const fresh = profiles[profiles.length - 1];
+    const newOpt = document.createElement('option');
+    newOpt.value = fresh.id;
+    newOpt.text = val.trim();
+    this.insertBefore(newOpt, this.lastChild);
+    this.value = fresh.id;
   };
 }
 
