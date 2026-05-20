@@ -3633,12 +3633,23 @@ async function showPublicQuote(token) {
               </tr>`).join('')}
           </tbody>
         </table>
-        <div style="background:#f0f4fa;padding:20px 24px;border:1px solid rgba(0,0,0,0.08);border-top:none;border-radius:0 0 16px 16px">
+       <div style="background:#f0f4fa;padding:20px 24px;border:1px solid rgba(0,0,0,0.08);border-top:none;border-radius:0 0 16px 16px">
           <div style="display:flex;justify-content:space-between;font-size:14px;color:#4a6b8a;margin-bottom:6px">
-            <span>סכום ביניים</span><span>₪${total.toLocaleString()}</span>
+            <span>סכום ביניים</span><span>₪${subtotal.toLocaleString()}</span>
+          </div>
+          ${discountPct > 0 ? `
+          <div style="display:flex;justify-content:space-between;font-size:14px;color:#4a8a4a;margin-bottom:6px">
+            <span>הנחה (${discountPct}%)</span><span>−₪${discountAmt.toLocaleString(undefined,{maximumFractionDigits:0})}</span>
+          </div>` : ''}
+          ${installFee > 0 ? `
+          <div style="display:flex;justify-content:space-between;font-size:14px;color:#4a6b8a;margin-bottom:6px">
+            <span>התקנה / משלוח</span><span>₪${installFee.toLocaleString()}</span>
+          </div>` : ''}
+          <div style="display:flex;justify-content:space-between;font-size:14px;color:#4a6b8a;margin-bottom:6px">
+            <span>מע״מ (${vatPct}%)</span><span>₪${vatAmt.toLocaleString(undefined,{maximumFractionDigits:0})}</span>
           </div>
           <div style="display:flex;justify-content:space-between;font-size:20px;font-weight:800;color:#0a1628;margin-top:12px;padding-top:12px;border-top:2px solid #0a1628">
-            <span>סה״כ לתשלום</span><span>₪${total.toLocaleString()}</span>
+            <span>סה״כ לתשלום</span><span>₪${total.toLocaleString(undefined,{maximumFractionDigits:0})}</span>
           </div>
           ${business?.terms ? `<div style="margin-top:16px;font-size:12px;color:#7a96b8;line-height:1.6">${business.terms}</div>` : ''}
         </div>
