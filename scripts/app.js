@@ -3614,7 +3614,12 @@ async function showPublicQuote(token) {
             ${items.map((it, i) => `
               <tr style="border-bottom:1px solid rgba(0,0,0,0.06)">
                 <td style="padding:12px;color:#7a96b8">${i+1}</td>
-                <td style="padding:12px;font-weight:600">${it.name || ''}<br><span style="font-size:11px;color:#4a6b8a;font-weight:400">×${it.qty || 1}</span></td>
+               <td style="padding:12px;font-weight:600">
+                  ${it.name || ''}
+                  ${it.profile_value ? `<br><span style="font-size:11px;color:#4a6b8a;font-weight:500">פרופיל ${it.profile_value}</span>` : ''}
+                  ${it.note ? `<br><span style="font-size:11px;color:#4a6b8a;font-weight:400">${it.note}</span>` : ''}
+                  <br><span style="font-size:11px;color:#7a96b8;font-weight:400">×${it.qty || 1}</span>
+                </td>
                 <td style="padding:12px;color:#4a6b8a">${it.width_cm ? it.width_cm + '×' + it.height_cm + ' ס״מ' : '-'}</td>
                 <td style="padding:12px;text-align:left;font-weight:700;color:#3a7bd5">₪${parseFloat(it.total_price||0).toLocaleString()}</td>
               </tr>`).join('')}
