@@ -365,8 +365,10 @@ function itemToDb(i, quoteId, position) {
     price_per_sqm: i.pricePerSqm || null,
     min_price: i.minPrice || null,
     total_price: totalPrice,
-    note: i.note || null,
-    media_ids: Array.isArray(i.media) ? i.media : []
+  note: i.note || null,
+    media_ids: Array.isArray(i.media) ? i.media : [],
+    profile_id: i.profileId || null,
+    profile_value: i.profileValue || null
   };
 }
 
