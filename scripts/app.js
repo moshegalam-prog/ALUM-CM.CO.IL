@@ -305,7 +305,7 @@ function quoteToDb(q) {
     vat_percent: pricing.vat || 18,
     notes: pricing.notes || '',
     total: q.total || 0,
-    publicToken: crypto.randomUUID(),
+    public_token: q.publicToken || null,
     history: q.history || q.timeline || [],  // 🛠️ FIX: timeline נשמר כ-history
     created_at: q.createdAt || new Date().toISOString(),
     sent_at: q.sentAt || null,
