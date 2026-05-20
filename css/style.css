@@ -1674,19 +1674,57 @@ overflow: visible;
 
 .template-btn {
   background: var(--bg-card);
-  border: 1px solid var(--line);
+  border: 1.5px solid rgba(10,22,40,0.18);
   border-radius: 12px;
-  padding: 18px 10px;
+  padding: 16px 10px;
   text-align: center;
   cursor: pointer;
   transition: all 0.15s;
+  position: relative;
 }
 
-.template-btn:hover { border-color: var(--accent); transform: translateY(-1px); }
+[data-theme="dark"] .template-btn {
+  border-color: rgba(255,255,255,0.18);
+}
 
-.template-icon { font-size: 28px; margin-bottom: 6px; }
-.template-name { font-size: 13px; font-weight: 600; }
-.template-meta { font-size: 11px; color: var(--steel); margin-top: 2px; }
+.template-btn:hover { 
+  border-color: var(--accent); 
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(217,119,87,0.12);
+}
+
+.template-icon-wrap {
+  width: 56px;
+  height: 56px;
+  background: rgba(217,119,87,0.1);
+  border-radius: 10px;
+  margin: 0 auto 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+}
+
+.template-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: white;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+}
+
+[data-theme="dark"] .template-badge {
+  background: var(--accent);
+}
+
+.template-name { font-size: 13px; font-weight: 700; color: var(--text-primary); }
 
 /* Area preview */
 .area-preview {
