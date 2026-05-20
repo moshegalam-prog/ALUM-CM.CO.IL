@@ -853,7 +853,7 @@ async function seedDemoData() {
       approvedAt: new Date(Date.now() - 25*86400000).toISOString(),
       installedAt: new Date(Date.now() - 7*86400000).toISOString(),
       items: [
-        { id: uid(), name: 'חלון סלון', mode: 'area', width: 180, height: 130, qty: 1, pricePerSqm: 2100, price: 4914, note: '', media: [] },
+        { id: uid(), name: 'חלון פתיחה', mode: 'area', width: 180, height: 130, qty: 1, pricePerSqm: 2100, price: 4914, note: '', media: [] },
         { id: uid(), name: 'חלון חדר שינה', mode: 'area', width: 140, height: 110, qty: 2, pricePerSqm: 2100, price: 3234, note: '', media: [] }
       ],
       pricing: { discount: 0, install: 600, vat: 18, notes: '' },
