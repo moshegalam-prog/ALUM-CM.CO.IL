@@ -1694,15 +1694,28 @@ overflow: visible;
 }
 
 .template-icon-wrap {
-  width: 56px;
-  height: 56px;
-  background: rgba(217,119,87,0.1);
+  width: 72px;
+  height: 72px;
+  background: rgba(217,119,87,0.08);
   border-radius: 10px;
   margin: 0 auto 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--accent);
+  overflow: hidden;
+}
+
+.template-icon-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.template-icon-wrap svg {
+  width: 36px;
+  height: 36px;
 }
 
 .template-badge {
