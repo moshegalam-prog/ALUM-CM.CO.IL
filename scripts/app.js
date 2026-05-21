@@ -1411,58 +1411,42 @@ async function renderQuoteDetail() {
               <div class="template-grid" style="margin-top:${currentQuote.items.length === 0 ? '16px' : '0'};max-width:600px;margin-left:auto;margin-right:auto">
          <div class="template-btn" onclick="newItemTemplate('חלון הזזה', 'area', {width:120, height:100})">
                   <div class="template-badge">+</div>
-                  <div class="template-icon-wrap">
-                    <img src="https://gpbphwgoygcfzebmsplk.supabase.co/storage/v1/object/public/category-icons/category-sliding-window.png" alt="חלון הזזה" onerror="this.outerHTML='<svg viewBox=\&quot;0 0 48 48\&quot; width=\&quot;36\&quot; height=\&quot;36\&quot; fill=\&quot;none\&quot; stroke=\&quot;currentColor\&quot; stroke-width=\&quot;1.8\&quot;><rect x=\&quot;6\&quot; y=\&quot;10\&quot; width=\&quot;36\&quot; height=\&quot;28\&quot; rx=\&quot;0.5\&quot;/><line x1=\&quot;24\&quot; y1=\&quot;10\&quot; x2=\&quot;24\&quot; y2=\&quot;38\&quot;/></svg>'">
-                  </div>
+                  <div class="template-icon-wrap"><img src="https://gpbphwgoygcfzebmsplk.supabase.co/storage/v1/object/public/category-icons/category-sliding-window.png" alt="חלון הזזה" style="width:100%;height:100%;object-fit:contain;display:block"></div>
                   <div class="template-name">חלון הזזה</div>
                 </div>
                 <div class="template-btn" onclick="newItemTemplate('חלון פתיחה', 'area')">
                   <div class="template-badge">+</div>
-                  <div class="template-icon-wrap">
-                    <img src="https://gpbphwgoygcfzebmsplk.supabase.co/storage/v1/object/public/category-icons/category-casement-window.png" alt="חלון פתיחה">
-                  </div>
+                  <div class="template-icon-wrap"><img src="https://gpbphwgoygcfzebmsplk.supabase.co/storage/v1/object/public/category-icons/category-casement-window.png" alt="חלון פתיחה" style="width:100%;height:100%;object-fit:contain;display:block"></div>
                   <div class="template-name">חלון פתיחה</div>
                 </div>
                 <div class="template-btn" onclick="newItemTemplate('דלת הזזה', 'area')">
                   <div class="template-badge">+</div>
-                  <div class="template-icon-wrap">
-                    <img src="https://gpbphwgoygcfzebmsplk.supabase.co/storage/v1/object/public/category-icons/category-sliding-door.png" alt="דלת הזזה">
-                  </div>
+                  <div class="template-icon-wrap"><img src="https://gpbphwgoygcfzebmsplk.supabase.co/storage/v1/object/public/category-icons/category-sliding-door.png" alt="דלת הזזה" style="width:100%;height:100%;object-fit:contain;display:block"></div>
                   <div class="template-name">דלת הזזה</div>
                 </div>
                 <div class="template-btn" onclick="newItemTemplate('דלת פתיחה', 'area')">
                   <div class="template-badge">+</div>
-                  <div class="template-icon-wrap">
-                    <img src="https://gpbphwgoygcfzebmsplk.supabase.co/storage/v1/object/public/category-icons/category-hinged-door.png" alt="דלת פתיחה">
-                  </div>
+                  <div class="template-icon-wrap"><img src="https://gpbphwgoygcfzebmsplk.supabase.co/storage/v1/object/public/category-icons/category-hinged-door.png" alt="דלת פתיחה" style="width:100%;height:100%;object-fit:contain;display:block"></div>
                   <div class="template-name">דלת פתיחה</div>
                 </div>
                 <div class="template-btn" onclick="newItemTemplate('תריס רפפה', 'area')">
                   <div class="template-badge">+</div>
-                  <div class="template-icon-wrap">
-                    <img src="https://gpbphwgoygcfzebmsplk.supabase.co/storage/v1/object/public/category-icons/category-louver-shutter.png" alt="תריס רפפה">
-                  </div>
+                  <div class="template-icon-wrap"><img src="https://gpbphwgoygcfzebmsplk.supabase.co/storage/v1/object/public/category-icons/category-louver-shutter.png" alt="תריס רפפה" style="width:100%;height:100%;object-fit:contain;display:block"></div>
                   <div class="template-name">תריס רפפה</div>
                 </div>
                 <div class="template-btn" onclick="newItemTemplate('תריס גלילה', 'area', {width:120, height:140})">
                   <div class="template-badge">+</div>
-                  <div class="template-icon-wrap">
-                    <img src="https://gpbphwgoygcfzebmsplk.supabase.co/storage/v1/object/public/category-icons/category-rolling-shutter.png" alt="תריס גלילה">
-                  </div>
+                  <div class="template-icon-wrap"><img src="https://gpbphwgoygcfzebmsplk.supabase.co/storage/v1/object/public/category-icons/category-rolling-shutter.png" alt="תריס גלילה" style="width:100%;height:100%;object-fit:contain;display:block"></div>
                   <div class="template-name">תריס גלילה</div>
                 </div>
                 <div class="template-btn" onclick="newItemTemplate('רשת נגד יתושים', 'area', {width:120, height:100})">
                   <div class="template-badge">+</div>
-                  <div class="template-icon-wrap">
-                    <img src="https://gpbphwgoygcfzebmsplk.supabase.co/storage/v1/object/public/category-icons/category-mosquito-net.png" alt="רשת נגד יתושים">
-                  </div>
+                  <div class="template-icon-wrap"><img src="https://gpbphwgoygcfzebmsplk.supabase.co/storage/v1/object/public/category-icons/category-mosquito-net.png" alt="רשת נגד יתושים" style="width:100%;height:100%;object-fit:contain;display:block"></div>
                   <div class="template-name">רשת</div>
                 </div>
                 <div class="template-btn" onclick="newItemTemplate('פתח אחר', 'fixed')">
                   <div class="template-badge">+</div>
-                  <div class="template-icon-wrap">
-                    <img src="https://gpbphwgoygcfzebmsplk.supabase.co/storage/v1/object/public/category-icons/category-custom.png" alt="פתח אחר">
-                  </div>
+                  <div class="template-icon-wrap"><img src="https://gpbphwgoygcfzebmsplk.supabase.co/storage/v1/object/public/category-icons/category-custom.png" alt="פתח אחר" style="width:100%;height:100%;object-fit:contain;display:block"></div>
                   <div class="template-name">פתח אחר</div>
                 </div>
               </div>
