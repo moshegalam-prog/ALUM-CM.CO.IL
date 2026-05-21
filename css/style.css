@@ -4102,13 +4102,16 @@ body.dropdown-open .quote-more-dropdown.open {
 }
 /* תצוגה רספונסיבית של הכפתורים בעמוד הצעה */
 .quote-actions .desktop-only {
-  display: inline-flex;
+  display: inline-flex !important;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
 }
 .quote-actions .mobile-only {
-  display: none;
+  display: none !important;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 767px) {
   .quote-actions .desktop-only {
     display: none !important;
   }
