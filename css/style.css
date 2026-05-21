@@ -4100,22 +4100,19 @@ body.printing-work-order #work-order-print-area {
 body.dropdown-open .quote-more-dropdown.open {
   display: block;
 }
-/* תצוגה רספונסיבית של הכפתורים בעמוד הצעה */
-.quote-actions .desktop-only {
+/* תצוגה רספונסיבית של הכפתורים בעמוד הצעה (מבוקרת ע"י JS) */
+body.is-desktop .quote-actions .desktop-only {
   display: inline-flex !important;
   gap: 8px;
   flex-wrap: wrap;
   align-items: center;
 }
-.quote-actions .mobile-only {
+body.is-desktop .quote-actions .mobile-only {
   display: none !important;
 }
-
-@media (max-width: 767px) {
-  .quote-actions .desktop-only {
-    display: none !important;
-  }
-  .quote-actions .mobile-only {
-    display: inline-block !important;
-  }
+body.is-mobile .quote-actions .desktop-only {
+  display: none !important;
+}
+body.is-mobile .quote-actions .mobile-only {
+  display: inline-block !important;
 }
