@@ -3757,3 +3757,13 @@ async function openForgotPassword() {
     showToast('שגיאה: ' + e.message);
   }
 }
+// סגירת תפריט "..." בהצעה בלחיצה מחוץ אליו
+document.addEventListener('click', function(e) {
+  const dropdown = document.getElementById('quote-more-dropdown');
+  if (dropdown && dropdown.classList.contains('open')) {
+    const menu = e.target.closest('.quote-more-menu');
+    if (!menu) {
+      dropdown.classList.remove('open');
+    }
+  }
+});
