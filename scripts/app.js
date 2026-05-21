@@ -3779,3 +3779,15 @@ document.addEventListener('click', function(e) {
     }
   }
 });
+// ============ זיהוי גודל מסך — מובייל מול מחשב ============
+function detectScreenSize() {
+  const isMobile = window.innerWidth < 768;
+  document.body.classList.toggle('is-mobile', isMobile);
+  document.body.classList.toggle('is-desktop', !isMobile);
+}
+
+// מריץ בטעינה
+detectScreenSize();
+
+// מריץ גם בכל שינוי גודל (לטאבלטים שמתחלפים בין landscape/portrait)
+window.addEventListener('resize', detectScreenSize);
