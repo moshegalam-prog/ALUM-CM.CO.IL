@@ -1400,7 +1400,7 @@ async function renderQuoteDetail() {
         </span>
         
         <!-- תפריט "..." — גלוי רק במובייל -->
-        <div class="quote-more-menu mobile-only" style="position:relative;display:none">
+        <div class="quote-more-menu mobile-only" style="position:relative">
           <button class="btn" onclick="event.stopPropagation();var d=document.getElementById('quote-more-dropdown');d.style.display=(d.style.display==='block'?'none':'block')" style="padding:10px 14px;font-size:18px;line-height:1">⋯</button>
           <div id="quote-more-dropdown" style="position:absolute;top:calc(100% + 4px);left:0;background:white;border:1px solid rgba(10,22,40,0.15);border-radius:10px;box-shadow:0 8px 24px rgba(10,22,40,0.12);min-width:200px;z-index:1000;display:none;overflow:hidden">
             ${['approved','production','installed'].includes(currentQuote.status) ? `<button onclick="document.getElementById('quote-more-dropdown').style.display='none';openWorkOrder()" style="display:block;width:100%;text-align:right;padding:12px 16px;background:transparent;border:none;border-bottom:1px solid rgba(10,22,40,0.06);font-size:14px;font-weight:500;cursor:pointer;color:#0a1628;white-space:nowrap">📄 דף ביצוע למפעל ${user.plan === 'free' ? '⭐' : ''}</button>` : ''}
