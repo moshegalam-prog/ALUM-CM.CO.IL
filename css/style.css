@@ -4101,20 +4101,18 @@ body.dropdown-open .quote-more-dropdown.open {
   display: block;
 }
 /* תצוגה רספונסיבית של הכפתורים בעמוד הצעה */
+.quote-actions .desktop-only {
+  display: inline-flex;
+}
+.quote-actions .mobile-only {
+  display: none;
+}
+
 @media (max-width: 767px) {
   .quote-actions .desktop-only {
     display: none !important;
   }
   .quote-actions .mobile-only {
     display: inline-block !important;
-  }
-}
-
-@media (min-width: 768px) {
-  .quote-actions .desktop-only {
-    display: inline-flex !important;
-  }
-  .quote-actions .mobile-only {
-    display: none !important;
   }
 }
