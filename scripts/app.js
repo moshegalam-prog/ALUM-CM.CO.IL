@@ -1388,17 +1388,17 @@ async function renderQuoteDetail() {
         <button class="btn" onclick="shareWhatsAppPDF()" style="background:#25D366;border:1px solid #25D366;color:#fff !important;display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;padding:10px 16px;white-space:nowrap;">שלח וואצאפ</button>
         
         <!-- תפריט "..." עם כל השאר -->
-        <div class="quote-more-menu" style="position:relative">
-          <button class="btn" onclick="event.stopPropagation();document.getElementById('quote-more-dropdown').classList.toggle('open')" style="padding:10px 14px;font-size:18px;line-height:1">⋯</button>
-          <div id="quote-more-dropdown" class="quote-more-dropdown">
-            ${['approved','production','installed'].includes(currentQuote.status) ? `<button onclick="document.getElementById('quote-more-dropdown').classList.remove('open');openWorkOrder()">📄 דף ביצוע למפעל ${user.plan === 'free' ? '⭐' : ''}</button>` : ''}
-            ${currentQuote.status !== 'draft' ? `<button onclick="document.getElementById('quote-more-dropdown').classList.remove('open');reopenForEdit()">✏️ פתח לעריכה</button>` : ''}
-            <button onclick="document.getElementById('quote-more-dropdown').classList.remove('open');sendQuoteEmail()">📧 שלח במייל</button>
-            <button onclick="document.getElementById('quote-more-dropdown').classList.remove('open');downloadQuotePDF()">⬇ הורד PDF</button>
-            <button onclick="document.getElementById('quote-more-dropdown').classList.remove('open');window.print()">🖨 הדפס הצעה</button>
-            <button onclick="document.getElementById('quote-more-dropdown').classList.remove('open');duplicateQuote()">⎘ שכפל הצעה</button>
-            <button onclick="document.getElementById('quote-more-dropdown').classList.remove('open');openStatusEditor()">⚙ תקן סטטוס</button>
-            <button onclick="document.getElementById('quote-more-dropdown').classList.remove('open');deleteQuote()" class="danger">🗑 מחק הצעה</button>
+       <div class="quote-more-menu" style="position:relative;display:inline-block">
+          <button class="btn" onclick="event.stopPropagation();var d=document.getElementById('quote-more-dropdown');d.style.display=(d.style.display==='block'?'none':'block')" style="padding:10px 14px;font-size:18px;line-height:1">⋯</button>
+          <div id="quote-more-dropdown" style="position:absolute;top:calc(100% + 4px);left:0;background:white;border:1px solid rgba(10,22,40,0.15);border-radius:10px;box-shadow:0 8px 24px rgba(10,22,40,0.12);min-width:200px;z-index:1000;display:none;overflow:hidden">
+            ${['approved','production','installed'].includes(currentQuote.status) ? `<button onclick="document.getElementById('quote-more-dropdown').style.display='none';openWorkOrder()" style="display:block;width:100%;text-align:right;padding:12px 16px;background:transparent;border:none;border-bottom:1px solid rgba(10,22,40,0.06);font-size:14px;font-weight:500;cursor:pointer;color:#0a1628;white-space:nowrap">📄 דף ביצוע למפעל ${user.plan === 'free' ? '⭐' : ''}</button>` : ''}
+            ${currentQuote.status !== 'draft' ? `<button onclick="document.getElementById('quote-more-dropdown').style.display='none';reopenForEdit()" style="display:block;width:100%;text-align:right;padding:12px 16px;background:transparent;border:none;border-bottom:1px solid rgba(10,22,40,0.06);font-size:14px;font-weight:500;cursor:pointer;color:#0a1628;white-space:nowrap">✏️ פתח לעריכה</button>` : ''}
+            <button onclick="document.getElementById('quote-more-dropdown').style.display='none';sendQuoteEmail()" style="display:block;width:100%;text-align:right;padding:12px 16px;background:transparent;border:none;border-bottom:1px solid rgba(10,22,40,0.06);font-size:14px;font-weight:500;cursor:pointer;color:#0a1628;white-space:nowrap">📧 שלח במייל</button>
+            <button onclick="document.getElementById('quote-more-dropdown').style.display='none';downloadQuotePDF()" style="display:block;width:100%;text-align:right;padding:12px 16px;background:transparent;border:none;border-bottom:1px solid rgba(10,22,40,0.06);font-size:14px;font-weight:500;cursor:pointer;color:#0a1628;white-space:nowrap">⬇ הורד PDF</button>
+            <button onclick="document.getElementById('quote-more-dropdown').style.display='none';window.print()" style="display:block;width:100%;text-align:right;padding:12px 16px;background:transparent;border:none;border-bottom:1px solid rgba(10,22,40,0.06);font-size:14px;font-weight:500;cursor:pointer;color:#0a1628;white-space:nowrap">🖨 הדפס הצעה</button>
+            <button onclick="document.getElementById('quote-more-dropdown').style.display='none';duplicateQuote()" style="display:block;width:100%;text-align:right;padding:12px 16px;background:transparent;border:none;border-bottom:1px solid rgba(10,22,40,0.06);font-size:14px;font-weight:500;cursor:pointer;color:#0a1628;white-space:nowrap">⎘ שכפל הצעה</button>
+            <button onclick="document.getElementById('quote-more-dropdown').style.display='none';openStatusEditor()" style="display:block;width:100%;text-align:right;padding:12px 16px;background:transparent;border:none;border-bottom:1px solid rgba(10,22,40,0.06);font-size:14px;font-weight:500;cursor:pointer;color:#0a1628;white-space:nowrap">⚙ תקן סטטוס</button>
+            <button onclick="document.getElementById('quote-more-dropdown').style.display='none';deleteQuote()" style="display:block;width:100%;text-align:right;padding:12px 16px;background:transparent;border:none;font-size:14px;font-weight:500;cursor:pointer;color:#dc2626;white-space:nowrap">🗑 מחק הצעה</button>
           </div>
         </div>
       </div>
