@@ -4100,3 +4100,21 @@ body.printing-work-order #work-order-print-area {
 body.dropdown-open .quote-more-dropdown.open {
   display: block;
 }
+/* תצוגה רספונסיבית של הכפתורים בעמוד הצעה */
+@media (max-width: 767px) {
+  .quote-actions .desktop-only {
+    display: none !important;
+  }
+  .quote-actions .mobile-only {
+    display: inline-block !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .quote-actions .desktop-only {
+    display: inline-flex !important;
+  }
+  .quote-actions .mobile-only {
+    display: none !important;
+  }
+}
