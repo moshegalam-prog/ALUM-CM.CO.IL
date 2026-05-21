@@ -1377,21 +1377,30 @@ async function renderQuoteDetail() {
           · ${escapeHTML(client?.name || 'לקוח')} · ${formatDate(currentQuote.createdAt)}
         </div>
       </div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap" class="quote-actions">
-       ${currentQuote.status === 'draft' ? `<button class="btn btn-accent" onclick="sendQuoteEmail()">📤 שלח ללקוח</button>` : ''}
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center" class="quote-actions">
+        <!-- כפתור ראשי דינמי לפי הסטטוס -->
+        ${currentQuote.status === 'draft' ? `<button class="btn btn-accent" onclick="sendQuoteEmail()">📤 שלח ללקוח</button>` : ''}
         ${currentQuote.status === 'sent' || currentQuote.status === 'viewed' ? `<button class="btn btn-accent" onclick="markAsApproved()">✓ סמן כאושר</button>` : ''}
         ${currentQuote.status === 'approved' ? `<button class="btn btn-accent" onclick="markAsProduction()">→ העבר לייצור</button>` : ''}
         ${currentQuote.status === 'production' ? `<button class="btn btn-accent" onclick="markAsInstalled()">✓ סמן כהותקן</button>` : ''}
-        ${['approved','production','installed'].includes(currentQuote.status) ? `<button class="btn btn-pro" onclick="openWorkOrder()">📄 דף ביצוע למפעל ${user.plan === 'free' ? '⭐' : ''}</button>` : ''}
-        ${currentQuote.status !== 'draft' ? `<button class="btn" onclick="reopenForEdit()">✏️ פתח לעריכה</button>` : ''}
-        <button class="btn" onclick="duplicateQuote()">⎘ שכפל הצעה</button>
-        <button class="btn" onclick="openStatusEditor()">⚙ תקן סטטוס</button>
-        <button class="btn" onclick="window.print()">🖨 הדפס הצעה</button>
-       
-     <button class="btn" onclick="shareWhatsAppPDF()" style="background:#25D366;border:1px solid #25D366;color:#fff !important;display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;padding:10px 16px;min-width:140px;white-space:nowrap;">שלח וואצאפ</button>
-        <button class="btn" onclick="sendQuoteEmail()">📧 שלח במייל</button>
-        <button class="btn" onclick="downloadQuotePDF()">⬇ הורד PDF</button>
-        <button class="btn" onclick="deleteQuote()">🗑 מחק</button>
+        
+        <!-- וואצאפ — כפתור משני -->
+        <button class="btn" onclick="shareWhatsAppPDF()" style="background:#25D366;border:1px solid #25D366;color:#fff !important;display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;padding:10px 16px;white-space:nowrap;">שלח וואצאפ</button>
+        
+        <!-- תפריט "..." עם כל השאר -->
+        <div class="quote-more-menu" style="position:relative">
+          <button class="btn" onclick="event.stopPropagation();document.getElementById('quote-more-dropdown').classList.toggle('open')" style="padding:10px 14px;font-size:18px;line-height:1">⋯</button>
+          <div id="quote-more-dropdown" class="quote-more-dropdown">
+            ${['approved','production','installed'].includes(currentQuote.status) ? `<button onclick="document.getElementById('quote-more-dropdown').classList.remove('open');openWorkOrder()">📄 דף ביצוע למפעל ${user.plan === 'free' ? '⭐' : ''}</button>` : ''}
+            ${currentQuote.status !== 'draft' ? `<button onclick="document.getElementById('quote-more-dropdown').classList.remove('open');reopenForEdit()">✏️ פתח לעריכה</button>` : ''}
+            <button onclick="document.getElementById('quote-more-dropdown').classList.remove('open');sendQuoteEmail()">📧 שלח במייל</button>
+            <button onclick="document.getElementById('quote-more-dropdown').classList.remove('open');downloadQuotePDF()">⬇ הורד PDF</button>
+            <button onclick="document.getElementById('quote-more-dropdown').classList.remove('open');window.print()">🖨 הדפס הצעה</button>
+            <button onclick="document.getElementById('quote-more-dropdown').classList.remove('open');duplicateQuote()">⎘ שכפל הצעה</button>
+            <button onclick="document.getElementById('quote-more-dropdown').classList.remove('open');openStatusEditor()">⚙ תקן סטטוס</button>
+            <button onclick="document.getElementById('quote-more-dropdown').classList.remove('open');deleteQuote()" class="danger">🗑 מחק הצעה</button>
+          </div>
+        </div>
       </div>
     </div>
     
