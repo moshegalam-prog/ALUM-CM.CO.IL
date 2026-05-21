@@ -4040,3 +4040,63 @@ body.printing-work-order #work-order-print-area {
     display: none !important;
   }
 }
+/* ===== תפריט "..." של פעולות בהצעה ===== */
+.quote-more-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  background: white;
+  border: 1px solid rgba(10,22,40,0.15);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(10,22,40,0.12);
+  min-width: 200px;
+  z-index: 1000;
+  display: none;
+  overflow: hidden;
+}
+
+[data-theme="dark"] .quote-more-dropdown {
+  background: var(--bg-card);
+  border-color: rgba(255,255,255,0.15);
+}
+
+.quote-more-dropdown.open {
+  display: block;
+}
+
+.quote-more-dropdown button {
+  display: block;
+  width: 100%;
+  text-align: right;
+  padding: 12px 16px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(10,22,40,0.06);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--text-primary);
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+
+.quote-more-dropdown button:last-child {
+  border-bottom: none;
+}
+
+.quote-more-dropdown button:hover {
+  background: rgba(217,119,87,0.08);
+}
+
+.quote-more-dropdown button.danger {
+  color: #dc2626;
+}
+
+.quote-more-dropdown button.danger:hover {
+  background: rgba(220,38,38,0.08);
+}
+
+/* סגירת התפריט כשלוחצים מחוץ אליו */
+body.dropdown-open .quote-more-dropdown.open {
+  display: block;
+}
