@@ -1377,18 +1377,30 @@ async function renderQuoteDetail() {
           · ${escapeHTML(client?.name || 'לקוח')} · ${formatDate(currentQuote.createdAt)}
         </div>
       </div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center" class="quote-actions">
+   <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center" class="quote-actions">
         <!-- כפתור ראשי דינמי לפי הסטטוס -->
         ${currentQuote.status === 'draft' ? `<button class="btn btn-accent" onclick="sendQuoteEmail()">📤 שלח ללקוח</button>` : ''}
         ${currentQuote.status === 'sent' || currentQuote.status === 'viewed' ? `<button class="btn btn-accent" onclick="markAsApproved()">✓ סמן כאושר</button>` : ''}
         ${currentQuote.status === 'approved' ? `<button class="btn btn-accent" onclick="markAsProduction()">→ העבר לייצור</button>` : ''}
         ${currentQuote.status === 'production' ? `<button class="btn btn-accent" onclick="markAsInstalled()">✓ סמן כהותקן</button>` : ''}
         
-        <!-- וואצאפ — כפתור משני -->
+        <!-- וואצאפ — תמיד גלוי -->
         <button class="btn" onclick="shareWhatsAppPDF()" style="background:#25D366;border:1px solid #25D366;color:#fff !important;display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;padding:10px 16px;white-space:nowrap;">שלח וואצאפ</button>
         
-        <!-- תפריט "..." עם כל השאר -->
-       <div class="quote-more-menu" style="position:relative;display:inline-block">
+        <!-- כפתורים נוספים — גלויים רק במחשב/טאבלט (לא במובייל) -->
+        <span class="desktop-only" style="display:inline-flex;gap:8px;flex-wrap:wrap;align-items:center">
+          ${['approved','production','installed'].includes(currentQuote.status) ? `<button class="btn btn-pro" onclick="openWorkOrder()">📄 דף ביצוע למפעל ${user.plan === 'free' ? '⭐' : ''}</button>` : ''}
+          ${currentQuote.status !== 'draft' ? `<button class="btn" onclick="reopenForEdit()">✏️ פתח לעריכה</button>` : ''}
+          <button class="btn" onclick="duplicateQuote()">⎘ שכפל הצעה</button>
+          <button class="btn" onclick="openStatusEditor()">⚙ תקן סטטוס</button>
+          <button class="btn" onclick="window.print()">🖨 הדפס הצעה</button>
+          <button class="btn" onclick="sendQuoteEmail()">📧 שלח במייל</button>
+          <button class="btn" onclick="downloadQuotePDF()">⬇ הורד PDF</button>
+          <button class="btn" onclick="deleteQuote()">🗑 מחק</button>
+        </span>
+        
+        <!-- תפריט "..." — גלוי רק במובייל -->
+        <div class="quote-more-menu mobile-only" style="position:relative;display:none">
           <button class="btn" onclick="event.stopPropagation();var d=document.getElementById('quote-more-dropdown');d.style.display=(d.style.display==='block'?'none':'block')" style="padding:10px 14px;font-size:18px;line-height:1">⋯</button>
           <div id="quote-more-dropdown" style="position:absolute;top:calc(100% + 4px);left:0;background:white;border:1px solid rgba(10,22,40,0.15);border-radius:10px;box-shadow:0 8px 24px rgba(10,22,40,0.12);min-width:200px;z-index:1000;display:none;overflow:hidden">
             ${['approved','production','installed'].includes(currentQuote.status) ? `<button onclick="document.getElementById('quote-more-dropdown').style.display='none';openWorkOrder()" style="display:block;width:100%;text-align:right;padding:12px 16px;background:transparent;border:none;border-bottom:1px solid rgba(10,22,40,0.06);font-size:14px;font-weight:500;cursor:pointer;color:#0a1628;white-space:nowrap">📄 דף ביצוע למפעל ${user.plan === 'free' ? '⭐' : ''}</button>` : ''}
