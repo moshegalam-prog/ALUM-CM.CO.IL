@@ -4108,7 +4108,7 @@ body.dropdown-open .quote-more-dropdown.open {
   display: none;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 900px) {
   .quote-actions .desktop-only {
     display: none !important;
   }
