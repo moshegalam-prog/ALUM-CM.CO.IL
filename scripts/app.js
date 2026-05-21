@@ -3779,15 +3779,36 @@ document.addEventListener('click', function(e) {
     }
   }
 });
-// ============ זיהוי גודל מסך — מובייל מול מחשב ============
+// ============ זיהוי גודל מסך — גרסה אגרסיבית ============
 function detectScreenSize() {
   const isMobile = window.innerWidth < 768;
+  
+  // עדכון body classes
   document.body.classList.toggle('is-mobile', isMobile);
   document.body.classList.toggle('is-desktop', !isMobile);
+  
+  // עדכון ישיר של הכפתורים — בלי תלות ב-CSS
+  const desktopEls = document.querySelectorAll('.quote-actions .desktop-only');
+  const mobileEls = document.querySelectorAll('.quote-actions .mobile-only');
+  
+  desktopEls.forEach(el => {
+    el.style.display = isMobile ? 'none' : 'inline-flex';
+  });
+  
+  mobileEls.forEach(el => {
+    el.style.display = isMobile ? 'inline-block' : 'none';
+  });
 }
 
 // מריץ בטעינה
 detectScreenSize();
 
-// מריץ גם בכל שינוי גודל (לטאבלטים שמתחלפים בין landscape/portrait)
+// מריץ גם בכל שינוי גודל
 window.addEventListener('resize', detectScreenSize);
+
+// מריץ גם אחרי שכל הדף נטען (למקרה שהוא רץ לפני שנוצרים הכפתורים)
+window.addEventListener('load', detectScreenSize);
+
+// מריץ גם 2 שניות אחרי הטעינה (למקרה ש-currentQuote נטען אסינכרונית)
+setTimeout(detectScreenSize, 2000);
+setTimeout(detectScreenSize, 5000);
