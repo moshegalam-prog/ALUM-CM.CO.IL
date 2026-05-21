@@ -1388,7 +1388,7 @@ async function renderQuoteDetail() {
         <button class="btn" onclick="shareWhatsAppPDF()" style="background:#25D366;border:1px solid #25D366;color:#fff !important;display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;padding:10px 16px;white-space:nowrap;">שלח וואצאפ</button>
         
         <!-- כפתורים נוספים — גלויים רק במחשב/טאבלט (לא במובייל) -->
-        <span class="desktop-only" style="display:inline-flex;gap:8px;flex-wrap:wrap;align-items:center">
+        <span class="desktop-only" style="gap:8px;flex-wrap:wrap;align-items:center">
           ${['approved','production','installed'].includes(currentQuote.status) ? `<button class="btn btn-pro" onclick="openWorkOrder()">📄 דף ביצוע למפעל ${user.plan === 'free' ? '⭐' : ''}</button>` : ''}
           ${currentQuote.status !== 'draft' ? `<button class="btn" onclick="reopenForEdit()">✏️ פתח לעריכה</button>` : ''}
           <button class="btn" onclick="duplicateQuote()">⎘ שכפל הצעה</button>
